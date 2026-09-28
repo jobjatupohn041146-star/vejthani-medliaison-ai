@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>โรงพยาบาลเวชธานี Vejthani Hospital — International Patient Liaison Portal</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans, Noto Sans Thai, Amiri (Arabic Classical), Alexandria (Arabic Modern) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans+Thai:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans Thai"', 'sans-serif'],
+            arabic: ['"Amiri"', 'serif'],
+            alexandria: ['"Alexandria"', 'sans-serif'],
+            arabicSans: ['"Alexandria"', 'sans-serif'],
+            thai: ['"Noto Sans Thai"', 'sans-serif'],
+          },
+          colors: {
+            obsidian: '#0b0d11',
+            charcoal: '#12151c',
+            platinum: '#f8fafc',
+            glass: {
+              panel: 'rgba(255, 255, 255, 0.95)',
+              card: '#ffffff',
+              border: '#e2e8f0',
+              borderHover: '#cbd5e1',
+              input: '#f8fafc'
+            },
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            vejthani: {
+              navy: '#1B365D',
+              navyDark: '#0A2540',
+              royal: '#1E40AF',
+              orange: '#EC7825',
+              orangeHover: '#D96515',
+              cyan: '#00A3E0',
+              cyanLight: '#E6F4FA',
+              lightBg: '#F4F7FB',
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            amberGold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+            }
+          },
+          boxShadow: {
+            'glass-glow': '0 4px 20px 0 rgba(27, 54, 93, 0.08)',
+            'blue-glow': '0 0 20px -3px rgba(27, 54, 93, 0.2)',
+            'emerald-glow': '0 0 20px -3px rgba(16, 185, 129, 0.2)',
+            'amber-glow': '0 0 20px -3px rgba(236, 120, 37, 0.2)',
+          }
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    /* Clean Hospital Light Theme Micro-Scrollbars */
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    /* Arabic Ligature & RTL Rendering Quality */
+    .font-arabic {
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "kern" 1, "liga" 1;
+    }
+  </style>
+</head>
+<body class="bg-[#F4F7FB] text-slate-800 antialiased min-h-screen flex flex-col font-sans relative selection:bg-[#1B365D]/10 selection:text-[#1B365D] pb-24 lg:pb-6">
+
+  <!-- ============================================================ -->
+  <!-- AMBIENT RADIAL GLOW CANVAS (Soft Medical Tone Layer)          -->
+  <!-- ============================================================ -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <!-- Royal Blue Glow (Top Left - Hospital Clinical Authority) -->
+    <div class="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-blue-600/[0.04] blur-[130px]"></div>
+    <!-- Emerald Glow (Top Right - Islamic Healing & JCI Safety) -->
+    <div class="absolute top-1/4 -right-24 w-[480px] h-[480px] rounded-full bg-emerald-500/[0.03] blur-[140px]"></div>
+    <!-- Amber Glow (Bottom Center - GCC Luxury Hospitality) -->
+    <div class="absolute -bottom-40 left-1/3 w-[600px] h-[600px] rounded-full bg-amber-500/[0.03] blur-[150px]"></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DESKTOP FLOATING LEFT NAVIGATION DOCK (lg:flex)              -->
+  <!-- ============================================================ -->
+  <aside class="hidden lg:flex fixed left-5 top-1/2 -translate-y-1/2 z-50 flex-col items-center py-5 px-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200 shadow-xl shadow-slate-300/40 gap-3">
+    <!-- Vejthani Crest Logo -->
+    <div class="w-11 h-11 rounded-xl bg-white p-1 flex items-center justify-center shadow-sm border border-slate-100 mb-2 cursor-pointer transition hover:scale-105" title="โรงพยาบาลเวชธานี Vejthani Hospital">
+      <img src="vejthani-logo.png" alt="โรงพยาบาลเวชธานี Vejthani Hospital" class="w-full h-full object-contain">
+    </div>
+    
+    <!-- Dock Item 1: Call Journey -->
+    <button id="navDockCall" class="dock-btn active group relative p-3 rounded-xl transition duration-200 bg-[#1B365D] text-white shadow-md shadow-blue-950/20" data-target="viewCallJourney" title="Vejthani Call Journey (3 Steps)">
+      <i data-lucide="phone-call" class="w-5 h-5"></i>
+      <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">3-Step Call Journey</span>
+    </button>
+
+    <!-- Dock Item 2: 5 Inquiry Groups -->
+    <button id="navDockInquiry" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewInquiryConsole" title="5 Inquiry Groups">
+      <i data-lucide="message-square" class="w-5 h-5"></i>
+      <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">5 Inquiry Groups</span>
+    </button>
+
+    <!-- Dock Item 3: Arabic Center -->
+    <button id="navDockArabic" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewArabicCenter" title="Arabic Center & GCC Concierge">
+      <i data-lucide="compass" class="w-5 h-5"></i>
+      <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Arabic Center (GCC)</span>
+    </button>
+
+    <!-- Dock Item 4: Lead Investigation -->
+    <button id="navDockLead" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewLeadInvestigation" title="Lead Investigation (4D Qualifier)">
+      <i data-lucide="search" class="w-5 h-5"></i>
+      <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Lead Investigation</span>
+    </button>
+
+    <!-- Dock Item 5: Settings -->
+    <button id="navDockSettings" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewSettings" title="Settings & System Config">
+      <i data-lucide="settings" class="w-5 h-5"></i>
+      <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Settings</span>
+    </button>
+  </aside>
+
+  <!-- ============================================================ -->
+  <!-- MOBILE / TABLET FLOATING BOTTOM NAVIGATION DOCK (lg:hidden)  -->
+  <!-- ============================================================ -->
+  <nav class="flex lg:hidden fixed bottom-3 inset-x-3 h-16 z-50 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200 shadow-2xl shadow-slate-300/60 items-center justify-around px-2">
+    <button class="dock-btn active p-2.5 rounded-xl text-[#1B365D] flex flex-col items-center gap-0.5" data-target="viewCallJourney" title="Call Journey">
+      <i data-lucide="phone-call" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Journey</span>
+    </button>
+    <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewInquiryConsole" title="Inquiries">
+      <i data-lucide="message-square" class="w-5 h-5"></i>
+      <span class="text-[9px] font-semibold">Inquiry</span>
+    </button>
+    <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewArabicCenter" title="Arabic Center">
+      <i data-lucide="compass" class="w-5 h-5"></i>
+      <span class="text-[9px] font-semibold">Arabic</span>
+    </button>
+    <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewLeadInvestigation" title="Lead Investigation">
+      <i data-lucide="search" class="w-5 h-5"></i>
+      <span class="text-[9px] font-semibold">Leads</span>
+    </button>
+    <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewSettings" title="Settings">
+      <i data-lucide="settings" class="w-5 h-5"></i>
+      <span class="text-[9px] font-semibold">Config</span>
+    </button>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- TOP CLINICAL WHITE HEADER                                     -->
+  <!-- ============================================================ -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:pl-28 lg:pr-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Hospital Identity -->
+      <div class="flex items-center space-x-3">
+        <div class="h-11 w-11 rounded-xl bg-white p-0.5 flex items-center justify-center shrink-0">
+          <img src="vejthani-logo.png" alt="โรงพยาบาลเวชธานี Vejthani Hospital" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-base sm:text-lg font-black text-[#1B365D] tracking-tight">Vejthani MedLiaison AI</h1>
+            <span class="px-2 py-0.5 text-[10px] font-extrabold bg-[#EC7825] text-white rounded-full shadow-xs">King of Bones</span>
+            <span class="px-2 py-0.5 text-[10px] font-extrabold bg-[#1B365D] text-white rounded-full">โรงพยาบาลเวชธานี</span>
+            <span class="hidden md:inline-flex px-2 py-0.5 text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 rounded-full">JCI Gold Seal</span>
+          </div>
+          <p class="text-[11px] text-slate-500 hidden sm:block">King of Bones — Thailand's Leading Center for Orthopedic Excellence | เวชธานี อินเตอร์เนชั่นแนล</p>
+        </div>
+      </div>
+
+      <!-- Header Mode Switcher (Retaining legacy IDs #navModeCall & #navModeInquiry for app.js) -->
+      <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold shadow-2xs">
+        <button id="navModeCall" class="mode-nav-btn active px-3 py-1.5 rounded-lg bg-[#1B365D] text-white shadow-xs flex items-center gap-1.5 transition duration-200">
+          <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">บทพูดโทร SOP เวชธานี (3-Step Journey)</span>
+          <span class="sm:hidden">3-Step</span>
+        </button>
+        <button id="navModeInquiry" class="mode-nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/70 flex items-center gap-1.5 transition duration-200">
+          <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">ตอบ Inquiry 5 กลุ่มโรค (WhatsApp/Email)</span>
+          <span class="sm:hidden">Inquiry</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- MAIN VIEWPORT CONTAINER (With Left-Dock Clearance)           -->
+  <!-- ============================================================ -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:pl-28 lg:pr-8 py-6 flex-1 w-full space-y-6 relative z-10">
+
+    <!-- ============================================================ -->
+    <!-- VIEW 1: VEJTHANI HOSPITAL 3-STEP FOLLOW-UP CALL JOURNEY     -->
+    <!-- ============================================================ -->
+    <section id="viewCallJourney" class="space-y-6">
+      
+      <!-- Vejthani Hospital SOP Banner (Clinical White Elevation) -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative overflow-hidden text-slate-800">
+        <!-- Subtle aura highlights -->
+        <div class="absolute -right-10 -top-10 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 text-[10px] font-extrabold bg-amber-100 text-amber-900 border border-amber-300 rounded-full tracking-wide">
+                VEJTHANI HOSPITAL OFFICIAL SOP
+              </span>
+              <span class="text-xs text-[#1B365D] font-semibold">Follow-up Call Script for International Patient Inquiries</span>
+            </div>
+            <h2 class="text-lg font-bold text-[#1B365D] mt-1.5">บทพูดโทรติดตาม Inquiry คนไข้ต่างชาติและตลาดอาหรับ โรงพยาบาลเวชธานี</h2>
+            <p class="text-xs text-slate-600 mt-1 max-w-2xl">
+              เป้าหมาย: เข้าใจสิ่งที่คนไข้ยังติดขัด ช่วยประสานคำตอบ แนะนำสิ่งอำนวยความสะดวก และตกลงขั้นตอนถัดไปอย่างชัดเจน ไร้ข้อผิดพลาด
+            </p>
+          </div>
+          <!-- Quick Load SOP Presets -->
+          <div id="callPresetButtons" class="flex flex-wrap gap-2 shrink-0">
+            <button class="call-preset-btn text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl font-semibold transition text-slate-700 hover:text-[#1B365D] flex items-center gap-1.5 shadow-2xs" data-call-preset="oman_knee">
+              <span class="w-5 h-4 rounded bg-blue-100 text-blue-900 border border-blue-200 text-[10px] font-extrabold flex items-center justify-center">OM</span> เคสผ่าเข่า (โอมาน)
+            </button>
+            <button class="call-preset-btn text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl font-semibold transition text-slate-700 hover:text-[#1B365D] flex items-center gap-1.5 shadow-2xs" data-call-preset="saudi_cancer">
+              <span class="w-5 h-4 rounded bg-emerald-100 text-emerald-900 border border-emerald-200 text-[10px] font-extrabold flex items-center justify-center">SA</span> เคสมะเร็ง (ซาอุดีฯ)
+            </button>
+            <button class="call-preset-btn text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl font-semibold transition text-slate-700 hover:text-[#1B365D] flex items-center gap-1.5 shadow-2xs" data-call-preset="uae_pediatric">
+              <span class="w-5 h-4 rounded bg-indigo-100 text-indigo-900 border border-indigo-200 text-[10px] font-extrabold flex items-center justify-center">AE</span> เคสเด็ก (UAE)
+            </button>
+            <button class="call-preset-btn text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl font-semibold transition text-slate-700 hover:text-[#1B365D] flex items-center gap-1.5 shadow-2xs" data-call-preset="uk_surgery">
+              <span class="w-5 h-4 rounded bg-purple-100 text-purple-900 border border-purple-200 text-[10px] font-extrabold flex items-center justify-center">GB</span> ผ่าตัดทั่วไป (อังกฤษ)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3-Step Journey Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- STEP 1: เตรียมก่อนโทร & Time Zone (4 Cols) -->
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-[#1B365D] text-white text-xs font-bold flex items-center justify-center shadow-xs">1</span>
+              <h3 class="text-sm font-bold text-[#1B365D]">เตรียมก่อนโทร (Before the Call)</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <span id="callPatientVerified" class="text-[10px] text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <i data-lucide="check-circle" class="w-3 h-3 text-emerald-600"></i> Verified VIP
+              </span>
+              <span class="text-[10px] text-blue-700 font-bold bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">SOP Checklist</span>
+            </div>
+          </div>
+
+          <!-- Time Zone & Prayer Watcher Card -->
+          <div class="bg-slate-50 text-slate-800 p-4 rounded-xl border border-blue-200/80 space-y-2.5 shadow-2xs">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#EC7825]"></i> เวลาท้องถิ่นประเทศคนไข้
+              </span>
+              <div class="flex items-center gap-1.5">
+                <span id="callTimeSuitabilityBadge" class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center">
+                  <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>เหมาะสมในการโทร
+                </span>
+                <!-- Hidden alias for contract consistency -->
+                <span id="callAppropriateBadge" class="hidden">เหมาะสม</span>
+                <button id="btnRefreshClock" class="p-1 text-slate-400 hover:text-slate-800 rounded transition" title="รีเฟรชเวลา">
+                  <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+            <div class="flex items-baseline justify-between">
+              <div class="text-2xl font-black text-[#1B365D] font-mono tracking-tight" id="patientCountryTime">
+                10:25 AM
+              </div>
+              <!-- Hidden alias for countryLocalClock -->
+              <span id="countryLocalClock" class="hidden">10:25 AM</span>
+              <div class="text-xs text-slate-600 font-semibold" id="patientCountryLabel">
+                Muscat, Oman (GMT+4)
+              </div>
+              <span id="countryTimeZoneBadge" class="hidden">GMT+4</span>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-snug" id="patientPrayerNotice">
+              เวลาท้องถิ่นห่างจากเวลาไทย 3 ชม. พ้นช่วงละหมาดซุบฮิแล้ว เป็นช่วงเวลาทำงานที่สะดวกในการรับสาย
+            </p>
+          </div>
+
+          <!-- Patient Input Form for Call -->
+          <div class="space-y-3 text-xs">
+            <div class="grid grid-cols-3 gap-2">
+              <div class="col-span-2">
+                <label class="block font-semibold text-slate-700 mb-1">ชื่อคนไข้ (Patient Name) *</label>
+                <input type="text" id="callPatientName" value="Mr. Mohammed Al-Balushi" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-medium shadow-2xs">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">เลข HN (Hospital No.)</label>
+                <input type="text" id="callPatientHN" value="HN 68-09241" placeholder="HN..." class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-mono text-[11px] shadow-2xs">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">ประเทศ / เขตเวลา *</label>
+                <select id="callPatientCountry" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-medium shadow-2xs">
+                  <option value="oman" selected>โอมาน (Oman, GMT+4)</option>
+                  <option value="uae">สหรัฐอาหรับเอมิเรตส์ (UAE, GMT+4)</option>
+                  <option value="saudi">ซาอุดีอาระเบีย (Saudi Arabia, GMT+3)</option>
+                  <option value="qatar">กาตาร์ (Qatar, GMT+3)</option>
+                  <option value="kuwait">คูเวต (Kuwait, GMT+3)</option>
+                  <option value="uk">สหราชอาณาจักร (UK, GMT+1)</option>
+                  <option value="usa">สหรัฐอเมริกา (USA, GMT-4)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">เบอร์โทรศัพท์ (WhatsApp)</label>
+                <input type="text" id="callPatientPhone" value="+968 9123 4567" placeholder="+968..." class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-mono text-[11px] shadow-2xs">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">ชื่อเจ้าหน้าที่เวชธานี</label>
+                <input type="text" id="callStaffName" value="ศรวิทย์ (Sorawit)" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">ช่องทางที่ส่งข้อมูลก่อนนี้</label>
+                <select id="callPriorChannel" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
+                  <option value="WhatsApp" selected>WhatsApp</option>
+                  <option value="Email">Email</option>
+                  <option value="WhatsApp & Email">WhatsApp & Email</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">กลุ่มโรค / หัตถการที่สอบถาม *</label>
+              <input type="text" id="callTopic" value="ผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Total Knee Replacement)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">ประเด็นที่รอคำตอบ / ติดขัด</label>
+              <input type="text" id="callRemainingIssue" value="ความชัดเจนเรื่องห้องพักครอบครัวและขั้นตอนการทำวีซ่าแพทย์" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
+            </div>
+
+            <!-- Call SOP Principles Reminder -->
+            <div class="bg-amber-50/80 p-3.5 rounded-xl border border-amber-200 text-[11px] text-amber-900 space-y-1.5 shadow-2xs">
+              <span class="font-bold flex items-center gap-1.5 text-amber-800">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-600"></i>
+                หลักการใช้บทพูดของ รพ. เวชธานี:
+              </span>
+              <p>• พูดอย่างสุภาพ อบอุ่น และอ้างอิงเรื่องจริงของคนไข้</p>
+              <p>• ถามทีละคำถาม เว้นจังหวะให้ตอบ แล้วทวนความเข้าใจ</p>
+              <p>• สรุปสิ่งที่รับปาก และหยุดติดตามทันทีเมื่อคนไข้ร้องขอ</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Interactive Vejthani Hospital SOP Script (5 Cols) -->
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="border-b border-slate-100 pb-3 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-[#1B365D] text-white text-xs font-bold flex items-center justify-center shadow-xs">2</span>
+              <h3 class="text-sm font-bold text-[#1B365D]">บทพูดโทรตาม SOP เวชธานี (Interactive Tele-Prompt)</h3>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <!-- Staff Gender Toggle -->
+              <div class="flex items-center space-x-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px] font-bold">
+                <button id="btnStaffGenderMale" class="px-2 py-0.5 rounded bg-white text-[#1B365D] shadow-xs font-bold" title="คำลงท้ายสุภาพบุรุษ: ครับ">ครับ</button>
+                <button id="btnStaffGenderFemale" class="px-2 py-0.5 rounded text-slate-500 hover:text-slate-900" title="คำลงท้ายสุภาพสตรี: ค่ะ">ค่ะ</button>
+              </div>
+
+              <!-- Language Toggle for Script -->
+              <div class="flex items-center space-x-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[11px] font-bold">
+                <button id="btnCallLangThai" class="px-2 py-0.5 rounded bg-[#1B365D] text-white shadow-xs transition">ไทย</button>
+                <button id="btnCallLangEn" class="px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 transition">English</button>
+                <button id="btnCallLangAr" class="px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 transition font-arabic text-xs">العربية</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tele-Prompt Flow Cards -->
+          <div class="space-y-3 custom-scroll max-h-[600px] overflow-y-auto pr-1">
+
+            <!-- Card 1: เปิดสายและขอเวลาคุย -->
+            <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition space-y-1.5">
+              <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">
+                1. เปิดสายและขอเวลาคุย (Opening & Permission)
+              </span>
+              <p class="text-xs sm:text-sm text-slate-900 font-semibold leading-relaxed whitespace-pre-line" id="scriptPrompt1">
+                <!-- Dynamically generated -->
+              </p>
+            </div>
+
+            <!-- Card 2: เชื่อมกับเรื่องที่เคยสอบถาม -->
+            <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition space-y-1.5">
+              <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">
+                2. เชื่อมกับเรื่องที่เคยสอบถาม (Referencing Inquiry)
+              </span>
+              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium whitespace-pre-line" id="scriptPrompt2">
+                <!-- Dynamically generated -->
+              </p>
+            </div>
+
+            <!-- Card 3: ถามข้อกังวลและฟังให้จบ -->
+            <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition space-y-1.5">
+              <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider flex items-center justify-between">
+                <span>3. ถามข้อกังวลและฟังให้จบ (Listening Carefully)</span>
+                <span class="text-[10px] text-amber-700 font-normal">ถามทีละคำถาม • เว้นจังหวะ • ทวนความเข้าใจ</span>
+              </span>
+              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium whitespace-pre-line" id="scriptPrompt3">
+                <!-- Dynamically generated -->
+              </p>
+            </div>
+
+            <!-- Card 4: แนะนำบริการ สิ่งอำนวยความสะดวกเวชธานี -->
+            <div class="p-3.5 rounded-xl border border-blue-200 bg-blue-50/40 space-y-1.5">
+              <span class="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">
+                4. แนะนำบริการ & สิ่งอำนวยความสะดวกของ รพ. เวชธานี (Facilities)
+              </span>
+              <div class="text-xs text-slate-800 space-y-1 leading-relaxed whitespace-pre-line" id="scriptPrompt4">
+                <!-- Dynamically generated -->
+              </div>
+            </div>
+
+            <!-- Card 5: Interactive Outcome Selector (เลือกผลตอบรับระหว่างคุย) -->
+            <div class="p-3.5 rounded-xl border-2 border-indigo-200 bg-indigo-50/30 space-y-2">
+              <span class="text-[11px] font-extrabold text-indigo-900 uppercase tracking-wider block">
+                5. ชวนนัดหมายและปิดการสนทนา (เลือกผลลัพธ์ระหว่างสนทนา):
+              </span>
+              <div id="callOutcomeButtons" class="grid grid-cols-3 gap-1.5 text-xs font-bold">
+                <button type="button" class="outcome-btn active py-2 px-1 rounded-xl border text-center transition bg-emerald-600 text-white border-emerald-600 shadow-xs flex items-center justify-center" data-outcome="ready">
+                  <span class="inline-block w-2.5 h-2.5 rounded-full bg-white mr-1.5"></span>พร้อมนัดหมาย
+                </button>
+                <button type="button" class="outcome-btn py-2 px-1 rounded-xl border text-center transition bg-white text-slate-700 border-slate-200 hover:bg-slate-50 flex items-center justify-center" data-outcome="not_ready">
+                  <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-500 mr-1.5"></span>ยังไม่พร้อม
+                </button>
+                <button type="button" class="outcome-btn py-2 px-1 rounded-xl border text-center transition bg-white text-slate-700 border-slate-200 hover:bg-slate-50 flex items-center justify-center" data-outcome="decline">
+                  <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500 mr-1.5"></span>ไม่สะดวก / ปฏิเสธ
+                </button>
+              </div>
+
+              <!-- Dynamic Closing Script based on Outcome -->
+              <div class="bg-white p-3.5 rounded-xl border border-indigo-200 text-xs text-slate-800 leading-relaxed font-medium whitespace-pre-line shadow-2xs" id="scriptClosingDynamic">
+                <!-- Dynamically generated based on outcome -->
+              </div>
+            </div>
+
+            <!-- Card 6: สรุปสิ่งที่รับปากและกำหนดตอบกลับ -->
+            <div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/40 space-y-1.5">
+              <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">
+                6. สรุปสิ่งที่รับปากและกำหนดตอบกลับ (Summarizing Agreed Actions)
+              </span>
+              <p class="text-xs text-slate-800 leading-relaxed font-medium whitespace-pre-line" id="scriptPrompt6">
+                <!-- Dynamically generated -->
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- STEP 3: Post-Call WhatsApp Summary Generator (3 Cols) -->
+        <div class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center shadow-xs">3</span>
+              <h3 class="text-sm font-bold text-[#1B365D]">สรุปหลังโทรส่ง WhatsApp</h3>
+            </div>
+            
+            <!-- Summary Language Toggle -->
+            <div class="flex items-center space-x-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px] font-bold">
+              <button id="btnSummaryLangAr" class="px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900 font-arabic">AR</button>
+              <button id="btnSummaryLangEn" class="px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900">EN</button>
+              <button id="btnSummaryLangTh" class="px-1.5 py-0.5 rounded bg-emerald-600 text-white shadow-2xs">TH</button>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-500 leading-relaxed">
+            ตาม SOP เวชธานี: <em>"ส่งสรุปหลังโทรตามที่ตกลง"</em> ข้อความด้านล่างจะถูกสร้างขึ้นอัตโนมัติตามผลการสนทนา พร้อมส่งให้คนไข้ทันที
+          </p>
+
+          <!-- WhatsApp Official Light Web Preview Box -->
+          <div class="bg-[#ECE5DD] p-3 rounded-xl border border-slate-300 shadow-inner overflow-hidden">
+            <!-- Official WhatsApp Header -->
+            <div class="bg-[#008069] text-white px-3 py-2 rounded-t-lg flex items-center justify-between text-xs font-semibold -m-3 mb-2 shadow-xs">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-white p-0.5 flex items-center justify-center shrink-0">
+                  <img src="vejthani-logo.png" alt="Vejthani" class="w-full h-full object-contain">
+                </div>
+                <div class="leading-tight">
+                  <span class="block text-[11px] font-bold truncate max-w-[150px]">Vejthani Hospital</span>
+                  <span class="block text-[9px] text-emerald-100 font-normal">Official Medical Liaison</span>
+                </div>
+              </div>
+              <i data-lucide="check-check" class="w-3.5 h-3.5 text-emerald-200"></i>
+            </div>
+            <div class="bg-white border border-slate-200/80 rounded-2xl rounded-tl-none p-3 shadow-sm text-xs text-slate-900 leading-relaxed font-sans whitespace-pre-line select-text" id="postCallWhatsAppSummary">
+              <!-- Dynamically populated -->
+            </div>
+            <div class="text-right text-[10px] text-slate-500 mt-2 flex items-center justify-end gap-1">
+              <span>Ready for WhatsApp</span>
+              <i data-lucide="check-check" class="w-3.5 h-3.5 text-sky-600"></i>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="space-y-2">
+            <button id="btnOpenPostCallWhatsApp" class="w-full py-2.5 px-3 bg-[#008069] hover:bg-[#00705a] text-white text-xs font-bold rounded-xl shadow-md flex items-center justify-center gap-1.5 transition active:scale-95">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>ส่งผ่าน WhatsApp Web ทันที</span>
+            </button>
+            <button id="btnCopyPostCallSummary" class="w-full py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 flex items-center justify-center gap-1.5 transition shadow-2xs">
+              <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-600"></i>
+              <span id="copyCallSummaryText">คัดลอกข้อความสรุป</span>
+            </button>
+          </div>
+
+          <!-- CRM Call Log Note -->
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-[11px] text-slate-700 space-y-1.5 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 flex items-center gap-1">
+                <i data-lucide="file-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                บันทึกเวชระเบียน (CRM Log):
+              </span>
+              <span id="postCallCrmLog" class="text-[9px] font-mono text-[#1B365D] font-bold">#EHR-SYNCED</span>
+            </div>
+            <p id="callCrmLogSummary" class="font-mono text-[10px] whitespace-pre-line text-slate-600 leading-relaxed">
+              <!-- Auto generated log snippet -->
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- VIEW 2: 5 SPECIALTIES INQUIRY & NURTURING CONSOLE            -->
+    <!-- ============================================================ -->
+    <section id="viewInquiryConsole" class="hidden space-y-6">
+      
+      <!-- 5 Specialty Quick Bar -->
+      <div class="bg-white rounded-2xl p-4 text-slate-900 flex flex-wrap items-center justify-between gap-3 border border-slate-200 shadow-sm">
+        <div>
+          <h3 class="text-sm font-bold flex items-center gap-2 text-[#1B365D]">
+            <i data-lucide="layers" class="w-4 h-4 text-[#EC7825]"></i>
+            ระบบตอบ Inquiry เริ่มต้น & แผนการรักษา (5 Specialties)
+          </h3>
+          <p class="text-xs text-slate-500">เลือกกลุ่มโรคเพื่อสร้างข้อความ WhatsApp (EN & AR) และอีเมลอย่างเป็นทางการตามมาตรฐาน JCI</p>
+        </div>
+        <div id="inqCategoryButtons" class="flex flex-wrap gap-2 text-xs">
+          <button class="inquiry-cat-tab active px-3 py-1.5 rounded-xl bg-[#1B365D] text-white font-bold shadow-sm transition" data-inq-cat="king_of_bone">King of Bones</button>
+          <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="cancer">Life Cancer</button>
+          <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="pediatric">Pediatric</button>
+          <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="general_surgery">Gen Surgery</button>
+          <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="investigate">Lead Qualification</button>
+        </div>
+      </div>
+
+      <!-- Inquiry Details Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Form -->
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="edit" class="w-3.5 h-3.5 text-[#1B365D]"></i>
+            ข้อมูล Inquiry ของคนไข้
+          </h4>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">ชื่อคนไข้</label>
+              <input type="text" id="inqPatientName" value="Mr. Mohammed Al-Balushi" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">ตลาดคนไข้</label>
+                <select id="inqTargetMarket" class="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30">
+                  <option value="gcc_arab" selected>GCC / อาหรับ</option>
+                  <option value="western_expat">Western / Expat</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">ระยะการติดตาม</label>
+                <select id="inqStage" class="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30">
+                  <option value="stage_1">Stage 1: ขอประวัติ/ผลสแกน</option>
+                  <option value="stage_2" selected>Stage 2: ส่งแผน/ราคา 48h</option>
+                  <option value="stage_3">Stage 3: เงียบไป 5-7 วัน</option>
+                  <option value="stage_4">Stage 4: วีซ่า & นัดเดินทาง</option>
+                  <option value="stage_5">Stage 5: กังวลเรื่องราคา</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">หัตถการที่สอบถาม</label>
+              <input type="text" id="inqProcedure" value="Robotic Total Knee Replacement (ผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ Vejthani King of Bones)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30">
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block font-semibold text-slate-700">เอกสารที่ตรวจเช็ค</label>
+                <span id="inqDocChecklist" class="text-[10px] text-[#1B365D] font-bold">Clinical Verification</span>
+              </div>
+              <div id="inqDocsList" class="space-y-1.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-700">
+                <!-- Dynamically rendered checklist items -->
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button id="btnRefreshInquiryScripts" class="w-full py-2.5 bg-[#1B365D] hover:bg-[#152a48] text-white font-bold rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> อัปเดตสคริปต์
+              </button>
+              <button id="btnSendInqWhatsApp" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                <i data-lucide="send" class="w-4 h-4"></i> ส่ง WhatsApp
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Script Outputs (WhatsApp, Arabic, Email) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div class="flex space-x-1.5 text-xs font-bold" id="inqOutputTabs">
+              <button class="inq-subtab active px-3 py-1.5 rounded-xl bg-[#1B365D] text-white shadow-sm transition" data-target="inqTabWA">WhatsApp (EN)</button>
+              <button class="inq-subtab px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition font-arabic" data-target="inqTabAR">Arabic (العربية)</button>
+              <button class="inq-subtab px-3 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition" data-target="inqTabEmail">Official Email</button>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <button id="btnCopyInqActive" class="text-xs text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 transition">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Active
+              </button>
+              <!-- Hidden button aliases for Interface Contract -->
+              <span id="btnCopyInqWA" class="hidden"></span>
+              <span id="btnCopyInqAR" class="hidden"></span>
+              <span id="btnCopyInqEmail" class="hidden"></span>
+            </div>
+          </div>
+
+          <!-- Subtab 1: WhatsApp EN -->
+          <div id="inqTabWA" class="inq-subtab-content space-y-3">
+            <div class="bg-[#ECE5DD] p-4 rounded-xl border border-slate-300 shadow-inner">
+              <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-3.5 text-xs leading-relaxed whitespace-pre-line text-[#111B21] select-text font-sans shadow-sm" id="inqWhatsAppText">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Subtab 2: Arabic -->
+          <div id="inqTabAR" class="inq-subtab-content hidden space-y-3">
+            <div class="bg-emerald-50/60 p-5 rounded-xl border border-emerald-200 font-arabic text-base sm:text-lg text-emerald-950 leading-loose text-right whitespace-pre-line select-text shadow-inner" dir="rtl" id="inqArabicText">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Subtab 3: Email -->
+          <div id="inqTabEmail" class="inq-subtab-content hidden space-y-3">
+            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs">
+              <span class="text-slate-500 font-bold block mb-1">Subject:</span>
+              <p class="font-bold text-slate-900" id="inqEmailSubject"></p>
+              <span id="inqEmailSub" class="hidden"></span>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs whitespace-pre-line text-slate-800 leading-relaxed font-sans select-text shadow-inner" id="inqEmailBody"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- VIEW 3: ARABIC CENTER & GCC CONCIERGE (Dedicated View)       -->
+    <!-- ============================================================ -->
+    <section id="viewArabicCenter" class="hidden space-y-6">
+      
+      <!-- Arabic Center Banner -->
+      <div class="bg-white rounded-2xl p-6 border border-emerald-200 shadow-sm relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 text-[10px] font-extrabold bg-emerald-600 text-white rounded-full tracking-wide">
+                GCC DIPLOMATIC CONCIERGE
+              </span>
+              <span class="text-xs text-emerald-800 font-arabic font-semibold">المكتب الدولي لرعاية المرضى العرب</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 mt-1.5 flex items-center gap-2">
+              <span>ศูนย์ประสานงานคนไข้กลุ่มประเทศความร่วมมืออ่าวอาหรับ (GCC 6 ประเทศ)</span>
+            </h2>
+            <p class="text-xs text-slate-600 mt-1 max-w-3xl leading-relaxed">
+              Vejthani Arabic Center มอบบริการประสานงานระดับการทูต ดูแลคนไข้และครอบครัวจากราชอาณาจักรซาอุดีอาระเบีย, สหรัฐอาหรับเอมิเรตส์, สุลต่านโอมาน, รัฐกาตาร์, คูเวต และบาห์เรน พร้อมระบบเรดาร์เวลาและการละหมาด 5 เวลาแบบสด
+            </p>
+          </div>
+          <div class="shrink-0 flex items-center gap-2">
+            <span class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-1.5">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+              Halal & Embassy Accredited
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6-Country Live GCC Radar Matrix -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="radar" class="w-4 h-4 text-[#1B365D]"></i>
+            GCC 6-Country Live Time & Prayer Radar
+          </h3>
+          <span class="text-[11px] text-slate-500">เวลาประเทศไทย: GMT+7 | อัปเดตแบบเรียลไทม์</span>
+        </div>
+
+        <div id="gccRadarContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <!-- Radar 1: Saudi Arabia -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2 hover:border-[#1B365D] transition shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <span class="w-6 h-6 rounded-md bg-[#1B365D] text-white text-[10px] font-bold flex items-center justify-center">SA</span> ซาอุดีอาระเบีย (Saudi Arabia)
+              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Riyadh (GMT+3)</span>
+            </div>
+            <div class="flex items-baseline justify-between pt-1">
+              <span class="text-xl font-mono font-bold text-[#1B365D]">09:25 AM</span>
+              <span class="text-[11px] text-slate-500">ห่างจากไทย 4 ชม.</span>
+            </div>
+            <div class="text-[11px] text-slate-600 space-y-0.5 border-t border-slate-100 pt-2">
+              <div class="flex justify-between"><span>เวลาละหมาดถัดไป:</span> <strong class="text-slate-800">ดุฮริ (11:58)</strong></div>
+              <div class="flex justify-between"><span>สถานะการโทร:</span> <span class="text-emerald-700 font-semibold"><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>เวลาทำการ</span></div>
+            </div>
+          </div>
+
+          <!-- Radar 2: UAE -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2 hover:border-[#1B365D] transition shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <span class="w-6 h-6 rounded-md bg-[#1B365D] text-white text-[10px] font-bold flex items-center justify-center">AE</span> สหรัฐอาหรับเอมิเรตส์ (UAE)
+              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Abu Dhabi (GMT+4)</span>
+            </div>
+            <div class="flex items-baseline justify-between pt-1">
+              <span class="text-xl font-mono font-bold text-[#1B365D]">10:25 AM</span>
+              <span class="text-[11px] text-slate-500">ห่างจากไทย 3 ชม.</span>
+            </div>
+            <div class="text-[11px] text-slate-600 space-y-0.5 border-t border-slate-100 pt-2">
+              <div class="flex justify-between"><span>เวลาละหมาดถัดไป:</span> <strong class="text-slate-800">ดุฮริ (12:22)</strong></div>
+              <div class="flex justify-between"><span>สถานะการโทร:</span> <span class="text-emerald-700 font-semibold"><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>เวลาทำการ</span></div>
+            </div>
+          </div>
+
+          <!-- Radar 3: Oman -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2 hover:border-[#1B365D] transition shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <span class="w-6 h-6 rounded-md bg-[#1B365D] text-white text-[10px] font-bold flex items-center justify-center">OM</span> สุลต่านโอมาน (Oman)
+              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Muscat (GMT+4)</span>
+            </div>
+            <div class="flex items-baseline justify-between pt-1">
+              <span class="text-xl font-mono font-bold text-[#1B365D]">10:25 AM</span>
+              <span class="text-[11px] text-slate-500">ห่างจากไทย 3 ชม.</span>
+            </div>
+            <div class="text-[11px] text-slate-600 space-y-0.5 border-t border-slate-100 pt-2">
+              <div class="flex justify-between"><span>เวลาละหมาดถัดไป:</span> <strong class="text-slate-800">ดุฮริ (12:15)</strong></div>
+              <div class="flex justify-between"><span>สถานะการโทร:</span> <span class="text-emerald-700 font-semibold"><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>เวลาทำการ</span></div>
+            </div>
+          </div>
+
+          <!-- Radar 4: Qatar -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2 hover:border-[#1B365D] transition shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <span class="w-6 h-6 rounded-md bg-[#1B365D] text-white text-[10px] font-bold flex items-center justify-center">QA</span> กาตาร์ (Qatar)
+              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Doha (GMT+3)</span>
+            </div>
+            <div class="flex items-baseline justify-between pt-1">
+              <span class="text-xl font-mono font-bold text-[#1B365D]">09:25 AM</span>
+              <span class="text-[11px] text-slate-500">ห่างจากไทย 4 ชม.</span>
+            </div>
+            <div class="text-[11px] text-slate-600 space-y-0.5 border-t border-slate-100 pt-2">
+              <div class="flex justify-between"><span>เวลาละหมาดถัดไป:</span> <strong class="text-slate-800">ดุฮริ (11:45)</strong></div>
+              <div class="flex justify-between"><span>สถานะการโทร:</span> <span class="text-emerald-700 font-semibold"><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>เวลาทำการ</span></div>
+            </div>
+          </div>
+
+          <!-- Radar 5: Kuwait -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2 hover:border-[#1B365D] transition shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <span class="w-6 h-6 rounded-md bg-[#1B365D] text-white text-[10px] font-bold flex items-center justify-center">KW</span> คูเวต (Kuwait)
+              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Kuwait City (GMT+3)</span>
+            </div>
+            <div class="flex items-baseline justify-between pt-1">
+              <span class="text-xl font-mono font-bold text-[#1B365D]">09:25 AM</span>
+              <span class="text-[11px] text-slate-500">ห่างจากไทย 4 ชม.</span>
+            </div>
+            <div class="text-[11px] text-slate-600 space-y-0.5 border-t border-slate-100 pt-2">
+              <div class="flex justify-between"><span>เวลาละหมาดถัดไป:</span> <strong class="text-slate-800">ดุฮริ (11:50)</strong></div>
+              <div class="flex justify-between"><span>สถานะการโทร:</span> <span class="text-emerald-700 font-semibold"><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>เวลาทำการ</span></div>
+            </div>
+          </div>
+
+          <!-- Radar 6: Bahrain -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2 hover:border-[#1B365D] transition shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <span class="w-6 h-6 rounded-md bg-[#1B365D] text-white text-[10px] font-bold flex items-center justify-center">BH</span> บาห์เรน (Bahrain)
+              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Manama (GMT+3)</span>
+            </div>
+            <div class="flex items-baseline justify-between pt-1">
+              <span class="text-xl font-mono font-bold text-[#1B365D]">09:25 AM</span>
+              <span class="text-[11px] text-slate-500">ห่างจากไทย 4 ชม.</span>
+            </div>
+            <div class="text-[11px] text-slate-600 space-y-0.5 border-t border-slate-100 pt-2">
+              <div class="flex justify-between"><span>เวลาละหมาดถัดไป:</span> <strong class="text-slate-800">ดุฮริ (11:47)</strong></div>
+              <div class="flex justify-between"><span>สถานะการโทร:</span> <span class="text-emerald-700 font-semibold"><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>เวลาทำการ</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Islamic Diplomatic Greetings & Clinical Protocol -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        
+        <!-- Left: Greetings Cheat Sheet -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="book-open" class="w-4 h-4 text-[#EC7825]"></i>
+            คำทักทายภาษาอาหรับทางการทูต (Diplomatic Islamic Etiquette)
+          </h4>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-600 font-medium">การทักทายมาตรฐานสากลอิสลาม:</span>
+                <span class="text-emerald-700 font-mono text-[10px] font-bold">Universal Greeting</span>
+              </div>
+              <p class="font-arabic text-lg text-slate-900 text-right leading-relaxed" dir="rtl">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</p>
+              <p class="text-slate-700 font-mono text-[11px]">Assalāmu 'alaykum wa-raḥmatullāhi wa-barakātuh</p>
+              <p class="text-slate-500 text-[11px]">ขอความสันติ ความเมตตา และความจำเริญจากพระองค์จงมีแด่ท่าน</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-600 font-medium">การต้อนรับสู่โรงพยาบาลเวชธานี:</span>
+                <span class="text-[#1B365D] font-mono text-[10px] font-bold">Welcome to Vejthani</span>
+              </div>
+              <p class="font-arabic text-lg text-slate-900 text-right leading-relaxed" dir="rtl">أَهْلًا وَسَهْلًا بِكُمْ فِي مُسْتَشْفَى فِيجْثَانِي بَانْكُوك</p>
+              <p class="text-slate-700 font-mono text-[11px]">Ahlan wa-sahlan bikum fī Mustashfā Fījthānī Bānkūk</p>
+              <p class="text-slate-500 text-[11px]">ยินดีต้อนรับท่านอย่างอบอุ่นสู่โรงพยาบาลเวชธานี กรุงเทพฯ</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-600 font-medium">คำอวยพรให้คนไข้หายจากโรค:</span>
+                <span class="text-[#EC7825] font-mono text-[10px] font-bold">Healing Prayer</span>
+              </div>
+              <p class="font-arabic text-lg text-slate-900 text-right leading-relaxed" dir="rtl">طَهُورٌ إِنْ شَاءَ اللهُ، لَا بَأْسَ عَلَيْكُمْ</p>
+              <p class="text-slate-700 font-mono text-[11px]">Ṭahūrun in shā' Allāh, lā ba'sa 'alaykum</p>
+              <p class="text-slate-500 text-[11px]">ขอให้อาการเจ็บป่วยนี้เป็นการชำระล้างและหายเป็นปกติโดยเร็ว</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Embassy Medical Attaché Directory -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="building" class="w-4 h-4 text-emerald-600"></i>
+            ทำเนียบสำนักงานที่ปรึกษาทางการแพทย์สถานทูต (Embassy Medical Offices)
+          </h4>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <strong class="text-slate-900"><span class="font-mono text-xs text-[#1B365D] mr-1.5">[OM]</span>สำนักงานที่ปรึกษาทางการแพทย์ สุลต่านโอมาน</strong>
+                <span class="text-[10px] text-emerald-800 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Active Direct</span>
+              </div>
+              <p class="text-slate-600">Embassy of the Sultanate of Oman — Medical Office Bangkok</p>
+              <div class="text-[11px] text-slate-500 flex flex-wrap gap-x-4 gap-y-1">
+                <span>Hotline: +66 2 639 9888</span>
+                <span>Email: medical.bkk@mohe.gov.om</span>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <strong class="text-slate-900"><span class="font-mono text-xs text-[#1B365D] mr-1.5">[SA]</span>สำนักงานที่ปรึกษาด้านสุขภาพ ซาอุดีอาระเบีย</strong>
+                <span class="text-[10px] text-emerald-800 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Accredited</span>
+              </div>
+              <p class="text-slate-600">Royal Embassy of Saudi Arabia — Health Office</p>
+              <div class="text-[11px] text-slate-500 flex flex-wrap gap-x-4 gap-y-1">
+                <span>Hotline: +66 2 635 6600</span>
+                <span>Email: themb@mofa.gov.sa</span>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <strong class="text-slate-900"><span class="font-mono text-xs text-[#1B365D] mr-1.5">[AE]</span>สำนักงานที่ปรึกษาทหารและการแพทย์ สหรัฐอาหรับเอมิเรตส์</strong>
+                <span class="text-[10px] text-emerald-800 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">FGL Partner</span>
+              </div>
+              <p class="text-slate-600">Embassy of the United Arab Emirates — Military & Police Medical Office</p>
+              <div class="text-[11px] text-slate-500 flex flex-wrap gap-x-4 gap-y-1">
+                <span>Hotline: +66 2 400 9800</span>
+                <span>Email: bangkokemb@mofaic.gov.ae</span>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-900 space-y-1">
+              <span class="font-bold text-[#1B365D] flex items-center gap-1">
+                <i data-lucide="check-square" class="w-3.5 h-3.5"></i> ข้อกำหนดหนังสือค้ำประกันค่ารักษา (Financial Guarantee Letter - FGL):
+              </span>
+              <p>• ต้องระบุชื่อคนไข้ตรงกับหนังสือเดินทาง (Passport) ทุกตัวอักษร</p>
+              <p>• ตรวจสอบเพดานวงเงินและหัตถการที่ระบุ (Inpatient / Surgical Coverage)</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- VIEW 4: LEAD INVESTIGATION (4D Qualifier Console)            -->
+    <!-- ============================================================ -->
+    <section id="viewLeadInvestigation" class="hidden space-y-6">
+      
+      <!-- Lead Qualifier Header Banner -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 text-[10px] font-extrabold bg-[#1B365D] text-white rounded-full tracking-wide">
+                4-DIMENSIONAL QUALIFIER
+              </span>
+              <span class="text-xs text-slate-500">Vejthani Clinical & Financial Evaluation</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 mt-1.5">Lead Investigation & VIP Scoring Console</h2>
+            <p class="text-xs text-slate-600 mt-1 max-w-3xl leading-relaxed">
+              ประเมินความพร้อมของเคสใน 4 มิติสำคัญ (เวชระเบียน, การเงิน/ผู้สนับสนุน, การเดินทาง/ผู้ติดตาม, ความเร่งด่วน) เพื่อจัดลำดับความสำคัญในการติดตามเคส VIP
+            </p>
+          </div>
+          <!-- Lead Score Priority Badge -->
+          <div class="shrink-0 flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-2xl border border-slate-200 shadow-inner">
+            <div>
+              <span class="text-[10px] font-bold text-slate-500 block uppercase">Calculated Status:</span>
+              <span id="leadScoreBadge" class="text-sm font-extrabold text-[#EC7825] flex items-center gap-1.5">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#EC7825]"></span>
+                VIP Diamond (Score: 92/100)
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Dimensions Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- Dimension 1: Clinical Records -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-3 shadow-sm">
+          <div class="flex items-center gap-2 text-slate-900 font-bold text-xs border-b border-slate-100 pb-2">
+            <span class="w-5 h-5 rounded-full bg-[#1B365D] text-white text-[10px] flex items-center justify-center font-bold">1</span>
+            <span>Clinical Records Completeness</span>
+          </div>
+          <div class="space-y-2 text-xs">
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" checked class="rounded bg-white border-slate-300 text-[#1B365D] focus:ring-0">
+              <span>MRI / CT Scan reports (< 6 mo)</span>
+            </label>
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" checked class="rounded bg-white border-slate-300 text-[#1B365D] focus:ring-0">
+              <span>Biopsy / Pathology Lab results</span>
+            </label>
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" checked class="rounded bg-white border-slate-300 text-[#1B365D] focus:ring-0">
+              <span>Current Attending MD Letter</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Dimension 2: Financial Guarantee -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-3 shadow-sm">
+          <div class="flex items-center gap-2 text-slate-900 font-bold text-xs border-b border-slate-100 pb-2">
+            <span class="w-5 h-5 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center font-bold">2</span>
+            <span>Financial & Sponsorship</span>
+          </div>
+          <div class="space-y-2 text-xs">
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" checked class="rounded bg-white border-slate-300 text-emerald-600 focus:ring-0">
+              <span>Embassy Guarantee (FGL) Verified</span>
+            </label>
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" class="rounded bg-white border-slate-300 text-emerald-600 focus:ring-0">
+              <span>Intl Insurance (Bupa/Allianz/Aetna)</span>
+            </label>
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" class="rounded bg-white border-slate-300 text-emerald-600 focus:ring-0">
+              <span>Self-Pay VIP Deposit Prepared</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Dimension 3: Logistics & Family -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-3 shadow-sm">
+          <div class="flex items-center gap-2 text-slate-900 font-bold text-xs border-b border-slate-100 pb-2">
+            <span class="w-5 h-5 rounded-full bg-[#EC7825] text-white text-[10px] flex items-center justify-center font-bold">3</span>
+            <span>Logistics & Companions</span>
+          </div>
+          <div class="space-y-2 text-xs">
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" checked class="rounded bg-white border-slate-300 text-[#EC7825] focus:ring-0">
+              <span>Passports valid (> 6 months)</span>
+            </label>
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" checked class="rounded bg-white border-slate-300 text-[#EC7825] focus:ring-0">
+              <span>VIP Suite & Family Apartment</span>
+            </label>
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" class="rounded bg-white border-slate-300 text-[#EC7825] focus:ring-0">
+              <span>Airport Stretcher / Ambulance Req</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Dimension 4: Clinical Urgency -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-3 shadow-sm">
+          <div class="flex items-center gap-2 text-slate-900 font-bold text-xs border-b border-slate-100 pb-2">
+            <span class="w-5 h-5 rounded-full bg-rose-600 text-white text-[10px] flex items-center justify-center font-bold">4</span>
+            <span>Urgency & Travel Window</span>
+          </div>
+          <div class="space-y-2 text-xs">
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" checked class="rounded bg-white border-slate-300 text-rose-600 focus:ring-0">
+              <span>Critical Transfer (< 7 days)</span>
+            </label>
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" class="rounded bg-white border-slate-300 text-rose-600 focus:ring-0">
+              <span>Planned Surgery Window (8-21 days)</span>
+            </label>
+            <label class="flex items-center gap-2 text-slate-700 cursor-pointer">
+              <input type="checkbox" class="rounded bg-white border-slate-300 text-rose-600 focus:ring-0">
+              <span>Second Opinion / Exploratory (30d+)</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Lead WhatsApp Follow-up Qualifier Generator -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+          <div>
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
+              Fast-Track Qualification Follow-up Generator
+            </h4>
+            <p class="text-[11px] text-slate-500">สร้างข้อความ WhatsApp สอบถามประเด็นที่ยังขาดหาย 1 คลิกเพื่อปิดเคสอย่างรวดเร็ว</p>
+          </div>
+          <button id="btnGenLeadWhatsApp" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-1.5 self-start sm:self-auto">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            <span>สร้างข้อความสอบถามความพร้อม 4D</span>
+          </button>
+        </div>
+
+        <!-- Generated Lead Qualification Text Preview -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+            <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">WhatsApp English Draft:</span>
+            <p class="text-slate-800 leading-relaxed font-sans select-text">
+              Dear Mr. Mohammed Al-Balushi, this is Vejthani Hospital International Liaison. Regarding your upcoming Robotic Knee Replacement, our medical board has reviewed your initial notes. To expedite your hospital admission and ensure VIP suite availability, could you kindly confirm whether your Embassy Financial Guarantee Letter (FGL) is already issued, or if you require our formal medical estimation letter for your attaché? We look forward to welcoming you to Bangkok.
+            </p>
+          </div>
+          <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200 space-y-2 text-right font-arabic" dir="rtl">
+            <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block font-sans text-left" dir="ltr">WhatsApp Arabic Draft:</span>
+            <p class="text-emerald-950 text-base leading-loose select-text">
+              سعادة الأخ العزيز محمد البلوشي، تحية طيبة من مستشفى فيجثاني بانكوك. حرصاً على سرعة إنهاء إجراءات حجز جناح الإقامة الملكي وتنسيق موعد الجراحة بالروبوت، يرجى التكرم بإفادتنا حول صدور كتاب الضمان المالي (FGL) من المكتب الصحي للسفارة، أو إذا كنتم بحاجة لتقرير طبي مفصل لتسليمه للملحقية. مع أطيب تمنياتنا لكم بموفور الصحة والعافية.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- VIEW 5: SETTINGS & SYSTEM CONFIGURATION (Dedicated View)     -->
+    <!-- ============================================================ -->
+    <section id="viewSettings" class="hidden space-y-6">
+      
+      <!-- Settings Header Banner -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 text-[10px] font-extrabold bg-[#1B365D] text-white rounded-full tracking-wide">
+                SYSTEM CONFIGURATION
+              </span>
+              <span class="text-xs text-slate-500">Coordinator Identity & AI Engine Integration</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 mt-1.5">Settings & Integration Console</h2>
+            <p class="text-xs text-slate-600 mt-1 max-w-3xl leading-relaxed">
+              จัดการข้อมูลประจำตัวเจ้าหน้าที่ประสานงานคนไข้สากล, ช่องทางการส่ง WhatsApp และเชื่อมต่อ Gemini 2.5 Flash Server Proxy
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-[#1B365D] text-xs font-semibold">
+              Vejthani MedLiaison Core v2.0
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Cards Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        
+        <!-- Panel 1: Liaison Coordinator Profile -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="user-check" class="w-4 h-4 text-[#1B365D]"></i>
+            ข้อมูลโปรไฟล์เจ้าหน้าที่ประสานงาน (Liaison Profile)
+          </h4>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">ชื่อเจ้าหน้าที่ (Staff Name - Thai / English)</label>
+              <input type="text" value="ศรวิทย์ (Sorawit)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D]">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">ตำแหน่งงาน</label>
+                <input type="text" value="International Patient Coordinator" class="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D]">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">เบอร์ต่อภายใน รพ.</label>
+                <input type="text" value="Ext. 2222 (King of Bones)" class="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D]">
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">เบอร์ WhatsApp ประจำโต๊ะเจ้าหน้าที่</label>
+              <input type="text" value="+66 81 234 5678" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono focus:outline-none focus:border-[#1B365D]">
+            </div>
+
+            <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-900">
+              <span>ข้อมูลนี้จะถูกนำไปแทนที่ในตัวแปรสคริปต์โทรและข้อความสรุปหลังโทรโดยอัตโนมัติ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Gemini 2.5 Flash Server Bridge -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="cpu" class="w-4 h-4 text-emerald-600"></i>
+              Gemini AI Integration Console
+            </h4>
+            <span id="cfgServerStatus" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+              <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>Ready: Local + API Fallback
+            </span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Server Endpoint Proxy</label>
+              <input type="text" value="http://localhost:8080/api/generate" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-600 font-mono text-[11px]">
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Custom Gemini API Key (Optional Override)</label>
+              <input type="password" id="cfgGeminiApiKey" placeholder="AIzaSy... (Leave blank to use server environment)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 font-mono focus:outline-none focus:border-[#1B365D]">
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1 text-slate-600 text-[11px] leading-relaxed">
+              <strong class="text-slate-900 block">สถาปัตยกรรม High-Reliability Zero-Failure:</strong>
+              <p>ระบบเชื่อมต่อกับ Gemini 2.5 Flash สำหรับการเขียนสคริปต์ทางการแพทย์เฉพาะรายบุคคล หากไม่มี API Key หรือออฟไลน์ ระบบจะสลับไปใช้ Local Deterministic Medical Templates โดยอัตโนมัติ 100%</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Emergency Hospital Extensions -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 text-rose-700">
+          <i data-lucide="phone-forwarded" class="w-4 h-4 text-rose-600"></i>
+          สายด่วนศูนย์การแพทย์เฉพาะทาง โรงพยาบาลเวชธานี (Emergency Hotlines)
+        </h4>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+            <span class="text-[#1B365D] font-bold block">King of Bones Center</span>
+            <p class="text-slate-600">2nd Floor, King of Bones Bldg.</p>
+            <span class="text-slate-900 font-mono font-bold block pt-1">Ext. 2298, 2299</span>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+            <span class="text-[#EC7825] font-bold block">Life Cancer Center</span>
+            <p class="text-slate-600">ศูนย์มะเร็งวิทยาและเคมีบำบัด MDT</p>
+            <span class="text-slate-900 font-mono font-bold block pt-1">Ext. 3333 / 3334</span>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+            <span class="text-emerald-700 font-bold block">Pediatric Center</span>
+            <p class="text-slate-600">ศูนย์สุขภาพเด็กและทารกแรกเกิด</p>
+            <span class="text-slate-900 font-mono font-bold block pt-1">Ext. 4444 / 4445</span>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+            <span class="text-[#1B365D] font-bold block">24/7 International & WhatsApp</span>
+            <p class="text-slate-600">Hotline ประสานงานต่างชาติ & GCC</p>
+            <span class="text-slate-900 font-mono font-bold block pt-1">+66 85 223 8888</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- ULTRA-PREMIUM CLINICAL WHITE FOOTER                          -->
+  <!-- ============================================================ -->
+  <footer class="bg-white/95 backdrop-blur-xl border-t border-slate-200 py-5 mt-auto relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:pl-28 lg:pr-8 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-[#1B365D]">โรงพยาบาลเวชธานี (Vejthani Hospital)</span>
+        <span class="text-slate-400">•</span>
+        <span class="text-slate-600">International Medical Liaison Follow-up System</span>
+      </div>
+      <div class="flex items-center gap-2 text-slate-600">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span>Ultra-Premium Hospital Tier (JCI Gold Seal Enterprise Standard)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- APPLICATION SCRIPTS                                          -->
+  <!-- ============================================================ -->
+  <script src="app.js"></script>
+
+  <!-- Dock & Multi-View Navigation Synchronizer -->
+  <script>
+    (function() {
+      // 5-View IDs list
+      const views = [
+        'viewCallJourney',
+        'viewInquiryConsole',
+        'viewArabicCenter',
+        'viewLeadInvestigation',
+        'viewSettings'
+      ];
+
+      window.activateView = function(targetViewId) {
+        // Toggle view containers
+        views.forEach(function(id) {
+          const el = document.getElementById(id);
+          if (el) {
+            if (id === targetViewId) {
+              el.classList.remove('hidden');
+            } else {
+              el.classList.add('hidden');
+            }
+          }
+        });
+
+        // Update all dock buttons (both desktop and mobile)
+        document.querySelectorAll('.dock-btn').forEach(function(btn) {
+          const target = btn.getAttribute('data-target');
+          if (target === targetViewId) {
+            btn.classList.add('active', 'bg-[#1B365D]', 'text-white', 'shadow-sm');
+            btn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+          } else {
+            btn.classList.remove('active', 'bg-[#1B365D]', 'text-white', 'shadow-sm');
+            btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+          }
+        });
+
+        // Sync header mode buttons if applicable
+        const navModeCall = document.getElementById('navModeCall');
+        const navModeInquiry = document.getElementById('navModeInquiry');
+        if (navModeCall && navModeInquiry) {
+          if (targetViewId === 'viewCallJourney') {
+            navModeCall.classList.add('bg-[#1B365D]', 'text-white');
+            navModeCall.classList.remove('text-slate-600');
+            navModeInquiry.classList.remove('bg-[#1B365D]', 'text-white');
+            navModeInquiry.classList.add('text-slate-600');
+          } else if (targetViewId === 'viewInquiryConsole') {
+            navModeInquiry.classList.add('bg-[#1B365D]', 'text-white');
+            navModeInquiry.classList.remove('text-slate-600');
+            navModeCall.classList.remove('bg-[#1B365D]', 'text-white');
+            navModeCall.classList.add('text-slate-600');
+          } else {
+            navModeCall.classList.remove('bg-[#1B365D]', 'text-white');
+            navModeCall.classList.add('text-slate-600');
+            navModeInquiry.classList.remove('bg-[#1B365D]', 'text-white');
+            navModeInquiry.classList.add('text-slate-600');
+          }
+        }
+
+        // Re-render any newly shown Lucide icons
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+          window.lucide.createIcons();
+        }
+      }
+
+      // Attach click listeners to all dock buttons
+      document.querySelectorAll('.dock-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const target = btn.getAttribute('data-target');
+          if (target) {
+            activateView(target);
+          }
+        });
+      });
+
+      // Synchronize when header mode buttons are clicked
+      const navModeCall = document.getElementById('navModeCall');
+      const navModeInquiry = document.getElementById('navModeInquiry');
+      if (navModeCall) {
+        navModeCall.addEventListener('click', function() {
+          activateView('viewCallJourney');
+        });
+      }
+      if (navModeInquiry) {
+        navModeInquiry.addEventListener('click', function() {
+          activateView('viewInquiryConsole');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

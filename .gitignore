@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.agents/
+.DS_Store
+.system_generated/
+scratch/
