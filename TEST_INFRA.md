@@ -135,8 +135,8 @@ tests/
 
 | Milestone | Scope Description | Tests Activated | Target Pass Rate | Current Status |
 | :--- | :--- | :---: | :---: | :---: |
-| **Baseline** | Legacy codebase regression preservation | 34 | 100% (34/34) | 🟢 **PASSING** |
-| **M1** | Dark Glassmorphism Canvas, Floating Dock, 5 Views | 10 | 100% (10/10) | 🟢 **PASSING** |
+| **Baseline** | Legacy codebase regression preservation | 34 | 100% (34/34) |  **PASSING** |
+| **M1** | Dark Glassmorphism Canvas, Floating Dock, 5 Views | 10 | 100% (10/10) |  **PASSING** |
 | **M2** | Amiri/Alexandria/Noto Fonts, Arabic SOP, Gender toggle, No slashes | 10 | 100% (10/10) | ⏳ **PENDING (4 tests)** |
 | **M3** | 1s Clock, Friday Jummah Alert, Direct wa.me, 5-Stage Nurturing | 12 | 100% (12/12) | ⏳ **PENDING (4 tests)** |
 | **M4** | Final Acceptance Gate & Tier 5 Hardening | 66 | 100% (66/66) | ⏳ **PLANNED** |

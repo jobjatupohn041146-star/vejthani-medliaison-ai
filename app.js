@@ -198,6 +198,127 @@ const CALL_SOP_PRESETS = {
     remainingIssueEn: "5-day Fit-to-Fly medical certificate clearance and international health insurance direct billing",
     remainingIssueTh: "การยืนยันระยะเวลาพักฟื้น Fit-to-fly ภายใน 5 วัน และการเคลมประกันสุขภาพต่างประเทศ",
     remainingIssueAr: "تأكيد شهادة اللياقة الطبية للسفر بالطائرة (Fit-to-Fly) في غضون 5 أيام وإجراءات التأمين الصحي الدولي"
+  },
+  king_of_bone: {
+    patientName: "Mr. Mohammed Al-Balushi",
+    patientNameAr: "السيد / محمد البلوشي",
+    patientNameTh: "คุณโมฮัมเหม็ด อัล-บาลูชี",
+    country: "oman",
+    phone: "+968 9123-4567",
+    hn: "VN-884920",
+    staffName: "Sorawit",
+    staffNameEn: "Sorawit",
+    staffNameTh: "ศรวิทย์",
+    staffNameAr: "سوراويت",
+    topic: "ผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Total Knee Replacement)",
+    topicEn: "Robotic-Assisted Total Knee Replacement (King of Bones)",
+    topicTh: "การผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Total Knee Replacement)",
+    topicAr: "جراحة استبدال مفصل الركبة بالكامل بمساعدة الروبوت (كينغ أوف بونز)",
+    priorChannel: "WhatsApp",
+    priorChannelEn: "WhatsApp",
+    priorChannelTh: "WhatsApp",
+    priorChannelAr: "واتساب",
+    remainingIssue: "การจัดเตรียมห้องพักครอบครัว VIP, บริการอาหารฮาลาล 100% และหนังสือค้ำประกันค่ารักษาจากสถานทูตโอมาน",
+    remainingIssueEn: "VIP family suite arrangements, 100% Halal dining verification, and Royal Embassy of Oman Financial Guarantee Letter coordination",
+    remainingIssueTh: "การจัดเตรียมห้องพักครอบครัว VIP, บริการอาหารฮาลาล 100% และหนังสือค้ำประกันค่ารักษาจากสถานทูตโอมาน",
+    remainingIssueAr: "ترتيبات الأجنحة العائلية الفاخرة، وشهادة الوجبات الحلال 100%، وتنسيق خطاب الضمان المالي الصادر من الملحقية الصحية بسفارة سلطنة عُمان"
+  },
+  cancer: {
+    patientName: "Mrs. Aisha Al-Husseini",
+    patientNameAr: "السيدة / عائشة الحسيني",
+    patientNameTh: "คุณไอชา อัล-ฮุสเซนี",
+    country: "saudi",
+    phone: "+966 50 123 4567",
+    hn: "VN-773104",
+    staffName: "Patcharee",
+    staffNameEn: "Patcharee",
+    staffNameTh: "พัชรี",
+    staffNameAr: "باتشاري",
+    topic: "การขอความเห็นที่สองด้านมะเร็งวิทยา (Oncology Second Opinion & MDT Tumor Board)",
+    topicEn: "Oncology Second Opinion & MDT Tumor Board Review",
+    topicTh: "การขอความเห็นที่สองด้านมะเร็งวิทยา (Oncology Second Opinion & MDT Tumor Board)",
+    topicAr: "طلب رأي طبي ثانٍ في طب الأورام ومراجعة اللجنة الطبية متعددة التخصصات (Tumor Board)",
+    priorChannel: "WhatsApp & Email",
+    priorChannelEn: "WhatsApp & Email",
+    priorChannelTh: "WhatsApp และ Email",
+    priorChannelAr: "واتساب والبريد الإلكتروني",
+    remainingIssue: "การประสานงานแพทย์หญิงเฉพาะทาง ผลตรวจชิ้นเนื้อเพิ่มเติม และหนังสือเชิญทำวีซ่าแพทย์",
+    remainingIssueEn: "Female oncologist coordination, pathology biopsy review, and medical visa invitation letter",
+    remainingIssueTh: "การประสานงานแพทย์หญิงเฉพาะทาง ผลตรวจชิ้นเนื้อเพิ่มเติม และหนังสือเชิญทำวีซ่าแพทย์",
+    remainingIssueAr: "تنسيق كادر طبي نسائي متخصص، ومراجعة تقرير فحص العينة (Biopsy)، وإصدار خطاب الدعوة لتأشيرة العلاج"
+  },
+  pediatric: {
+    patientName: "Mr. Mansoor (Father of Master Rashid)",
+    patientNameEn: "Mr. Mansoor (Father of Master Rashid)",
+    patientNameAr: "السيد / منصور (والد الطفل راشد)",
+    patientNameTh: "คุณมันซูร์ (บิดาของ ด.ช. ราชิด)",
+    country: "uae",
+    phone: "+971 50 987 6543",
+    hn: "VN-654219",
+    staffName: "Yasmin",
+    staffNameEn: "Yasmin",
+    staffNameTh: "ยัสมิน",
+    staffNameAr: "ياسمين",
+    topic: "การแก้ไขปัญหากระดูกขาส่วนล่างโก่งในเด็ก (Pediatric Orthopedic Gait Correction)",
+    topicEn: "Pediatric Orthopedic Gait Correction & Limb Realignment",
+    topicTh: "การแก้ไขปัญหากระดูกขาส่วนล่างโก่งในเด็ก (Pediatric Orthopedic Gait Correction)",
+    topicAr: "تصحيح المشي وتشوهات عظام الأطراف لدى الأطفال (Pediatric Orthopedics)",
+    priorChannel: "WhatsApp",
+    priorChannelEn: "WhatsApp",
+    priorChannelTh: "WhatsApp",
+    priorChannelAr: "واتساب",
+    remainingIssue: "ต้องการปรึกษาแพทย์ผ่าน Video Call ก่อนเดินทาง และข้อมูลห้องพักเด็กที่เป็นมิตรต่อครอบครัว",
+    remainingIssueEn: "Pre-travel surgeon video consultation and child-friendly family suite accommodation",
+    remainingIssueTh: "ต้องการปรึกษาแพทย์ผ่าน Video Call ก่อนเดินทาง และข้อมูลห้องพักเด็กที่เป็นมิตรต่อครอบครัว",
+    remainingIssueAr: "ترتيب استشارة فيديو مسبقة مع الجراح، وتفاصيل أجنحة الأطفال العائلية المجهزة"
+  },
+  general_surgery: {
+    patientName: "Mr. Johnathan Brooks",
+    patientNameAr: "السيد / جوناثان بروكس",
+    patientNameTh: "คุณโจนาธาน บรูคส์",
+    country: "uk",
+    phone: "+44 7911 123456",
+    hn: "VN-991203",
+    staffName: "Amanda Clark",
+    staffNameEn: "Amanda Clark",
+    staffNameTh: "อแมนด้า คลาร์ก",
+    staffNameAr: "أماندا كلارك",
+    topic: "ผ่าตัดส่องกล้องนิ่วในถุงน้ำดี แผลเล็ก (Laparoscopic Cholecystectomy)",
+    topicEn: "Minimally Invasive Laparoscopic Cholecystectomy",
+    topicTh: "ผ่าตัดส่องกล้องนิ่วในถุงน้ำดี แผลเล็ก (Laparoscopic Cholecystectomy)",
+    topicAr: "جراحة استئصال المرارة بالمنظار قليل التدخل الجراحي (Laparoscopic Cholecystectomy)",
+    priorChannel: "Email",
+    priorChannelEn: "Email",
+    priorChannelTh: "Email",
+    priorChannelAr: "البريد الإلكتروني",
+    remainingIssue: "การยืนยันระยะเวลาพักฟื้น Fit-to-fly ภายใน 5 วัน และการเคลมประกันสุขภาพต่างประเทศ",
+    remainingIssueEn: "5-day Fit-to-Fly medical certificate clearance and international health insurance direct billing",
+    remainingIssueTh: "การยืนยันระยะเวลาพักฟื้น Fit-to-fly ภายใน 5 วัน และการเคลมประกันสุขภาพต่างประเทศ",
+    remainingIssueAr: "تأكيد شهادة اللياقة الطبية للسفر بالطائرة (Fit-to-Fly) في غضون 5 أيام وإجراءات التأمين الصحي الدولي"
+  },
+  investigate: {
+    patientName: "Mr. Hamad Al-Kuwari",
+    patientNameAr: "السيد / حمد الكواري",
+    patientNameTh: "คุณฮาหมัด อัล-คูวารี",
+    country: "qatar",
+    phone: "+974 5512 3456",
+    hn: "VN-552190",
+    staffName: "Sorawit",
+    staffNameEn: "Sorawit",
+    staffNameTh: "ศรวิทย์",
+    staffNameAr: "سوراويت",
+    topic: "การคัดกรองความพร้อมคนไข้และวางแผนการเดินทางเพื่อการรักษา (4D Lead Qualification)",
+    topicEn: "4D International Patient Clinical & Travel Assessment",
+    topicTh: "การคัดกรองความพร้อมคนไข้และวางแผนการเดินทางเพื่อการรักษา (4D Lead Qualification)",
+    topicAr: "التقييم الطبي الشامل وخطة السفر للعلاج (4D Medical Assessment)",
+    priorChannel: "WhatsApp",
+    priorChannelEn: "WhatsApp",
+    priorChannelTh: "WhatsApp",
+    priorChannelAr: "واتساب",
+    remainingIssue: "การประสานงานเอกสารรับรองสถานทูต การตรวจเช็คประวัติการรักษา และจัดทำใบเสนอราคาอย่างเป็นทางการ",
+    remainingIssueEn: "Embassy guarantee letter coordination, medical history evaluation, and official quotation preparation",
+    remainingIssueTh: "การประสานงานเอกสารรับรองสถานทูต การตรวจเช็คประวัติการรักษา และจัดทำใบเสนอราคาอย่างเป็นทางการ",
+    remainingIssueAr: "تنسيق خطابات الضمان المالي الصادرة من السفارة ومراجعة التقارير الطبية وإصدار التقدير المالي المعتمد"
   }
 };
 
@@ -1013,25 +1134,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- Step 1: Time Zone Updates ---
+  // --- Step 1: Time Zone Updates & Quick Country Selectors ---
   const callPatientCountry = document.getElementById("callPatientCountry");
+  const quickCountrySelect1 = document.getElementById("quickCountrySelect1");
+  const quickCountrySelect2 = document.getElementById("quickCountrySelect2");
   const patientCountryTime = document.getElementById("patientCountryTime");
   const patientCountryLabel = document.getElementById("patientCountryLabel");
   const patientPrayerNotice = document.getElementById("patientPrayerNotice");
   const callTimeSuitabilityBadge = document.getElementById("callTimeSuitabilityBadge");
+  const countryLocalClock = document.getElementById("countryLocalClock");
+  const countryTimeZoneBadge = document.getElementById("countryTimeZoneBadge");
 
   function updateCountryClock() {
     if (!callPatientCountry) return;
     const countryKey = callPatientCountry.value;
     const calc = calculateCountryTime(countryKey);
     if (patientCountryTime) patientCountryTime.textContent = calc.timeStr;
+    if (countryLocalClock) countryLocalClock.textContent = calc.timeStr;
     if (patientCountryLabel) patientCountryLabel.textContent = calc.countryLabel;
+    if (countryTimeZoneBadge) countryTimeZoneBadge.textContent = calc.tzBadge;
     if (patientPrayerNotice) patientPrayerNotice.textContent = calc.suitability.desc;
     if (callTimeSuitabilityBadge) {
       callTimeSuitabilityBadge.textContent = calc.suitability.badge;
       callTimeSuitabilityBadge.className = `text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${calc.suitability.badgeClass}`;
     }
   }
+
+  function syncCountrySelection(countryKey) {
+    if (!countryKey) return;
+    if (callPatientCountry && callPatientCountry.value !== countryKey) {
+      callPatientCountry.value = countryKey;
+    }
+    if (quickCountrySelect1 && quickCountrySelect1.value !== countryKey) {
+      quickCountrySelect1.value = countryKey;
+    }
+    if (quickCountrySelect2 && quickCountrySelect2.value !== countryKey) {
+      quickCountrySelect2.value = countryKey;
+    }
+    updateCountryClock();
+    refreshCallScript();
+  }
+
+  [quickCountrySelect1, quickCountrySelect2].forEach(sel => {
+    if (sel) {
+      sel.addEventListener("change", (e) => {
+        syncCountrySelection(e.target.value);
+      });
+    }
+  });
 
   const btnRefreshClock = document.getElementById("btnRefreshClock");
   if (btnRefreshClock) {
@@ -1105,8 +1255,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (callPatientCountry) {
     callPatientCountry.addEventListener("change", () => {
-      updateCountryClock();
-      refreshCallScript();
+      syncCountrySelection(callPatientCountry.value);
     });
   }
   setInterval(() => {
@@ -1269,13 +1418,27 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.classList.add("bg-rose-600", "text-white");
       }
       refreshCallScript();
+      if (typeof recordCurrentCallOutcome === "function") {
+        recordCurrentCallOutcome(currentCallOutcome);
+      }
     });
   });
+
+  const callStaffPosition = document.getElementById("callStaffPosition");
+  const callStaffExt = document.getElementById("callStaffExt");
+  const callStaffWhatsApp = document.getElementById("callStaffWhatsApp");
+  const callPatientHN = document.getElementById("callPatientHN");
+  const callPatientPhone = document.getElementById("callPatientPhone");
 
   function getCallFormData() {
     return {
       patientName: (callPatientName && callPatientName.value.trim()) || (currentCallLang === "ar" ? "المريض" : currentCallLang === "th" ? "คนไข้" : "Patient"),
       staffName: (callStaffName && callStaffName.value.trim()) || (currentCallLang === "ar" ? "منسق فيجثاني" : currentCallLang === "th" ? "เจ้าหน้าที่เวชธานี" : "Vejthani Coordinator"),
+      staffPosition: (callStaffPosition && callStaffPosition.value.trim()) || "International Patient Coordinator",
+      staffExt: (callStaffExt && callStaffExt.value.trim()) || "Ext. 2222 (King of Bones)",
+      staffWhatsApp: (callStaffWhatsApp && callStaffWhatsApp.value.trim()) || "+66 81 234 5678",
+      patientHN: (callPatientHN && callPatientHN.value.trim()) || "",
+      patientPhone: (callPatientPhone && callPatientPhone.value.trim()) || "",
       topic: (callTopic && callTopic.value.trim()) || (currentCallLang === "ar" ? "العلاج الطبي" : currentCallLang === "th" ? "การรักษา" : "Medical Treatment"),
       priorChannel: (callPriorChannel && callPriorChannel.value) || "WhatsApp",
       remainingIssue: (callRemainingIssue && callRemainingIssue.value.trim()) || (currentCallLang === "ar" ? "ترتيبات السفر والعلاج" : currentCallLang === "th" ? "ข้อมูลที่ต้องการสอบถามเพิ่มเติม" : "Pending Arrangements")
@@ -1354,7 +1517,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Input listeners
-  [callPatientName, callStaffName, callTopic, callRemainingIssue, callPriorChannel].forEach(el => {
+  [callPatientName, callStaffName, callStaffPosition, callStaffExt, callStaffWhatsApp, callPatientHN, callPatientPhone, callTopic, callRemainingIssue, callPriorChannel].forEach(el => {
     if (el) {
       el.addEventListener("input", refreshCallScript);
       el.addEventListener("change", refreshCallScript);
@@ -1369,6 +1532,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!p) return;
 
       currentLoadedPresetKey = key;
+
+      // Update active tab style on all call-preset-btn
+      document.querySelectorAll(".call-preset-btn").forEach(b => {
+        b.classList.remove("bg-[#1B365D]", "text-white", "font-bold");
+        b.classList.add("bg-slate-50", "text-slate-700", "font-semibold");
+      });
+      btn.classList.add("bg-[#1B365D]", "text-white", "font-bold");
+      btn.classList.remove("bg-slate-50", "text-slate-700", "font-semibold");
 
       if (currentCallLang === "en") {
         if (callPatientName) callPatientName.value = p.patientName;
@@ -1390,7 +1561,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (callRemainingIssue) callRemainingIssue.value = p.remainingIssueTh || p.remainingIssue;
       }
 
-      if (callPatientCountry) callPatientCountry.value = p.country;
+      if (p.country) {
+        syncCountrySelection(p.country);
+      }
 
       const callPatientHN = document.getElementById("callPatientHN");
       if (callPatientHN && p.hn) callPatientHN.value = p.hn;
@@ -1452,34 +1625,148 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const inqNewDocInput = document.getElementById("inqNewDocInput");
+  const btnAddInqDoc = document.getElementById("btnAddInqDoc");
+
+  function updateInquiryOutputs() {
+    const currentStage = inqStage ? inqStage.value : "stage_1";
+    const stageMod = INQUIRY_STAGE_MODIFIERS[currentStage] || INQUIRY_STAGE_MODIFIERS.stage_1;
+    const cat = INQUIRY_SPECIALTIES[activeInqCat] || INQUIRY_SPECIALTIES.king_of_bone;
+    const customProc = (inqProcedure && inqProcedure.value.trim()) ? inqProcedure.value.trim() : cat.procedure;
+
+    // Checkbox and missing documents logic
+    const docItems = inqDocsList ? Array.from(inqDocsList.querySelectorAll(".doc-item-row")) : [];
+    const missingDocs = [];
+    docItems.forEach(item => {
+      const cb = item.querySelector("input[type='checkbox']");
+      const txtEl = item.querySelector(".doc-item-text");
+      const docName = txtEl ? txtEl.textContent.trim() : "";
+      if (docName && cb && !cb.checked) {
+        missingDocs.push(docName);
+      }
+    });
+
+    let waEnText = cat.waEn;
+    let waArText = cat.waAr;
+    let emailSubText = `Medical Treatment Plan & ${customProc} Evaluation - Vejthani Hospital`;
+    let emailBodyText = cat.emailBody;
+
+    // Reflect procedure change
+    if (customProc && customProc !== cat.procedure) {
+      if (waEnText.includes(cat.procedure)) {
+        waEnText = waEnText.replaceAll(cat.procedure, customProc);
+      } else {
+        waEnText = waEnText.replace(/(regarding the )([^.]+?)( treatment plan)/i, `$1${customProc}$3`);
+      }
+      if (emailBodyText.includes(cat.procedure)) {
+        emailBodyText = emailBodyText.replaceAll(cat.procedure, customProc);
+      } else {
+        emailBodyText = emailBodyText.replace(/(Following your inquiry regarding )([^,]+)/i, `$1${customProc}`);
+      }
+    }
+
+    // Append pending docs notice if any checkbox is unchecked
+    if (missingDocs.length > 0) {
+      const missingEn = `\n\n*Pending Documents Needed for Doctor Review:*\n` + missingDocs.map(d => `• ${d}`).join('\n');
+      const missingAr = `\n\n*المستندات المطلوبة لاستكمال دراسة الحالة:*\n` + missingDocs.map(d => `• ${d}`).join('\n');
+      waEnText += missingEn;
+      waArText += missingAr;
+      emailBodyText += missingEn;
+    }
+
+    if (inqWhatsAppText) inqWhatsAppText.textContent = waEnText + stageMod.enSuffix;
+    if (inqArabicText) inqArabicText.textContent = waArText + stageMod.arSuffix;
+    if (inqEmailSubject) inqEmailSubject.textContent = emailSubText;
+    if (inqEmailBody) inqEmailBody.textContent = emailBodyText + stageMod.enSuffix;
+  }
+
+  function bindDocItemEvents() {
+    if (!inqDocsList) return;
+    inqDocsList.querySelectorAll(".btn-remove-doc").forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const row = btn.closest(".doc-item-row");
+        if (row) row.remove();
+        updateInquiryOutputs();
+      };
+    });
+    inqDocsList.querySelectorAll(".inq-doc-checkbox").forEach(cb => {
+      cb.onchange = () => {
+        updateInquiryOutputs();
+      };
+    });
+  }
+
+  function addNewInquiryDoc() {
+    if (!inqNewDocInput || !inqDocsList) return;
+    const docVal = inqNewDocInput.value.trim();
+    if (!docVal) return;
+
+    const row = document.createElement("div");
+    row.className = "doc-item-row flex items-center justify-between gap-1.5 p-1.5 rounded-lg bg-white border border-slate-200 text-[11px] group";
+    row.innerHTML = `
+      <label class="flex items-center gap-2 flex-1 cursor-pointer">
+        <input type="checkbox" class="inq-doc-checkbox rounded text-emerald-600 focus:ring-emerald-500" checked>
+        <span class="doc-item-text text-slate-800 font-medium">${docVal}</span>
+      </label>
+      <button type="button" class="btn-remove-doc text-slate-400 hover:text-rose-500 p-0.5 rounded transition" title="ลบรายการ">
+        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+      </button>
+    `;
+    inqDocsList.appendChild(row);
+    inqNewDocInput.value = "";
+    bindDocItemEvents();
+    if (window.lucide) lucide.createIcons();
+    updateInquiryOutputs();
+  }
+
+  if (btnAddInqDoc) {
+    btnAddInqDoc.addEventListener("click", addNewInquiryDoc);
+  }
+  if (inqNewDocInput) {
+    inqNewDocInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addNewInquiryDoc();
+      }
+    });
+  }
+
+  if (inqProcedure) {
+    inqProcedure.addEventListener("input", updateInquiryOutputs);
+    inqProcedure.addEventListener("change", updateInquiryOutputs);
+  }
+
   function renderInquiryCategory(catKey, stageKey) {
     activeInqCat = catKey;
-    const currentStage = stageKey || (inqStage ? inqStage.value : "stage_1");
-    const stageMod = INQUIRY_STAGE_MODIFIERS[currentStage] || INQUIRY_STAGE_MODIFIERS.stage_1;
     const cat = INQUIRY_SPECIALTIES[catKey] || INQUIRY_SPECIALTIES.king_of_bone;
 
     inqTabs.forEach(t => {
       if (t.getAttribute("data-inq-cat") === catKey) {
-        t.className = "inquiry-cat-tab active px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold shadow-amber-glow transition";
+        t.className = "inquiry-cat-tab active px-3 py-1.5 rounded-xl bg-[#1B365D] text-white font-bold shadow-sm transition";
       } else {
-        t.className = "inquiry-cat-tab px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border border-white/10 font-semibold transition";
+        t.className = "inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition";
       }
     });
 
     if (inqProcedure) inqProcedure.value = cat.procedure;
+
     if (inqDocsList) {
       inqDocsList.innerHTML = cat.docs.map(d => `
-        <div class="flex items-center gap-1.5 text-[11px]">
-          <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
-          <span>${d}</span>
+        <div class="doc-item-row flex items-center justify-between gap-1.5 p-1.5 rounded-lg bg-white border border-slate-200 text-[11px] group">
+          <label class="flex items-center gap-2 flex-1 cursor-pointer">
+            <input type="checkbox" class="inq-doc-checkbox rounded text-emerald-600 focus:ring-emerald-500" checked>
+            <span class="doc-item-text text-slate-800 font-medium">${d}</span>
+          </label>
+          <button type="button" class="btn-remove-doc text-slate-400 hover:text-rose-500 p-0.5 rounded transition" title="ลบรายการ">
+            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+          </button>
         </div>
       `).join('');
+      bindDocItemEvents();
     }
 
-    if (inqWhatsAppText) inqWhatsAppText.textContent = cat.waEn + stageMod.enSuffix;
-    if (inqArabicText) inqArabicText.textContent = cat.waAr + stageMod.arSuffix;
-    if (inqEmailSubject) inqEmailSubject.textContent = cat.emailSub;
-    if (inqEmailBody) inqEmailBody.textContent = cat.emailBody + stageMod.enSuffix;
+    updateInquiryOutputs();
 
     if (window.lucide) {
       lucide.createIcons();
@@ -1608,7 +1895,324 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --- EHR & Call Log History + Excel Export Engine ---
+  const CRM_STORAGE_KEY = "vejthani_call_records";
+  const crmDateFilter = document.getElementById("crmDateFilter");
+  const btnShowAllDates = document.getElementById("btnShowAllDates");
+  const btnExportExcel = document.getElementById("btnExportExcel");
+  const btnExportInqExcel = document.getElementById("btnExportInqExcel");
+  const crmCallRecordsTableBody = document.getElementById("crmCallRecordsTableBody");
+  const crmRecordsCount = document.getElementById("crmRecordsCount");
+
+  const SEED_CALL_RECORDS = [
+    {
+      id: "REC-2026-001",
+      dateTime: "2026-09-29 10:30",
+      date: "2026-09-29",
+      hn: "VN-884920",
+      patientName: "Mr. Mohammed Al-Balushi",
+      country: "โอมาน (Oman, GMT+4)",
+      topic: "ผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Knee)",
+      outcome: "พร้อมนัดหมาย (Ready / Booked)",
+      outcomeBadge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      staff: "ศรวิทย์ (Sorawit) - Ext. 2222",
+      issue: "ห้องพักครอบครัว VIP และการทำวีซ่าแพทย์",
+      phone: "+968 9123-4567"
+    },
+    {
+      id: "REC-2026-002",
+      dateTime: "2026-09-29 09:15",
+      date: "2026-09-29",
+      hn: "VN-773104",
+      patientName: "Mrs. Aisha Al-Husseini",
+      country: "ซาอุดีอาระเบีย (Saudi Arabia, GMT+3)",
+      topic: "ขอความเห็นที่สองด้านมะเร็งวิทยา (Tumor Board)",
+      outcome: "อยู่ระหว่างพิจารณา (Considering)",
+      outcomeBadge: "bg-amber-50 text-amber-700 border-amber-200",
+      staff: "พัชรี (Patcharee) - Ext. 3311",
+      issue: "ประสานงานแพทย์หญิงเฉพาะทางและผลตรวจชิ้นเนื้อ",
+      phone: "+966 50 123 4567"
+    },
+    {
+      id: "REC-2026-003",
+      dateTime: "2026-09-28 15:45",
+      date: "2026-09-28",
+      hn: "VN-654219",
+      patientName: "Mr. Mansoor (Master Rashid)",
+      country: "สหรัฐอาหรับเอมิเรตส์ (UAE, GMT+4)",
+      topic: "แก้ไขกระดูกขาส่วนล่างโก่งในเด็ก (Pediatric Gait)",
+      outcome: "พร้อมนัดหมาย (Ready / Booked)",
+      outcomeBadge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      staff: "ยัสมิน (Yasmin) - Ext. 4105",
+      issue: "นัดปรึกษาแพทย์ผ่าน Video Call ก่อนเดินทาง",
+      phone: "+971 50 987 6543"
+    },
+    {
+      id: "REC-2026-004",
+      dateTime: "2026-09-28 14:10",
+      date: "2026-09-28",
+      hn: "VN-991203",
+      patientName: "Mr. Johnathan Brooks",
+      country: "สหราชอาณาจักร (UK, GMT+1)",
+      topic: "ผ่าตัดส่องกล้องนิ่วถุงน้ำดี (Cholecystectomy)",
+      outcome: "พร้อมนัดหมาย (Ready / Booked)",
+      outcomeBadge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      staff: "Amanda Clark - Ext. 1190",
+      issue: "ยืนยันระยะเวลาพักฟื้น Fit-to-fly 5 วัน",
+      phone: "+44 7911 123456"
+    },
+    {
+      id: "REC-2026-005",
+      dateTime: "2026-09-27 11:20",
+      date: "2026-09-27",
+      hn: "VN-552190",
+      patientName: "Mr. Hamad Al-Kuwari",
+      country: "กาตาร์ (Qatar, GMT+3)",
+      topic: "คัดกรองความพร้อมคนไข้และวางแผนการเดินทาง (4D Lead)",
+      outcome: "อยู่ระหว่างพิจารณา (Considering)",
+      outcomeBadge: "bg-amber-50 text-amber-700 border-amber-200",
+      staff: "ศรวิทย์ (Sorawit) - Ext. 2222",
+      issue: "การประสานงานเอกสารรับรองจากสถานทูต",
+      phone: "+974 5512 3456"
+    }
+  ];
+
+  function getCallRecords() {
+    try {
+      const data = localStorage.getItem(CRM_STORAGE_KEY);
+      if (data) {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    try {
+      localStorage.setItem(CRM_STORAGE_KEY, JSON.stringify(SEED_CALL_RECORDS));
+    } catch (e) {}
+    return SEED_CALL_RECORDS;
+  }
+
+  function saveCallRecords(records) {
+    try {
+      localStorage.setItem(CRM_STORAGE_KEY, JSON.stringify(records));
+    } catch (e) {}
+  }
+
+  function renderCallRecordsTable(filteredDate = null) {
+    if (!crmCallRecordsTableBody) return;
+    const records = getCallRecords();
+    const displayRecords = filteredDate
+      ? records.filter(r => r.date === filteredDate || r.dateTime.startsWith(filteredDate))
+      : records;
+
+    if (displayRecords.length === 0) {
+      crmCallRecordsTableBody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-center py-6 text-slate-400">
+            ไม่พบข้อมูลบันทึกเวชระเบียนสำหรับวันที่เลือก
+          </td>
+        </tr>
+      `;
+    } else {
+      crmCallRecordsTableBody.innerHTML = displayRecords.map(r => `
+        <tr class="hover:bg-slate-50/80 transition">
+          <td class="py-2.5 px-3 font-mono text-[11px] text-slate-600 whitespace-nowrap">${r.dateTime}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-[#1B365D] whitespace-nowrap">${r.hn}</td>
+          <td class="py-2.5 px-3 font-semibold text-slate-800">${r.patientName}</td>
+          <td class="py-2.5 px-3 whitespace-nowrap text-slate-600">${r.country}</td>
+          <td class="py-2.5 px-3 text-slate-700 max-w-xs truncate" title="${r.topic}">${r.topic}</td>
+          <td class="py-2.5 px-3 whitespace-nowrap">
+            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border ${r.outcomeBadge || 'bg-slate-100 text-slate-700 border-slate-200'}">
+              ${r.outcome}
+            </span>
+          </td>
+          <td class="py-2.5 px-3 text-slate-600 whitespace-nowrap">${r.staff}</td>
+          <td class="py-2.5 px-3 text-slate-600 max-w-xs truncate" title="${r.issue}">${r.issue}</td>
+        </tr>
+      `).join('');
+    }
+
+    if (crmRecordsCount) {
+      crmRecordsCount.textContent = filteredDate
+        ? `แสดง ${displayRecords.length} รายการ (วันที่ ${filteredDate})`
+        : `แสดง ${displayRecords.length} รายการทั้งหมด`;
+    }
+  }
+
+  function recordCurrentCallOutcome(outcomeKey) {
+    const data = getCallFormData();
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const dateStr = `${year}-${month}-${day}`;
+    const dateTimeStr = `${dateStr} ${hours}:${minutes}`;
+
+    const outcomeLabels = {
+      ready: "พร้อมนัดหมาย (Ready / Booked)",
+      not_ready: "อยู่ระหว่างพิจารณา (Considering)",
+      decline: "ปฏิเสธการรักษา (Declined)"
+    };
+
+    const outcomeBadges = {
+      ready: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      not_ready: "bg-amber-50 text-amber-700 border-amber-200",
+      decline: "bg-rose-50 text-rose-700 border-rose-200"
+    };
+
+    const countrySelect = document.getElementById("callPatientCountry");
+    const countryName = countrySelect ? countrySelect.options[countrySelect.selectedIndex].text : "โอมาน (Oman)";
+
+    const newRecord = {
+      id: `REC-${Date.now().toString().slice(-4)}`,
+      dateTime: dateTimeStr,
+      date: dateStr,
+      hn: data.patientHN || "VN-Pending",
+      patientName: data.patientName,
+      country: countryName,
+      topic: data.topic,
+      outcome: outcomeLabels[outcomeKey] || outcomeKey,
+      outcomeBadge: outcomeBadges[outcomeKey] || "bg-slate-100 text-slate-700 border-slate-200",
+      staff: `${data.staffName} (${data.staffExt})`,
+      issue: data.remainingIssue,
+      phone: data.patientPhone || ""
+    };
+
+    const records = getCallRecords();
+    records.unshift(newRecord);
+    saveCallRecords(records);
+    renderCallRecordsTable(crmDateFilter ? crmDateFilter.value : null);
+  }
+
+  if (crmDateFilter) {
+    crmDateFilter.addEventListener("change", (e) => {
+      renderCallRecordsTable(e.target.value);
+    });
+  }
+
+  if (btnShowAllDates) {
+    btnShowAllDates.addEventListener("click", () => {
+      if (crmDateFilter) crmDateFilter.value = "";
+      renderCallRecordsTable(null);
+    });
+  }
+
+  function exportRecordsToExcel() {
+    const records = getCallRecords();
+    const filterDate = crmDateFilter ? crmDateFilter.value : null;
+    const recordsToExport = filterDate
+      ? records.filter(r => r.date === filterDate || r.dateTime.startsWith(filterDate))
+      : records;
+
+    if (!recordsToExport.length) {
+      alert("ไม่พบข้อมูลบันทึกสำหรับการส่งออก Excel");
+      return;
+    }
+
+    const headers = [
+      "ลำดับ",
+      "วันที่-เวลา",
+      "เลข HN",
+      "ชื่อคนไข้",
+      "เบอร์โทรศัพท์",
+      "ประเทศ",
+      "กลุ่มโรค / หัตถการ",
+      "ผลการโทร",
+      "เจ้าหน้าที่ประสานงาน",
+      "ประเด็นติดตาม / สิ่งที่ติดขัด"
+    ];
+
+    const rows = recordsToExport.map((r, i) => [
+      i + 1,
+      r.dateTime,
+      r.hn,
+      r.patientName,
+      r.phone || "",
+      r.country,
+      r.topic,
+      r.outcome,
+      r.staff,
+      r.issue
+    ]);
+
+    const csvContent = [
+      headers.map(h => `"${String(h).replace(/"/g, '""')}"`).join(","),
+      ...rows.map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(","))
+    ].join("\r\n");
+
+    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const todayStr = new Date().toISOString().slice(0, 10);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Vejthani_Call_Records_${todayStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    if (btnExportExcel) {
+      const origText = btnExportExcel.innerHTML;
+      btnExportExcel.classList.add("bg-emerald-700");
+      btnExportExcel.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>ส่งออกสำเร็จ</span>`;
+      if (window.lucide) lucide.createIcons();
+      setTimeout(() => {
+        btnExportExcel.classList.remove("bg-emerald-700");
+        btnExportExcel.innerHTML = origText;
+        if (window.lucide) lucide.createIcons();
+      }, 1500);
+    }
+  }
+
+  if (btnExportExcel) {
+    btnExportExcel.addEventListener("click", exportRecordsToExcel);
+  }
+
+  // Also support exporting Inquiry Plan in View 2
+  if (btnExportInqExcel) {
+    btnExportInqExcel.addEventListener("click", () => {
+      const cat = INQUIRY_SPECIALTIES[activeInqCat] || INQUIRY_SPECIALTIES.king_of_bone;
+      const customProc = (inqProcedure && inqProcedure.value.trim()) ? inqProcedure.value.trim() : cat.procedure;
+      const docItems = inqDocsList ? Array.from(inqDocsList.querySelectorAll(".doc-item-text")).map(el => el.textContent.trim()) : [];
+      const pName = document.getElementById("inqPatientName") ? document.getElementById("inqPatientName").value.trim() : "Patient";
+      const pMarket = document.getElementById("inqPatientMarket") ? document.getElementById("inqPatientMarket").value.trim() : "GCC";
+      const pStage = inqStage ? inqStage.options[inqStage.selectedIndex].text : "Stage 1";
+
+      const headers = ["หัวข้อข้อมูล", "รายละเอียด"];
+      const rows = [
+        ["ชื่อคนไข้", pName],
+        ["ตลาดคนไข้", pMarket],
+        ["ขั้นตอนการติดตาม (Stage)", pStage],
+        ["กลุ่มโรคเฉพาะทาง", cat.name],
+        ["หัตถการที่สอบถาม", customProc],
+        ["เอกสารที่ต้องตรวจเช็ค", docItems.join("; ")],
+        ["ข้อความ WhatsApp (EN)", inqWhatsAppText ? inqWhatsAppText.textContent : ""],
+        ["ข้อความ Arabic (العربية)", inqArabicText ? inqArabicText.textContent : ""],
+        ["หัวข้ออีเมล (Official Email)", inqEmailSubject ? inqEmailSubject.textContent : ""],
+        ["เนื้อหาอีเมล (Email Body)", inqEmailBody ? inqEmailBody.textContent : ""]
+      ];
+
+      const csvContent = [
+        headers.map(h => `"${String(h).replace(/"/g, '""')}"`).join(","),
+        ...rows.map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(","))
+      ].join("\r\n");
+
+      const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const todayStr = new Date().toISOString().slice(0, 10);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Vejthani_Inquiry_Plan_${todayStr}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    });
+  }
+
   // Initial trigger
   refreshCallScript();
   renderInquiryCategory("king_of_bone");
+  renderCallRecordsTable();
 });

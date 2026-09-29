@@ -50,20 +50,20 @@ The E2E test suite comprises **66 automated, opaque-box test cases** built using
 
 ```
 ================================================================================
-📊 Test Execution Summary & Milestone Readiness
+ Test Execution Summary & Milestone Readiness
 ================================================================================
 Total Test Cases Executed : 66
 Execution Duration        : 0.326 seconds
 Currently Passing         : 58 / 66 (87.9%)
 --------------------------------------------------------------------------------
 Milestone Breakdown:
-  🟢 Baseline (Existing Codebase)  : 58 passing (Regressions: 0)
+   Baseline (Existing Codebase)  : 58 passing (Regressions: 0)
   ⏳ Milestone 1 (M1 UI Glass)     : 10/10 passing (100% verified on updated markup)
   ⏳ Milestone 2 (M2 Localization) : 4 tests pending M2 completion
   ⏳ Milestone 3 (M3 Call & Specs) : 4 tests pending M3 completion
 ================================================================================
 
-📋 Next Implementation Milestone Activations:
+ Next Implementation Milestone Activations:
   [M2 Scope] 4 tests waiting for Amiri/Alexandria/Noto Sans Thai, Arabic SOP, and gender toggle.
   [M3 Scope] 4 tests waiting for 1s clock, Friday Jummah alert, phone in wa.me, and 5-stage engine.
 

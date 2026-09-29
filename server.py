@@ -111,9 +111,9 @@ def main():
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), MedLiaisonHandler) as httpd:
         print(f"==================================================")
-        print(f"🏥 MedLiaison AI Demo Server (5 Specialties Edition)")
-        print(f"👉 Running at: http://localhost:{PORT}")
-        print(f"👉 Local Path: {DIRECTORY}")
+        print(f"[SERVER] MedLiaison AI Demo Server (5 Specialties Edition)")
+        print(f"[URL] Running at: http://localhost:{PORT}")
+        print(f"[PATH] Local Path: {DIRECTORY}")
         print(f"Press Ctrl+C to stop.")
         print(f"==================================================")
         try:

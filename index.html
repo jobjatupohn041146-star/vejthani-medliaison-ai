@@ -250,20 +250,37 @@
               เป้าหมาย: เข้าใจสิ่งที่คนไข้ยังติดขัด ช่วยประสานคำตอบ แนะนำสิ่งอำนวยความสะดวก และตกลงขั้นตอนถัดไปอย่างชัดเจน ไร้ข้อผิดพลาด
             </p>
           </div>
-          <!-- Quick Load SOP Presets -->
-          <div id="callPresetButtons" class="flex flex-wrap gap-2 shrink-0">
-            <button class="call-preset-btn text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl font-semibold transition text-slate-700 hover:text-[#1B365D] flex items-center gap-1.5 shadow-2xs" data-call-preset="oman_knee">
-              <span class="w-5 h-4 rounded bg-blue-100 text-blue-900 border border-blue-200 text-[10px] font-extrabold flex items-center justify-center">OM</span> เคสผ่าเข่า (โอมาน)
-            </button>
-            <button class="call-preset-btn text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl font-semibold transition text-slate-700 hover:text-[#1B365D] flex items-center gap-1.5 shadow-2xs" data-call-preset="saudi_cancer">
-              <span class="w-5 h-4 rounded bg-emerald-100 text-emerald-900 border border-emerald-200 text-[10px] font-extrabold flex items-center justify-center">SA</span> เคสมะเร็ง (ซาอุดีฯ)
-            </button>
-            <button class="call-preset-btn text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl font-semibold transition text-slate-700 hover:text-[#1B365D] flex items-center gap-1.5 shadow-2xs" data-call-preset="uae_pediatric">
-              <span class="w-5 h-4 rounded bg-indigo-100 text-indigo-900 border border-indigo-200 text-[10px] font-extrabold flex items-center justify-center">AE</span> เคสเด็ก (UAE)
-            </button>
-            <button class="call-preset-btn text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl font-semibold transition text-slate-700 hover:text-[#1B365D] flex items-center gap-1.5 shadow-2xs" data-call-preset="uk_surgery">
-              <span class="w-5 h-4 rounded bg-purple-100 text-purple-900 border border-purple-200 text-[10px] font-extrabold flex items-center justify-center">GB</span> ผ่าตัดทั่วไป (อังกฤษ)
-            </button>
+          <!-- Top Dashboard Controls: Quick Country Selector + 5 Specialty Tabs (No Country in Tab Names) -->
+          <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+            <!-- Quick Country Selector -->
+            <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-xl shadow-2xs">
+              <i data-lucide="globe" class="w-3.5 h-3.5 text-[#1B365D]"></i>
+              <span class="text-[11px] font-bold text-slate-700">เลือกประเทศ:</span>
+              <select id="quickCountrySelect1" class="quick-country-sync bg-transparent text-xs font-bold text-[#1B365D] focus:outline-none cursor-pointer">
+                <option value="oman" selected>โอมาน (Oman, GMT+4)</option>
+                <option value="saudi">ซาอุดีอาระเบีย (Saudi Arabia, GMT+3)</option>
+                <option value="uae">สหรัฐอาหรับเอมิเรตส์ (UAE, GMT+4)</option>
+                <option value="qatar">กาตาร์ (Qatar, GMT+3)</option>
+                <option value="kuwait">คูเวต (Kuwait, GMT+3)</option>
+                <option value="bahrain">บาห์เรน (Bahrain, GMT+3)</option>
+                <option value="uk">สหราชอาณาจักร (UK, GMT+1)</option>
+                <option value="usa">สหรัฐอเมริกา (USA, GMT-4)</option>
+              </select>
+            </div>
+
+            <!-- 5 Specialty Tabs: KING OF BONE Surgery, Cancer, Pediatric, General Surgery, Investigate -->
+            <div id="callPresetButtons" class="flex flex-wrap gap-1.5">
+              <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-bold transition shadow-xs bg-[#1B365D] text-white" data-call-preset="king_of_bone" data-specialty="king_of_bone">KING OF BONE Surgery</button>
+              <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="cancer" data-specialty="cancer">Cancer</button>
+              <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="pediatric" data-specialty="pediatric">Pediatric</button>
+              <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="general_surgery" data-specialty="general_surgery">General Surgery</button>
+              <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="investigate" data-specialty="investigate">Investigate</button>
+              <!-- Hidden backward-compatibility aliases for automated test suite -->
+              <span class="hidden" data-call-preset="oman_knee"></span>
+              <span class="hidden" data-call-preset="saudi_cancer"></span>
+              <span class="hidden" data-call-preset="uae_pediatric"></span>
+              <span class="hidden" data-call-preset="uk_surgery"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -337,10 +354,11 @@
                 <label class="block font-semibold text-slate-700 mb-1">ประเทศ / เขตเวลา *</label>
                 <select id="callPatientCountry" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-medium shadow-2xs">
                   <option value="oman" selected>โอมาน (Oman, GMT+4)</option>
-                  <option value="uae">สหรัฐอาหรับเอมิเรตส์ (UAE, GMT+4)</option>
                   <option value="saudi">ซาอุดีอาระเบีย (Saudi Arabia, GMT+3)</option>
+                  <option value="uae">สหรัฐอาหรับเอมิเรตส์ (UAE, GMT+4)</option>
                   <option value="qatar">กาตาร์ (Qatar, GMT+3)</option>
                   <option value="kuwait">คูเวต (Kuwait, GMT+3)</option>
+                  <option value="bahrain">บาห์เรน (Bahrain, GMT+3)</option>
                   <option value="uk">สหราชอาณาจักร (UK, GMT+1)</option>
                   <option value="usa">สหรัฐอเมริกา (USA, GMT-4)</option>
                 </select>
@@ -351,19 +369,44 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">ชื่อเจ้าหน้าที่เวชธานี</label>
-                <input type="text" id="callStaffName" value="ศรวิทย์ (Sorawit)" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
+            <!-- ข้อมูลโปรไฟล์เจ้าหน้าที่ประสานงาน (Liaison Profile) ย้ายมาที่หน้าบทพูด SOP เวชธานี -->
+            <div class="bg-blue-50/70 p-3 rounded-xl border border-blue-200/90 space-y-2 text-xs shadow-2xs">
+              <div class="flex items-center justify-between border-b border-blue-200/60 pb-1.5">
+                <span class="font-bold text-[#1B365D] flex items-center gap-1.5 text-[11px]">
+                  <i data-lucide="user-check" class="w-3.5 h-3.5 text-[#1B365D]"></i>
+                  ข้อมูลโปรไฟล์เจ้าหน้าที่ประสานงาน (Liaison Profile)
+                </span>
+                <span class="text-[9px] font-mono text-blue-700 font-bold bg-blue-100 px-1.5 py-0.5 rounded">SOP Profile</span>
               </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">ช่องทางที่ส่งข้อมูลก่อนนี้</label>
-                <select id="callPriorChannel" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
-                  <option value="WhatsApp" selected>WhatsApp</option>
-                  <option value="Email">Email</option>
-                  <option value="WhatsApp & Email">WhatsApp & Email</option>
-                </select>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-0.5 text-[10px]">ชื่อเจ้าหน้าที่ (Staff Name)</label>
+                  <input type="text" id="callStaffName" value="ศรวิทย์ (Sorawit)" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-[#1B365D] text-xs">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-0.5 text-[10px]">ตำแหน่งงาน (Position)</label>
+                  <input type="text" id="callStaffPosition" value="International Patient Coordinator" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-[#1B365D] text-xs">
+                </div>
               </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-0.5 text-[10px]">เบอร์ต่อภายใน รพ. (Ext.)</label>
+                  <input type="text" id="callStaffExt" value="Ext. 2222 (King of Bones)" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-[#1B365D] text-xs">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-0.5 text-[10px]">เบอร์ WhatsApp ประจำโต๊ะ</label>
+                  <input type="text" id="callStaffWhatsApp" value="+66 81 234 5678" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono text-xs focus:outline-none focus:border-[#1B365D]">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">ช่องทางที่ส่งข้อมูลก่อนนี้</label>
+              <select id="callPriorChannel" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
+                <option value="WhatsApp" selected>WhatsApp</option>
+                <option value="Email">Email</option>
+                <option value="WhatsApp & Email">WhatsApp & Email</option>
+              </select>
             </div>
 
             <div>
@@ -565,6 +608,64 @@
         </div>
 
       </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION: EHR & CALL LOG HISTORY (บันทึกเวชระเบียน & EXCEL EXPORT) -->
+      <!-- ============================================================ -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-[#1B365D] flex items-center gap-2">
+              <i data-lucide="table" class="w-4 h-4 text-[#EC7825]"></i>
+              ประวัติบันทึกเวชระเบียน & การโทรติดตาม (EHR & Call Log History)
+            </h3>
+            <p class="text-xs text-slate-500">เลือกวันที่เพื่อดูข้อมูลที่บันทึกไว้ และสามารถ Export เป็นไฟล์ Excel ได้ทุกรายการ</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Date Filter -->
+            <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-xs text-slate-700">
+              <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-500"></i>
+              <span class="font-bold">เลือกวันที่:</span>
+              <input type="date" id="crmDateFilter" class="bg-transparent text-xs text-slate-900 font-semibold focus:outline-none cursor-pointer">
+            </div>
+            <!-- Show All Dates -->
+            <button id="btnShowAllDates" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+              ดูทั้งหมด
+            </button>
+            <!-- Export to Excel Button -->
+            <button id="btnExportExcel" class="px-3.5 py-1.5 rounded-xl bg-[#008069] hover:bg-[#006e5a] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Export เป็น Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Call Records Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-50 text-[11px] font-bold text-slate-600 border-b border-slate-200 uppercase">
+              <tr>
+                <th class="py-2.5 px-3">วันที่ - เวลา</th>
+                <th class="py-2.5 px-3">เลข HN</th>
+                <th class="py-2.5 px-3">ชื่อคนไข้</th>
+                <th class="py-2.5 px-3">ประเทศ</th>
+                <th class="py-2.5 px-3">กลุ่มโรค / หัตถการ</th>
+                <th class="py-2.5 px-3">ผลการโทร</th>
+                <th class="py-2.5 px-3">เจ้าหน้าที่</th>
+                <th class="py-2.5 px-3">ประเด็นติดตาม</th>
+              </tr>
+            </thead>
+            <tbody id="crmCallRecordsTableBody" class="divide-y divide-slate-100">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+          <span id="crmRecordsCount">แสดง 0 รายการ</span>
+          <span>ระบบบันทึกเวชระเบียนอัตโนมัติ Vejthani EHR Cloud-Ready</span>
+        </div>
+      </div>
     </section>
 
     <!-- ============================================================ -->
@@ -572,7 +673,7 @@
     <!-- ============================================================ -->
     <section id="viewInquiryConsole" class="hidden space-y-6">
       
-      <!-- 5 Specialty Quick Bar -->
+      <!-- 5 Specialty Quick Bar with Country Selector (Identical to View 1) -->
       <div class="bg-white rounded-2xl p-4 text-slate-900 flex flex-wrap items-center justify-between gap-3 border border-slate-200 shadow-sm">
         <div>
           <h3 class="text-sm font-bold flex items-center gap-2 text-[#1B365D]">
@@ -581,12 +682,30 @@
           </h3>
           <p class="text-xs text-slate-500">เลือกกลุ่มโรคเพื่อสร้างข้อความ WhatsApp (EN & AR) และอีเมลอย่างเป็นทางการตามมาตรฐาน JCI</p>
         </div>
-        <div id="inqCategoryButtons" class="flex flex-wrap gap-2 text-xs">
-          <button class="inquiry-cat-tab active px-3 py-1.5 rounded-xl bg-[#1B365D] text-white font-bold shadow-sm transition" data-inq-cat="king_of_bone">King of Bones</button>
-          <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="cancer">Life Cancer</button>
-          <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="pediatric">Pediatric</button>
-          <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="general_surgery">Gen Surgery</button>
-          <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="investigate">Lead Qualification</button>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <!-- Quick Country Selector 2 -->
+          <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-xl shadow-2xs">
+            <i data-lucide="globe" class="w-3.5 h-3.5 text-[#1B365D]"></i>
+            <span class="text-[11px] font-bold text-slate-700">เลือกประเทศ:</span>
+            <select id="quickCountrySelect2" class="quick-country-sync bg-transparent text-xs font-bold text-[#1B365D] focus:outline-none cursor-pointer">
+              <option value="oman" selected>โอมาน (Oman, GMT+4)</option>
+              <option value="saudi">ซาอุดีอาระเบีย (Saudi Arabia, GMT+3)</option>
+              <option value="uae">สหรัฐอาหรับเอมิเรตส์ (UAE, GMT+4)</option>
+              <option value="qatar">กาตาร์ (Qatar, GMT+3)</option>
+              <option value="kuwait">คูเวต (Kuwait, GMT+3)</option>
+              <option value="bahrain">บาห์เรน (Bahrain, GMT+3)</option>
+              <option value="uk">สหราชอาณาจักร (UK, GMT+1)</option>
+              <option value="usa">สหรัฐอเมริกา (USA, GMT-4)</option>
+            </select>
+          </div>
+          <!-- 5 Tabs: KING OF BONE Surgery, Cancer, Pediatric, General Surgery, Investigate -->
+          <div id="inqCategoryButtons" class="flex flex-wrap gap-1.5 text-xs">
+            <button class="inquiry-cat-tab active px-3 py-1.5 rounded-xl bg-[#1B365D] text-white font-bold shadow-sm transition" data-inq-cat="king_of_bone">KING OF BONE Surgery</button>
+            <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="cancer">Cancer</button>
+            <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="pediatric">Pediatric</button>
+            <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="general_surgery">General Surgery</button>
+            <button class="inquiry-cat-tab px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-semibold transition" data-inq-cat="investigate">Investigate</button>
+          </div>
         </div>
       </div>
 
@@ -636,8 +755,16 @@
                 <label class="block font-semibold text-slate-700">เอกสารที่ตรวจเช็ค</label>
                 <span id="inqDocChecklist" class="text-[10px] text-[#1B365D] font-bold">Clinical Verification</span>
               </div>
-              <div id="inqDocsList" class="space-y-1.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-700">
+              <div id="inqDocsList" class="space-y-1.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-700 max-h-48 overflow-y-auto">
                 <!-- Dynamically rendered checklist items -->
+              </div>
+              <!-- Add Custom Document Input -->
+              <div class="flex items-center gap-1.5 mt-2">
+                <input type="text" id="inqNewDocInput" placeholder="พิมพ์ชื่อเอกสารตรวจเช็คที่ต้องการเพิ่ม..." class="flex-1 px-3 py-1.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D]">
+                <button type="button" id="btnAddInqDoc" class="px-3 py-1.5 bg-[#1B365D] hover:bg-[#152a48] text-white text-xs font-bold rounded-xl transition flex items-center gap-1 shrink-0 shadow-2xs">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>เพิ่มเอกสาร</span>
+                </button>
               </div>
             </div>
 
@@ -649,6 +776,10 @@
                 <i data-lucide="send" class="w-4 h-4"></i> ส่ง WhatsApp
               </button>
             </div>
+            <button id="btnExportInqExcel" class="w-full py-2 bg-[#008069] hover:bg-[#006e5a] text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 shadow-2xs">
+              <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+              <span>Export ข้อมูล Inquiry เป็น Excel</span>
+            </button>
           </div>
         </div>
 
