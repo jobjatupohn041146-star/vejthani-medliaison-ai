@@ -1645,7 +1645,7 @@ Vejthani Hospital Liaison Office`,
 // =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
   if (window.lucide) {
-    lucide.createIcons();
+    window.lucide.createIcons();
   }
 
   // State Management
@@ -2585,7 +2585,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inqDocsList.appendChild(row);
     inqNewDocInput.value = "";
     bindDocItemEvents();
-    if (window.lucide) lucide.createIcons();
+    if (window.lucide) window.lucide.createIcons();
     updateInquiryOutputs();
   }
 
@@ -2640,7 +2640,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateInquiryOutputs();
 
     if (window.lucide) {
-      lucide.createIcons();
+      window.lucide.createIcons();
     }
   }
 
@@ -3027,11 +3027,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const origText = btnExportExcel.innerHTML;
       btnExportExcel.classList.add("bg-emerald-700");
       btnExportExcel.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>ส่งออกสำเร็จ</span>`;
-      if (window.lucide) lucide.createIcons();
+      if (window.lucide) window.lucide.createIcons();
       setTimeout(() => {
         btnExportExcel.classList.remove("bg-emerald-700");
         btnExportExcel.innerHTML = origText;
-        if (window.lucide) lucide.createIcons();
+        if (window.lucide) window.lucide.createIcons();
       }, 1500);
     }
   }
