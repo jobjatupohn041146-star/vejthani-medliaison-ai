@@ -459,7 +459,31 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         for k in arab_keys + inter_keys:
             self.assertIn(f'value="{k}"', self.dom.raw_html, f"Missing country option value '{k}' in index.html")
 
+    @milestone("baseline")
+    def test_t1_38_global_radar_all_42_countries_and_categories(self):
+        """T1.38: Global Radar Matrix covers all 42 countries with category grouping, live search, and dual world clock."""
+        # 1. Verify Global Radar controls in index.html
+        self.assertIn('id="radarSearchInput"', self.dom.raw_html)
+        self.assertIn('id="radarFilterButtonGroup"', self.dom.raw_html)
+        self.assertIn('data-filter="all"', self.dom.raw_html)
+        self.assertIn('data-filter="arab"', self.dom.raw_html)
+        self.assertIn('data-filter="inter"', self.dom.raw_html)
+        self.assertIn('data-filter="gcc"', self.dom.raw_html)
+        self.assertIn('id="gccRadarContainer"', self.dom.raw_html)
+
+        # 2. Verify Dual World Clock in View 1 Header
+        self.assertIn('id="bkkHeaderClock"', self.dom.raw_html)
+        self.assertIn('id="patientCountryHeaderClock"', self.dom.raw_html)
+        self.assertIn('id="headerTimeDiffBadge"', self.dom.raw_html)
+
+        # 3. Verify Radar engine in app.js
+        self.assertIn("renderRadarCard", self.script.raw_js)
+        self.assertIn("activeRadarFilter", self.script.raw_js)
+        self.assertIn("radarSearchQuery", self.script.raw_js)
+        self.assertIn("selectCountryAndOpenSOP", self.script.raw_js)
+
 
 if __name__ == "__main__":
     unittest.main()
+
 

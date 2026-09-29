@@ -8,52 +8,52 @@ const COUNTRY_TIMEZONES = {
   // -------------------------------------------------------------------------
   // กลุ่มประเทศอาหรับ / ตะวันออกกลาง (Arab / Middle East - 19 ประเทศ)
   // -------------------------------------------------------------------------
-  qatar: { name: "Doha, Qatar", offset: 3, label: "กาตาร์ (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:15", "17:45", "19:00"], category: "arab", dialCode: "+974" },
-  uae: { name: "Dubai / Abu Dhabi, UAE", offset: 4, label: "สหรัฐอาหรับเอมิเรตส์ (GST / GMT+4)", diffFromTh: -3, prayers: ["04:55", "12:20", "15:45", "18:15", "19:30"], category: "arab", dialCode: "+971" },
-  kuwait: { name: "Kuwait City, Kuwait", offset: 3, label: "คูเวต (AST / GMT+3)", diffFromTh: -4, prayers: ["04:20", "11:45", "15:10", "17:40", "18:55"], category: "arab", dialCode: "+965" },
-  oman: { name: "Muscat, Oman", offset: 4, label: "โอมาน (GST / GMT+4)", diffFromTh: -3, prayers: ["04:50", "12:15", "15:40", "18:10", "19:25"], category: "arab", dialCode: "+968" },
-  yemen: { name: "Sana'a / Aden, Yemen", offset: 3, label: "เยเมน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:40", "12:05", "15:25", "18:05", "19:15"], category: "arab", dialCode: "+967" },
-  saudi: { name: "Riyadh / Jeddah, Saudi Arabia", offset: 3, label: "ซาอุดีอาระเบีย (AST / GMT+3)", diffFromTh: -4, prayers: ["04:30", "11:55", "15:20", "17:50", "19:05"], category: "arab", dialCode: "+966" },
-  sudan: { name: "Khartoum, Sudan", offset: 2, label: "ซูดาน (CAT / GMT+2)", diffFromTh: -5, prayers: ["04:45", "12:00", "15:20", "18:00", "19:10"], category: "arab", dialCode: "+249" },
-  comoros: { name: "Moroni, Comoros", offset: 3, label: "คอโมโรส (EAT / GMT+3)", diffFromTh: -4, prayers: ["04:50", "12:10", "15:30", "18:15", "19:25"], category: "arab", dialCode: "+269" },
-  bahrain: { name: "Manama, Bahrain", offset: 3, label: "บาห์เรน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:15", "17:45", "19:00"], category: "arab", dialCode: "+973" },
-  morocco: { name: "Rabat / Casablanca, Morocco", offset: 1, label: "โมร็อกโก (WEST / GMT+1)", diffFromTh: -6, prayers: ["05:30", "12:40", "16:05", "18:45", "20:00"], category: "arab", dialCode: "+212" },
-  jordan: { name: "Amman, Jordan", offset: 3, label: "จอร์แดน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+962" },
-  iraq: { name: "Baghdad, Iraq", offset: 3, label: "อิรัก (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:20", "17:48", "19:05"], category: "arab", dialCode: "+964" },
-  palestine: { name: "Jerusalem / Ramallah, Palestine", offset: 3, label: "ปาเลสไตน์ (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+970" },
-  egypt: { name: "Cairo, Egypt", offset: 3, label: "อียิปต์ (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "18:00", "19:15"], category: "arab", dialCode: "+20" },
-  algeria: { name: "Algiers, Algeria", offset: 1, label: "แอลจีเรีย (CET / GMT+1)", diffFromTh: -6, prayers: ["05:15", "12:35", "16:00", "18:40", "19:55"], category: "arab", dialCode: "+213" },
-  syria: { name: "Damascus, Syria", offset: 3, label: "ซีเรีย (AST / GMT+3)", diffFromTh: -4, prayers: ["04:30", "11:50", "15:20", "17:50", "19:10"], category: "arab", dialCode: "+963" },
-  tunisia: { name: "Tunis, Tunisia", offset: 1, label: "ตูนิเซีย (CET / GMT+1)", diffFromTh: -6, prayers: ["05:10", "12:30", "15:55", "18:35", "19:50"], category: "arab", dialCode: "+216" },
-  lebanon: { name: "Beirut, Lebanon", offset: 3, label: "เลบานอน (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+961" },
-  mauritania: { name: "Nouakchott, Mauritania", offset: 0, label: "มอริเตเนีย (GMT / GMT+0)", diffFromTh: -7, prayers: ["05:40", "13:00", "16:20", "19:00", "20:15"], category: "arab", dialCode: "+222" },
+  qatar: { code: "QA", thName: "กาตาร์", enName: "Qatar", name: "Doha, Qatar", capital: "Doha (GMT+3)", offset: 3, label: "กาตาร์ (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:15", "17:45", "19:00"], category: "arab", dialCode: "+974", isGcc: true },
+  uae: { code: "AE", thName: "สหรัฐอาหรับเอมิเรตส์", enName: "UAE", name: "Dubai / Abu Dhabi, UAE", capital: "Dubai / Abu Dhabi (GMT+4)", offset: 4, label: "สหรัฐอาหรับเอมิเรตส์ (GST / GMT+4)", diffFromTh: -3, prayers: ["04:55", "12:20", "15:45", "18:15", "19:30"], category: "arab", dialCode: "+971", isGcc: true },
+  kuwait: { code: "KW", thName: "คูเวต", enName: "Kuwait", name: "Kuwait City, Kuwait", capital: "Kuwait City (GMT+3)", offset: 3, label: "คูเวต (AST / GMT+3)", diffFromTh: -4, prayers: ["04:20", "11:45", "15:10", "17:40", "18:55"], category: "arab", dialCode: "+965", isGcc: true },
+  oman: { code: "OM", thName: "สุลต่านโอมาน", enName: "Oman", name: "Muscat, Oman", capital: "Muscat (GMT+4)", offset: 4, label: "โอมาน (GST / GMT+4)", diffFromTh: -3, prayers: ["04:50", "12:15", "15:40", "18:10", "19:25"], category: "arab", dialCode: "+968", isGcc: true },
+  yemen: { code: "YE", thName: "เยเมน", enName: "Yemen", name: "Sana'a / Aden, Yemen", capital: "Sana'a / Aden (GMT+3)", offset: 3, label: "เยเมน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:40", "12:05", "15:25", "18:05", "19:15"], category: "arab", dialCode: "+967", isGcc: false },
+  saudi: { code: "SA", thName: "ซาอุดีอาระเบีย", enName: "Saudi Arabia", name: "Riyadh / Jeddah, Saudi Arabia", capital: "Riyadh (GMT+3)", offset: 3, label: "ซาอุดีอาระเบีย (AST / GMT+3)", diffFromTh: -4, prayers: ["04:30", "11:55", "15:20", "17:50", "19:05"], category: "arab", dialCode: "+966", isGcc: true },
+  sudan: { code: "SD", thName: "ซูดาน", enName: "Sudan", name: "Khartoum, Sudan", capital: "Khartoum (GMT+2)", offset: 2, label: "ซูดาน (CAT / GMT+2)", diffFromTh: -5, prayers: ["04:45", "12:00", "15:20", "18:00", "19:10"], category: "arab", dialCode: "+249", isGcc: false },
+  comoros: { code: "KM", thName: "คอโมโรส", enName: "Comoros", name: "Moroni, Comoros", capital: "Moroni (GMT+3)", offset: 3, label: "คอโมโรส (EAT / GMT+3)", diffFromTh: -4, prayers: ["04:50", "12:10", "15:30", "18:15", "19:25"], category: "arab", dialCode: "+269", isGcc: false },
+  bahrain: { code: "BH", thName: "บาห์เรน", enName: "Bahrain", name: "Manama, Bahrain", capital: "Manama (GMT+3)", offset: 3, label: "บาห์เรน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:15", "17:45", "19:00"], category: "arab", dialCode: "+973", isGcc: true },
+  morocco: { code: "MA", thName: "โมร็อกโก", enName: "Morocco", name: "Rabat / Casablanca, Morocco", capital: "Rabat (GMT+1)", offset: 1, label: "โมร็อกโก (WEST / GMT+1)", diffFromTh: -6, prayers: ["05:30", "12:40", "16:05", "18:45", "20:00"], category: "arab", dialCode: "+212", isGcc: false },
+  jordan: { code: "JO", thName: "จอร์แดน", enName: "Jordan", name: "Amman, Jordan", capital: "Amman (GMT+3)", offset: 3, label: "จอร์แดน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+962", isGcc: false },
+  iraq: { code: "IQ", thName: "อิรัก", enName: "Iraq", name: "Baghdad, Iraq", capital: "Baghdad (GMT+3)", offset: 3, label: "อิรัก (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:20", "17:48", "19:05"], category: "arab", dialCode: "+964", isGcc: false },
+  palestine: { code: "PS", thName: "ปาเลสไตน์", enName: "Palestine", name: "Jerusalem / Ramallah, Palestine", capital: "Jerusalem (GMT+3)", offset: 3, label: "ปาเลสไตน์ (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+970", isGcc: false },
+  egypt: { code: "EG", thName: "อียิปต์", enName: "Egypt", name: "Cairo, Egypt", capital: "Cairo (GMT+3)", offset: 3, label: "อียิปต์ (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "18:00", "19:15"], category: "arab", dialCode: "+20", isGcc: false },
+  algeria: { code: "DZ", thName: "แอลจีเรีย", enName: "Algeria", name: "Algiers, Algeria", capital: "Algiers (GMT+1)", offset: 1, label: "แอลจีเรีย (CET / GMT+1)", diffFromTh: -6, prayers: ["05:15", "12:35", "16:00", "18:40", "19:55"], category: "arab", dialCode: "+213", isGcc: false },
+  syria: { code: "SY", thName: "ซีเรีย", enName: "Syria", name: "Damascus, Syria", capital: "Damascus (GMT+3)", offset: 3, label: "ซีเรีย (AST / GMT+3)", diffFromTh: -4, prayers: ["04:30", "11:50", "15:20", "17:50", "19:10"], category: "arab", dialCode: "+963", isGcc: false },
+  tunisia: { code: "TN", thName: "ตูนิเซีย", enName: "Tunisia", name: "Tunis, Tunisia", capital: "Tunis (GMT+1)", offset: 1, label: "ตูนิเซีย (CET / GMT+1)", diffFromTh: -6, prayers: ["05:10", "12:30", "15:55", "18:35", "19:50"], category: "arab", dialCode: "+216", isGcc: false },
+  lebanon: { code: "LB", thName: "เลบานอน", enName: "Lebanon", name: "Beirut, Lebanon", capital: "Beirut (GMT+3)", offset: 3, label: "เลบานอน (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+961", isGcc: false },
+  mauritania: { code: "MR", thName: "มอริเตเนีย", enName: "Mauritania", name: "Nouakchott, Mauritania", capital: "Nouakchott (GMT+0)", offset: 0, label: "มอริเตเนีย (GMT / GMT+0)", diffFromTh: -7, prayers: ["05:40", "13:00", "16:20", "19:00", "20:15"], category: "arab", dialCode: "+222", isGcc: false },
 
   // -------------------------------------------------------------------------
   // กลุ่มประเทศนานาชาติ (International - 23 ประเทศ)
   // -------------------------------------------------------------------------
-  myanmar: { name: "Yangon, Myanmar", offset: 6.5, label: "เมียนมา (MMT / GMT+6.5)", diffFromTh: -0.5, prayers: [], category: "inter", dialCode: "+95" },
-  ethiopia: { name: "Addis Ababa, Ethiopia", offset: 3, label: "เอธิโอเปีย (EAT / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+251" },
-  usa: { name: "New York, USA", offset: -4, label: "สหรัฐอเมริกา (EDT / GMT-4)", diffFromTh: -11, prayers: [], category: "inter", dialCode: "+1" },
-  bangladesh: { name: "Dhaka, Bangladesh", offset: 6, label: "บังกลาเทศ (BST / GMT+6)", diffFromTh: -1, prayers: ["04:30", "11:55", "15:15", "17:50", "19:05"], category: "inter", dialCode: "+880" },
-  vietnam: { name: "Hanoi / Ho Chi Minh, Vietnam", offset: 7, label: "เวียดนาม (ICT / GMT+7)", diffFromTh: 0, prayers: [], category: "inter", dialCode: "+84" },
-  uk: { name: "London, UK", offset: 1, label: "สหราชอาณาจักร (BST / GMT+1)", diffFromTh: -6, prayers: [], category: "inter", dialCode: "+44" },
-  china: { name: "Beijing / Shanghai, China", offset: 8, label: "จีน (CST / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+86" },
-  canada: { name: "Toronto / Montreal, Canada", offset: -4, label: "แคนาดา (EDT / GMT-4)", diffFromTh: -11, prayers: [], category: "inter", dialCode: "+1" },
-  singapore: { name: "Singapore", offset: 8, label: "สิงคโปร์ (SGT / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+65" },
-  australia: { name: "Sydney, Australia", offset: 10, label: "ออสเตรเลีย (AEST / GMT+10)", diffFromTh: 3, prayers: [], category: "inter", dialCode: "+61" },
-  russia: { name: "Moscow, Russia", offset: 3, label: "รัสเซีย (MSK / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+7" },
-  germany: { name: "Berlin / Frankfurt, Germany", offset: 2, label: "เยอรมนี (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+49" },
-  cambodia: { name: "Phnom Penh, Cambodia", offset: 7, label: "กัมพูชา (ICT / GMT+7)", diffFromTh: 0, prayers: [], category: "inter", dialCode: "+855" },
-  philippines: { name: "Manila, Philippines", offset: 8, label: "ฟิลิปปินส์ (PST / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+63" },
-  france: { name: "Paris, France", offset: 2, label: "ฝรั่งเศส (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+33" },
-  india: { name: "New Delhi / Mumbai, India", offset: 5.5, label: "อินเดีย (IST / GMT+5.5)", diffFromTh: -1.5, prayers: [], category: "inter", dialCode: "+91" },
-  netherlands: { name: "Amsterdam, Netherlands", offset: 2, label: "เนเธอร์แลนด์ (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+31" },
-  maldives: { name: "Male, Maldives", offset: 5, label: "มัลดีฟส์ (MVT / GMT+5)", diffFromTh: -2, prayers: ["04:55", "12:05", "15:25", "18:10", "19:20"], category: "inter", dialCode: "+960" },
-  swiss: { name: "Zurich / Geneva, Switzerland", offset: 2, label: "สวิตเซอร์แลนด์ (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+41" },
-  turkey: { name: "Istanbul / Ankara, Turkey", offset: 3, label: "ตุรกี (TRT / GMT+3)", diffFromTh: -4, prayers: ["05:10", "12:50", "16:20", "19:00", "20:25"], category: "inter", dialCode: "+90" },
-  ukraine: { name: "Kyiv, Ukraine", offset: 3, label: "ยูเครน (EEST / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+380" },
-  iran: { name: "Tehran, Iran", offset: 3.5, label: "อิหร่าน (IRST / GMT+3.5)", diffFromTh: -3.5, prayers: ["04:40", "12:05", "15:35", "18:15", "19:35"], category: "inter", dialCode: "+98" },
-  south_africa: { name: "Johannesburg / Cape Town, South Africa", offset: 2, label: "แอฟริกาใต้ (SAST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+27" }
+  myanmar: { code: "MM", thName: "เมียนมา", enName: "Myanmar", name: "Yangon, Myanmar", capital: "Yangon (GMT+6.5)", offset: 6.5, label: "เมียนมา (MMT / GMT+6.5)", diffFromTh: -0.5, prayers: [], category: "inter", dialCode: "+95", isGcc: false },
+  ethiopia: { code: "ET", thName: "เอธิโอเปีย", enName: "Ethiopia", name: "Addis Ababa, Ethiopia", capital: "Addis Ababa (GMT+3)", offset: 3, label: "เอธิโอเปีย (EAT / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+251", isGcc: false },
+  usa: { code: "US", thName: "สหรัฐอเมริกา", enName: "USA", name: "New York, USA", capital: "New York (GMT-4)", offset: -4, label: "สหรัฐอเมริกา (EDT / GMT-4)", diffFromTh: -11, prayers: [], category: "inter", dialCode: "+1", isGcc: false },
+  bangladesh: { code: "BD", thName: "บังกลาเทศ", enName: "Bangladesh", name: "Dhaka, Bangladesh", capital: "Dhaka (GMT+6)", offset: 6, label: "บังกลาเทศ (BST / GMT+6)", diffFromTh: -1, prayers: ["04:30", "11:55", "15:15", "17:50", "19:05"], category: "inter", dialCode: "+880", isGcc: false },
+  vietnam: { code: "VN", thName: "เวียดนาม", enName: "Vietnam", name: "Hanoi / Ho Chi Minh, Vietnam", capital: "Hanoi (GMT+7)", offset: 7, label: "เวียดนาม (ICT / GMT+7)", diffFromTh: 0, prayers: [], category: "inter", dialCode: "+84", isGcc: false },
+  uk: { code: "GB", thName: "สหราชอาณาจักร", enName: "UK", name: "London, UK", capital: "London (GMT+1)", offset: 1, label: "สหราชอาณาจักร (BST / GMT+1)", diffFromTh: -6, prayers: [], category: "inter", dialCode: "+44", isGcc: false },
+  china: { code: "CN", thName: "จีน", enName: "China", name: "Beijing / Shanghai, China", capital: "Beijing (GMT+8)", offset: 8, label: "จีน (CST / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+86", isGcc: false },
+  canada: { code: "CA", thName: "แคนาดา", enName: "Canada", name: "Toronto / Montreal, Canada", capital: "Toronto (GMT-4)", offset: -4, label: "แคนาดา (EDT / GMT-4)", diffFromTh: -11, prayers: [], category: "inter", dialCode: "+1", isGcc: false },
+  singapore: { code: "SG", thName: "สิงคโปร์", enName: "Singapore", name: "Singapore", capital: "Singapore (GMT+8)", offset: 8, label: "สิงคโปร์ (SGT / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+65", isGcc: false },
+  australia: { code: "AU", thName: "ออสเตรเลีย", enName: "Australia", name: "Sydney, Australia", capital: "Sydney (GMT+10)", offset: 10, label: "ออสเตรเลีย (AEST / GMT+10)", diffFromTh: 3, prayers: [], category: "inter", dialCode: "+61", isGcc: false },
+  russia: { code: "RU", thName: "รัสเซีย", enName: "Russia", name: "Moscow, Russia", capital: "Moscow (GMT+3)", offset: 3, label: "รัสเซีย (MSK / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+7", isGcc: false },
+  germany: { code: "DE", thName: "เยอรมนี", enName: "Germany", name: "Berlin / Frankfurt, Germany", capital: "Berlin (GMT+2)", offset: 2, label: "เยอรมนี (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+49", isGcc: false },
+  cambodia: { code: "KH", thName: "กัมพูชา", enName: "Cambodia", name: "Phnom Penh, Cambodia", capital: "Phnom Penh (GMT+7)", offset: 7, label: "กัมพูชา (ICT / GMT+7)", diffFromTh: 0, prayers: [], category: "inter", dialCode: "+855", isGcc: false },
+  philippines: { code: "PH", thName: "ฟิลิปปินส์", enName: "Philippines", name: "Manila, Philippines", capital: "Manila (GMT+8)", offset: 8, label: "ฟิลิปปินส์ (PST / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+63", isGcc: false },
+  france: { code: "FR", thName: "ฝรั่งเศส", enName: "France", name: "Paris, France", capital: "Paris (GMT+2)", offset: 2, label: "ฝรั่งเศส (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+33", isGcc: false },
+  india: { code: "IN", thName: "อินเดีย", enName: "India", name: "New Delhi / Mumbai, India", capital: "New Delhi (GMT+5.5)", offset: 5.5, label: "อินเดีย (IST / GMT+5.5)", diffFromTh: -1.5, prayers: [], category: "inter", dialCode: "+91", isGcc: false },
+  netherlands: { code: "NL", thName: "เนเธอร์แลนด์", enName: "Netherlands", name: "Amsterdam, Netherlands", capital: "Amsterdam (GMT+2)", offset: 2, label: "เนเธอร์แลนด์ (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+31", isGcc: false },
+  maldives: { code: "MV", thName: "มัลดีฟส์", enName: "Maldives", name: "Male, Maldives", capital: "Male (GMT+5)", offset: 5, label: "มัลดีฟส์ (MVT / GMT+5)", diffFromTh: -2, prayers: ["04:55", "12:05", "15:25", "18:10", "19:20"], category: "inter", dialCode: "+960", isGcc: false },
+  swiss: { code: "CH", thName: "สวิตเซอร์แลนด์", enName: "Switzerland", name: "Zurich / Geneva, Switzerland", capital: "Zurich (GMT+2)", offset: 2, label: "สวิตเซอร์แลนด์ (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+41", isGcc: false },
+  turkey: { code: "TR", thName: "ตุรกี", enName: "Turkey", name: "Istanbul / Ankara, Turkey", capital: "Istanbul (GMT+3)", offset: 3, label: "ตุรกี (TRT / GMT+3)", diffFromTh: -4, prayers: ["05:10", "12:50", "16:20", "19:00", "20:25"], category: "inter", dialCode: "+90", isGcc: false },
+  ukraine: { code: "UA", thName: "ยูเครน", enName: "Ukraine", name: "Kyiv, Ukraine", capital: "Kyiv (GMT+3)", offset: 3, label: "ยูเครน (EEST / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+380", isGcc: false },
+  iran: { code: "IR", thName: "อิหร่าน", enName: "Iran", name: "Tehran, Iran", capital: "Tehran (GMT+3.5)", offset: 3.5, label: "อิหร่าน (IRST / GMT+3.5)", diffFromTh: -3.5, prayers: ["04:40", "12:05", "15:35", "18:15", "19:35"], category: "inter", dialCode: "+98", isGcc: false },
+  south_africa: { code: "ZA", thName: "แอฟริกาใต้", enName: "South Africa", name: "Johannesburg / Cape Town, South Africa", capital: "Johannesburg (GMT+2)", offset: 2, label: "แอฟริกาใต้ (SAST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+27", isGcc: false }
 };
 
 function calculateCountryTime(countryKey) {
@@ -1205,6 +1205,46 @@ document.addEventListener("DOMContentLoaded", () => {
       callTimeSuitabilityBadge.textContent = calc.suitability.badge;
       callTimeSuitabilityBadge.className = `text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${calc.suitability.badgeClass}`;
     }
+
+    // Dual-clock header widgets
+    const bkkHeaderClock = document.getElementById("bkkHeaderClock");
+    if (bkkHeaderClock) {
+      const now = new Date();
+      const bkkHours = now.getHours();
+      const bkkMins = now.getMinutes();
+      const bkkSecs = now.getSeconds();
+      const bkkAmpm = bkkHours >= 12 ? 'PM' : 'AM';
+      const bkkDispH = bkkHours % 12 || 12;
+      const bkkDispM = bkkMins < 10 ? '0' + bkkMins : bkkMins;
+      const bkkDispS = bkkSecs < 10 ? '0' + bkkSecs : bkkSecs;
+      bkkHeaderClock.textContent = `${bkkDispH}:${bkkDispM}:${bkkDispS} ${bkkAmpm}`;
+    }
+
+    const patientCountryHeaderLabel = document.getElementById("patientCountryHeaderLabel");
+    if (patientCountryHeaderLabel) {
+      const cityPart = calc.config.capital ? calc.config.capital.split(' ')[0] : '';
+      patientCountryHeaderLabel.textContent = `${calc.config.thName || calc.countryLabel} (${cityPart})`;
+    }
+
+    const patientCountryHeaderClock = document.getElementById("patientCountryHeaderClock");
+    if (patientCountryHeaderClock) {
+      patientCountryHeaderClock.textContent = calc.timeStr;
+    }
+
+    const headerTimeDiffBadge = document.getElementById("headerTimeDiffBadge");
+    if (headerTimeDiffBadge) {
+      const diff = calc.config.diffFromTh;
+      if (diff === 0) headerTimeDiffBadge.textContent = "เวลาเดียวกับไทย";
+      else if (diff < 0) headerTimeDiffBadge.textContent = `ช้ากว่าไทย ${Math.abs(diff)} ชม.`;
+      else headerTimeDiffBadge.textContent = `เร็วกว่าไทย ${diff} ชม.`;
+    }
+
+    const headerSuitabilityBadge = document.getElementById("headerSuitabilityBadge");
+    if (headerSuitabilityBadge) {
+      const shortBadge = calc.suitability.badge.split('(')[0].trim();
+      headerSuitabilityBadge.textContent = shortBadge;
+      headerSuitabilityBadge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full border ${calc.suitability.badgeClass}`;
+    }
   }
 
   function syncCountrySelection(countryKey) {
@@ -1249,7 +1289,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // GCC 6-Country Live Radar Engine (View 3: Arabic Center)
+  // =========================================================================
+  // GLOBAL 42-COUNTRY LIVE RADAR ENGINE (View 3: Arabic & International Center)
+  // =========================================================================
+  // Backward-compatibility GCC core reference
   const GCC_RADAR_COUNTRIES = [
     { key: "saudi", code: "SA", name: "ซาอุดีอาระเบีย (Saudi Arabia)", city: "Riyadh (GMT+3)", offset: 3, diff: "4 ชม.", prayer: "ดุฮริ (11:58)", status: "เวลาทำการราชการ" },
     { key: "uae", code: "AE", name: "สหรัฐอาหรับเอมิเรตส์ (UAE)", city: "Dubai / Abu Dhabi (GMT+4)", offset: 4, diff: "3 ชม.", prayer: "ดุฮริ (12:20)", status: "เวลาทำการราชการ" },
@@ -1259,6 +1302,174 @@ document.addEventListener("DOMContentLoaded", () => {
     { key: "bahrain", code: "BH", name: "บาห์เรน (Bahrain)", city: "Manama (GMT+3)", offset: 3, diff: "4 ชม.", prayer: "ดุฮริ (11:52)", status: "เวลาทำการราชการ" }
   ];
 
+  let activeRadarFilter = "all";
+  let radarSearchQuery = "";
+
+  // One-click country selector that immediately opens SOP Call Journey
+  window.selectCountryAndOpenSOP = function(countryKey) {
+    if (!countryKey) return;
+    syncCountrySelection(countryKey);
+    if (typeof window.activateView === "function") {
+      window.activateView("viewCallJourney");
+    }
+    const view = document.getElementById("viewCallJourney");
+    if (view) {
+      view.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  // Wire up category filter buttons
+  const radarFilterButtonGroup = document.getElementById("radarFilterButtonGroup");
+  if (radarFilterButtonGroup) {
+    const filterBtns = radarFilterButtonGroup.querySelectorAll(".radar-filter-btn");
+    filterBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const filter = btn.getAttribute("data-filter") || "all";
+        activeRadarFilter = filter;
+        filterBtns.forEach(b => {
+          if (b === btn) {
+            b.className = "radar-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-xs bg-[#1B365D] text-white";
+          } else {
+            b.className = "radar-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200";
+          }
+        });
+        updateGccRadar();
+      });
+    });
+  }
+
+  // Wire up radar search input
+  const radarSearchInput = document.getElementById("radarSearchInput");
+  if (radarSearchInput) {
+    radarSearchInput.addEventListener("input", (e) => {
+      radarSearchQuery = e.target.value.trim().toLowerCase();
+      updateGccRadar();
+    });
+  }
+
+  function renderRadarCard(c, key, now, utc) {
+    const d = new Date(utc + (3600000 * c.offset));
+    const hours = d.getHours();
+    const minutes = d.getMinutes();
+    const seconds = d.getSeconds();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const dispH = hours % 12 || 12;
+    const dispM = minutes < 10 ? '0' + minutes : minutes;
+    const dispS = seconds < 10 ? '0' + seconds : seconds;
+    const timeStr = `${dispH}:${dispM}:${dispS} ${ampm}`;
+
+    // Time difference relative to Thailand (ICT / GMT+7)
+    let diffText = "";
+    if (c.diffFromTh === 0) {
+      diffText = "เวลาเดียวกับไทย (ICT)";
+    } else if (c.diffFromTh < 0) {
+      diffText = `ช้ากว่าไทย ${Math.abs(c.diffFromTh)} ชม.`;
+    } else {
+      diffText = `เร็วกว่าไทย ${c.diffFromTh} ชม.`;
+    }
+
+    // Call suitability status & prayer/business schedule
+    let suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>เวลาทำการ (Business Hours)';
+    let badgeCls = "bg-emerald-50 text-emerald-700 border-emerald-200";
+
+    const isFriday = d.getDay() === 5;
+    const totalMins = hours * 60 + minutes;
+
+    let nextScheduleLabel = "เวลาทำการ:";
+    let nextScheduleValue = "09:00 - 17:00 (เวลาท้องถิ่น)";
+
+    if (c.prayers && c.prayers.length > 0) {
+      const prayerNames = ["ฟัจญร์ (Fajr)", "ดุฮริ (Dhuhr)", "อัศริ (Asr)", "มัฆริบ (Maghrib)", "อิชาอ์ (Isha)"];
+      let nextPName = prayerNames[0];
+      let nextPTime = c.prayers[0];
+      for (let i = 0; i < c.prayers.length; i++) {
+        const parts = c.prayers[i].split(":");
+        const pMins = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+        if (pMins > totalMins) {
+          nextPName = prayerNames[i];
+          nextPTime = c.prayers[i];
+          break;
+        }
+      }
+      nextScheduleLabel = "เวลาละหมาดถัดไป:";
+      nextScheduleValue = `${nextPName} (${nextPTime})`;
+
+      if (isFriday && totalMins >= (11 * 60 + 30) && totalMins <= (13 * 60 + 30)) {
+        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-purple-500 mr-1.5"></span>ละหมาดวันศุกร์ (Jummah)';
+        badgeCls = "bg-purple-50 text-purple-700 border-purple-200";
+      } else if (hours >= 21 || hours < 5) {
+        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>พักผ่อน (Resting)';
+        badgeCls = "bg-rose-50 text-rose-700 border-rose-200";
+      } else if (hours < 9) {
+        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span>เช้าตรู่ (Early Morning)';
+        badgeCls = "bg-amber-50 text-amber-700 border-amber-200";
+      }
+    } else {
+      if (hours >= 9 && hours < 17) {
+        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>เวลาทำการ (Business Hours)';
+        badgeCls = "bg-emerald-50 text-emerald-700 border-emerald-200";
+      } else if (hours >= 6 && hours < 9) {
+        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span>เช้าตรู่ (Early Morning)';
+        badgeCls = "bg-amber-50 text-amber-700 border-amber-200";
+      } else if (hours >= 17 && hours < 21) {
+        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1.5"></span>นอกเวลาทำการ (After Hours)';
+        badgeCls = "bg-blue-50 text-blue-700 border-blue-200";
+      } else {
+        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>พักผ่อน (Resting)';
+        badgeCls = "bg-rose-50 text-rose-700 border-rose-200";
+      }
+    }
+
+    const gccBadge = c.isGcc 
+      ? '<span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 shrink-0">GCC</span>' 
+      : '';
+
+    return `
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2.5 shadow-2xs hover:border-[#1B365D] hover:shadow-md transition group">
+        <div class="flex items-center justify-between gap-1.5">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-7 h-6 rounded-md bg-[#1B365D] text-white text-[11px] font-mono font-black flex items-center justify-center shrink-0 shadow-2xs">${c.code}</span>
+            <div class="min-w-0">
+              <div class="text-xs font-bold text-slate-900 truncate flex items-center gap-1">
+                <span>${c.thName}</span>
+                ${gccBadge}
+              </div>
+              <div class="text-[10px] text-slate-500 truncate">${c.enName}</div>
+            </div>
+          </div>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeCls} shrink-0">${c.capital}</span>
+        </div>
+
+        <div class="flex items-baseline justify-between pt-1 border-t border-slate-100">
+          <span class="text-xl font-mono font-black text-[#1B365D] tracking-tight">${timeStr}</span>
+          <span class="text-[10px] font-semibold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200">${diffText}</span>
+        </div>
+
+        <div class="text-[11px] text-slate-600 space-y-1 bg-slate-50/70 p-2.5 rounded-xl border border-slate-100">
+          <div class="flex justify-between items-center text-[10.5px]">
+            <span class="text-slate-500">${nextScheduleLabel}</span>
+            <strong class="text-slate-800 font-semibold truncate ml-1">${nextScheduleValue}</strong>
+          </div>
+          <div class="flex justify-between items-center text-[10.5px]">
+            <span class="text-slate-500">สถานะการโทร:</span>
+            <span class="font-semibold text-slate-700 flex items-center">${suitBadge}</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-1 gap-2">
+          <span class="text-[10px] font-mono font-bold text-[#1B365D] bg-blue-50 px-2 py-1 rounded-lg border border-blue-200 flex items-center gap-1 shrink-0">
+            <svg class="w-3 h-3 text-[#1B365D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            ${c.dialCode}
+          </span>
+          <button type="button" onclick="window.selectCountryAndOpenSOP('${key}')" class="text-[10px] font-bold px-2.5 py-1 bg-white hover:bg-[#1B365D] text-[#1B365D] hover:text-white border border-[#1B365D]/30 hover:border-[#1B365D] rounded-lg transition-all flex items-center gap-1 shadow-2xs ml-auto">
+            <span>เลือก & เปิดบทพูดโทร</span>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
   function updateGccRadar() {
     const container = document.getElementById("gccRadarContainer");
     if (!container) return;
@@ -1266,47 +1477,111 @@ document.addEventListener("DOMContentLoaded", () => {
     const now = new Date();
     const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
 
-    container.innerHTML = GCC_RADAR_COUNTRIES.map(c => {
-      const d = new Date(utc + (3600000 * c.offset));
-      const hours = d.getHours();
-      const minutes = d.getMinutes();
-      const seconds = d.getSeconds();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      const dispH = hours % 12 || 12;
-      const dispM = minutes < 10 ? '0' + minutes : minutes;
-      const dispS = seconds < 10 ? '0' + seconds : seconds;
-      const timeStr = `${dispH}:${dispM}:${dispS} ${ampm}`;
+    // Get all 42 country keys
+    let keys = Object.keys(COUNTRY_TIMEZONES);
 
-      let suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>เวลาทำการ (Business Hours)';
-      let badgeCls = "bg-emerald-50 text-emerald-700 border-emerald-200";
-      if (hours < 9) {
-        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span>เช้าตรู่ (Early Morning)';
-        badgeCls = "bg-amber-50 text-amber-700 border-amber-200";
-      } else if (hours >= 20 || hours < 6) {
-        suitBadge = '<span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>พักผ่อน (Resting)';
-        badgeCls = "bg-rose-50 text-rose-700 border-rose-200";
-      }
+    // Apply search filter if query is provided
+    if (radarSearchQuery) {
+      keys = keys.filter(k => {
+        const c = COUNTRY_TIMEZONES[k];
+        return k.includes(radarSearchQuery) ||
+          (c.code && c.code.toLowerCase().includes(radarSearchQuery)) ||
+          (c.thName && c.thName.toLowerCase().includes(radarSearchQuery)) ||
+          (c.enName && c.enName.toLowerCase().includes(radarSearchQuery)) ||
+          (c.name && c.name.toLowerCase().includes(radarSearchQuery)) ||
+          (c.capital && c.capital.toLowerCase().includes(radarSearchQuery)) ||
+          (c.dialCode && c.dialCode.toLowerCase().includes(radarSearchQuery));
+      });
+    }
 
-      return `
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-2.5 shadow-sm hover:border-blue-400 hover:shadow-md transition">
-          <div class="flex items-center justify-between">
-            <span class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-              <span class="w-6 h-5 rounded bg-blue-50 text-[#1B365D] border border-blue-200 text-[10px] font-extrabold flex items-center justify-center shrink-0">${c.code}</span>
-              <span class="truncate">${c.name}</span>
-            </span>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeCls}">${c.city}</span>
+    // Apply category tab filter
+    if (activeRadarFilter === "arab") {
+      keys = keys.filter(k => COUNTRY_TIMEZONES[k].category === "arab");
+    } else if (activeRadarFilter === "inter") {
+      keys = keys.filter(k => COUNTRY_TIMEZONES[k].category === "inter");
+    } else if (activeRadarFilter === "gcc") {
+      keys = keys.filter(k => COUNTRY_TIMEZONES[k].isGcc === true);
+    }
+
+    // Update count badge
+    const radarCountBadge = document.getElementById("radarCountBadge");
+    if (radarCountBadge) {
+      radarCountBadge.textContent = `แสดง ${keys.length} / 42 ประเทศ`;
+    }
+
+    // If no matching countries found
+    if (keys.length === 0) {
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500 text-xs shadow-2xs space-y-2">
+          <p class="font-bold text-slate-700 text-sm">ไม่พบประเทศที่ตรงกับการค้นหา "${radarSearchQuery}"</p>
+          <p>กรุณาลองค้นหาด้วยชื่อประเทศ ภาษาไทย ภาษาอังกฤษ หรือรหัสโทรระหว่างประเทศ</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Categorized grouping
+    const arabList = keys.filter(k => COUNTRY_TIMEZONES[k].category === "arab");
+    const interList = keys.filter(k => COUNTRY_TIMEZONES[k].category === "inter");
+
+    let html = "";
+
+    // Section 1: Arab & Middle East (Render if active filter is "all", "arab", or "gcc")
+    if ((activeRadarFilter === "all" || activeRadarFilter === "arab" || activeRadarFilter === "gcc") && arabList.length > 0) {
+      const sectionTitle = activeRadarFilter === "gcc" 
+        ? "กลุ่มประเทศความร่วมมืออ่าวอาหรับ (GCC 6 ประเทศ)" 
+        : "กลุ่มประเทศอาหรับและตะวันออกกลาง (Arab & Middle East - 19 ประเทศ)";
+      const sectionBadge = activeRadarFilter === "gcc"
+        ? "GCC Diplomatic Core"
+        : "Islamic Prayer & Diplomatic Protocol";
+
+      html += `
+        <div class="space-y-3">
+          <div class="flex items-center justify-between border-b border-emerald-200/80 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+              <h4 class="text-xs font-bold text-slate-900 tracking-wide uppercase">
+                ${sectionTitle}
+              </h4>
+              <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                ${sectionBadge}
+              </span>
+            </div>
+            <span class="text-xs font-semibold text-slate-500">${arabList.length} ประเทศ</span>
           </div>
-          <div class="flex items-baseline justify-between pt-1">
-            <span class="text-xl font-mono font-extrabold text-[#1B365D]">${timeStr}</span>
-            <span class="text-[11px] text-slate-500">ห่างจากไทย ${c.diff}</span>
-          </div>
-          <div class="text-[11px] text-slate-600 space-y-1 border-t border-slate-100 pt-2">
-            <div class="flex justify-between"><span>เวลาละหมาดถัดไป:</span> <strong class="text-slate-800">${c.prayer}</strong></div>
-            <div class="flex justify-between items-center"><span>สถานะการโทร:</span> <span class="font-semibold text-slate-700 flex items-center">${suitBadge}</span></div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            ${arabList.map(k => renderRadarCard(COUNTRY_TIMEZONES[k], k, now, utc)).join('')}
           </div>
         </div>
       `;
-    }).join('');
+    }
+
+    // Section 2: International Patients (Render if active filter is "all" or "inter")
+    if ((activeRadarFilter === "all" || activeRadarFilter === "inter") && interList.length > 0) {
+      html += `
+        <div class="space-y-3 pt-4">
+          <div class="flex items-center justify-between border-b border-blue-200/80 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#1B365D]"></span>
+              <h4 class="text-xs font-bold text-slate-900 tracking-wide uppercase">
+                กลุ่มประเทศนานาชาติ (International Patient Hub - 23 ประเทศ)
+              </h4>
+              <span class="text-[10px] font-bold text-blue-800 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
+                Global Business Hours & Timezones
+              </span>
+            </div>
+            <span class="text-xs font-semibold text-slate-500">${interList.length} ประเทศ</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            ${interList.map(k => renderRadarCard(COUNTRY_TIMEZONES[k], k, now, utc)).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    container.innerHTML = html;
   }
 
   if (callPatientCountry) {
