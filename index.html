@@ -355,12 +355,16 @@
         <!-- 5 Specialty Tabs: KING OF BONE Surgery, Cancer, Pediatric, General Surgery, Investigate -->
         <div class="space-y-1">
           <label class="block text-[11px] font-bold text-slate-700">คลินิกและศูนย์เฉพาะทาง (Specialty Center):</label>
-          <div id="callPresetButtons" class="flex flex-wrap gap-1.5">
-            <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-bold transition shadow-xs bg-[#1B365D] text-white" data-call-preset="king_of_bone" data-specialty="king_of_bone">KING OF BONE Surgery</button>
+          <div id="callPresetButtons" class="flex flex-wrap items-center gap-1.5">
+            <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="king_of_bone" data-specialty="king_of_bone">KING OF BONE Surgery</button>
             <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="cancer" data-specialty="cancer">Cancer</button>
             <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="pediatric" data-specialty="pediatric">Pediatric</button>
             <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="general_surgery" data-specialty="general_surgery">General Surgery</button>
             <button class="call-preset-btn text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-[#1B365D] border border-slate-200" data-call-preset="investigate" data-specialty="investigate">Investigate</button>
+            <button id="btnClearCallForm" type="button" class="text-xs px-3 py-1.5 rounded-xl font-semibold transition bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-1.5 shadow-2xs cursor-pointer" title="ล้างข้อมูลในฟอร์มเพื่อเริ่มเคสใหม่">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              <span>ล้างข้อมูล / เริ่มเคสใหม่</span>
+            </button>
             <!-- Hidden backward-compatibility aliases for automated test suite -->
             <span class="hidden" data-call-preset="oman_knee"></span>
             <span class="hidden" data-call-preset="saudi_cancer"></span>
@@ -426,11 +430,11 @@
             <div class="grid grid-cols-3 gap-2">
               <div class="col-span-2">
                 <label class="block font-semibold text-slate-700 mb-1">ชื่อคนไข้ (Patient Name) *</label>
-                <input type="text" id="callPatientName" value="Mr. Mohammed Al-Balushi" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-medium shadow-2xs">
+                <input type="text" id="callPatientName" value="" placeholder="เช่น คุณโมฮัมเหม็ด อัล-บาลูชี, Mr. Johnathan Brooks" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-medium shadow-2xs">
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">เลข HN (Hospital No.)</label>
-                <input type="text" id="callPatientHN" value="HN 68-09241" placeholder="HN..." class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-mono text-[11px] shadow-2xs">
+                <input type="text" id="callPatientHN" value="" placeholder="เช่น VN-884920" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-mono text-[11px] shadow-2xs">
               </div>
             </div>
 
@@ -488,7 +492,7 @@
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">เบอร์โทรศัพท์ (WhatsApp)</label>
-                <input type="text" id="callPatientPhone" value="+968 9123 4567" placeholder="+968..." class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-mono text-[11px] shadow-2xs">
+                <input type="text" id="callPatientPhone" value="" placeholder="เช่น +968 9123 4567" class="w-full px-2.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 font-mono text-[11px] shadow-2xs">
               </div>
             </div>
 
@@ -534,12 +538,12 @@
 
             <div>
               <label class="block font-semibold text-slate-700 mb-1">กลุ่มโรค / หัตถการที่สอบถาม *</label>
-              <input type="text" id="callTopic" value="ผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Total Knee Replacement)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
+              <input type="text" id="callTopic" value="" placeholder="พิมพ์ชื่อโรค หรือหัตถการ เช่น ผ่าตัดกระเพาะอาหาร, โรคหัวใจ, ผ่าตัดต้อกระจก..." class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
             </div>
 
             <div>
               <label class="block font-semibold text-slate-700 mb-1">ประเด็นที่รอคำตอบ / ติดขัด</label>
-              <input type="text" id="callRemainingIssue" value="ความชัดเจนเรื่องห้องพักครอบครัวและขั้นตอนการทำวีซ่าแพทย์" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
+              <input type="text" id="callRemainingIssue" value="" placeholder="พิมพ์เรื่องที่ต้องประสานงาน เช่น ต้องการล่ามภาษาอาหรับ, ห้องพักครอบครัว, วีซ่าแพทย์..." class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30 shadow-2xs">
             </div>
 
             <!-- Call SOP Principles Reminder -->
@@ -908,7 +912,7 @@
 
             <div>
               <label class="block font-semibold text-slate-700 mb-1">หัตถการที่สอบถาม</label>
-              <input type="text" id="inqProcedure" value="Robotic Total Knee Replacement (ผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ Vejthani King of Bones)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30">
+              <input type="text" id="inqProcedure" value="" placeholder="พิมพ์หัตถการหรือโรคที่สอบถาม (ตัวอย่าง: Robotic Total Knee Replacement...)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:ring-1 focus:ring-[#1B365D]/30">
             </div>
 
             <div>

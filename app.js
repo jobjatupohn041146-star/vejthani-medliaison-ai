@@ -856,10 +856,38 @@ const MEDICAL_LOCALIZER = {
   ]
 };
 
+function getPlaceholderForField(fieldType, targetLang) {
+  if (fieldType === "topic") {
+    if (targetLang === "ar") return "[التخصص الطبي / الإجراء]";
+    if (targetLang === "th") return "[ระบุกลุ่มโรค/หัตถการ]";
+    return "[Medical Topic / Procedure]";
+  }
+  if (fieldType === "remainingIssue") {
+    if (targetLang === "ar") return "[الإجراءات المطلوب متابعتها]";
+    if (targetLang === "th") return "[ระบุเรื่องที่ประสานงานต่อ]";
+    return "[Pending Arrangements / Action Item]";
+  }
+  if (fieldType === "patientName") {
+    if (targetLang === "ar") return "[اسم المريض]";
+    if (targetLang === "th") return "[ระบุชื่อคนไข้]";
+    return "[Patient Name]";
+  }
+  if (fieldType === "staffName") {
+    if (targetLang === "ar") return "منسق التنسيق الطبي الدولي";
+    if (targetLang === "th") return "เจ้าหน้าที่เวชธานี";
+    return "International Patient Coordinator";
+  }
+  return "";
+}
+
 function localizeField(value, targetLang, fieldType) {
-  if (!value || typeof value !== "string") return value || "";
+  if (!value || typeof value !== "string") {
+    return getPlaceholderForField(fieldType, targetLang);
+  }
   const trimmed = value.trim();
-  if (!trimmed) return "";
+  if (!trimmed || trimmed.startsWith("[")) {
+    return getPlaceholderForField(fieldType, targetLang);
+  }
   const lower = trimmed.toLowerCase();
 
   // If targetLang is "th" and value contains Thai characters, always preserve the user's exact Thai input!
@@ -1010,10 +1038,10 @@ function localizeField(value, targetLang, fieldType) {
 
 // Dynamic salutation formatter preventing double salutations and language leakage
 function formatPatientSalutation(name, lang = "en") {
-  if (!name) {
-    if (lang === "ar") return "حضرة الفاضل المحترم";
-    if (lang === "th") return "ท่านคนไข้";
-    return "Esteemed Patient";
+  if (!name || typeof name !== "string" || !name.trim() || name.trim().startsWith("[")) {
+    if (lang === "ar") return "[اسم المريض]";
+    if (lang === "th") return "[ระบุชื่อคนไข้]";
+    return "[Patient Name]";
   }
   const trimmed = name.trim();
 
@@ -1159,11 +1187,11 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
     const politeEnd = isMale ? "นะครับ" : "นะคะ";
     const politeQuestion = isMale ? "ไหมครับ" : "ไหมคะ";
     const formalPatientName = formatPatientSalutation(scriptPatientName, 'th');
-    const displayPatientName = scriptPatientName.replace(/^(คุณ|ท่าน)\s*/, '');
+    const displayPatientName = scriptPatientName.startsWith("[") ? scriptPatientName : `คุณ ${scriptPatientName.replace(/^(คุณ|ท่าน)\s*/, '')}`;
 
     p1 = `“อัสสลามุอะลัยกุม ${formalPatientName} ${pronoun} ${scriptStaffName} จากโรงพยาบาลเวชธานี${polite} ที่เราเคยคุยกันทาง ${channelDisplay} ก่อนหน้านี้ คุณสบายดี${politeQuestion}? ตอนนี้สะดวกคุยสัก 2–3 นาที${politeQuestion}? ${pronoun}โทรมาเพื่อดูว่ามีอะไรที่เราช่วยเตรียมเพิ่มเติมให้คุณได้ ก่อนวางแผนมาพบแพทย์${polite}”`;
 
-    p2 = `“ครั้งก่อนคุณ ${displayPatientName} แจ้งว่าอยากทราบเรื่อง ${scriptTopic} เราได้ส่งข้อมูลให้ทาง ${channelDisplay} แล้ว${polite} คุณได้ดูข้อมูลหรือยัง${politeQuestion}? มีส่วนไหนที่อยากให้เราอธิบายเพิ่มเติม${politeQuestion}?”`;
+    p2 = `“ครั้งก่อน ${displayPatientName} แจ้งว่าอยากทราบเรื่อง ${scriptTopic} เราได้ส่งข้อมูลให้ทาง ${channelDisplay} แล้ว${polite} คุณได้ดูข้อมูลหรือยัง${politeQuestion}? มีส่วนไหนที่อยากให้เราอธิบายเพิ่มเติม${politeQuestion}?”`;
 
     p3 = `“ตอนนี้เรื่องไหนที่ยังทำให้คุณไม่สบายใจ หรือยังต้องจัดเตรียมก่อนเดินทางมารักษา${politeQuestion}?”
 (คำแนะนำสำหรับเจ้าหน้าที่: ถามทีละคำถาม เว้นจังหวะให้ตอบ แล้วทวนความเข้าใจ)`;
@@ -1181,7 +1209,7 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
       closing = `“ไม่เป็นไร${polite} ขอบคุณที่แจ้งให้ทราบ${politeEnd} หากไม่สะดวก ขออนุญาตสอบถามเหตุผลหลักสั้นๆ เพื่อให้โรงพยาบาลนำไปปรับปรุงบริการได้${politeQuestion}? หากต้องการความช่วยเหลือหรือปรึกษาเรื่องสุขภาพในอนาคต ติดต่อเวชธานีได้เสมอเลย${politeEnd} ขอบคุณมาก${polite}”`;
     }
 
-    p6 = `“ขอสรุป${politeEnd} คุณ ${displayPatientName} ${pronoun}จะตรวจสอบเรื่อง ${scriptRemainingIssue} และแจ้งกลับทาง WhatsApp ${polite} ส่วนเอกสารจะส่งทาง ${channelDisplay} หากมีคำถามเพิ่มเติม ฝากข้อความถึง${pronoun}ได้ตลอดเวลาเลย${politeEnd} ขอบคุณที่สละเวลาคุยกัน${politeEnd}”`;
+    p6 = `“ขอสรุป${politeEnd} ${displayPatientName} ${pronoun}จะตรวจสอบเรื่อง ${scriptRemainingIssue} และแจ้งกลับทาง WhatsApp ${polite} ส่วนเอกสารจะส่งทาง ${channelDisplay} หากมีคำถามเพิ่มเติม ฝากข้อความถึง${pronoun}ได้ตลอดเวลาเลย${politeEnd} ขอบคุณที่สละเวลาคุยกัน${politeEnd}”`;
   }
 
   // =========================================================================
@@ -1244,7 +1272,11 @@ Vejthani Hospital, Bangkok, Thailand`;
     // Thai summary
     const isMale = (staffGender === "male");
     const polite = isMale ? "ครับ" : "ค่ะ";
-    const formalPatientName = formatPatientSalutation(waPatientName, 'th');
+    const waDisplayPatientName = waPatientName.startsWith("[") ? waPatientName : `คุณ ${waPatientName.replace(/^(คุณ|ท่าน)\s*/, '')}`;
+
+    if (outcome === "ready") {
+      // ready
+    }
 
     summaryWA = `السلام عليكم ورحمة الله وبركاته
 เรียน ${formalPatientName},
@@ -1257,7 +1289,7 @@ Vejthani Hospital, Bangkok, Thailand`;
 ${outcome === "ready" ? `• สถานะการนัดหมาย: อยู่ระหว่างตรวจสอบตารางแพทย์และจัดเตรียมล่ามประจำตัว
 • การเดินทาง: ประสานงานรถรับส่งสนามบินและห้องพักครอบครัว` : outcome === "not_ready" ? "• สถานะ: เจ้าหน้าที่จะค้นหาข้อมูลเพิ่มเติมและติดต่อกลับตามเวลาที่นัดหมาย" : "• สถานะ: บันทึกข้อมูลเรียบร้อย หากต้องการความช่วยเหลือในอนาคตติดต่อเราได้ตลอดเวลา"}
 
-หากคุณ ${waPatientName.replace(/^(คุณ|ท่าน)\s*/, '')} หรือครอบครัวมีข้อสงสัยเพิ่มเติม สามารถตอบกลับทางข้อความ WhatsApp นี้ได้ตลอด 24 ชั่วโมง${polite}
+หาก ${waDisplayPatientName} หรือครอบครัวมีข้อสงสัยเพิ่มเติม สามารถตอบกลับทางข้อความ WhatsApp นี้ได้ตลอด 24 ชั่วโมง${polite}
 
 ด้วยความเคารพอย่างสูง,
 ${waStaffName}
@@ -1625,7 +1657,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentStaffGender = "male"; // "male" | "female"
   let currentCallOutcome = "ready"; // "ready" | "not_ready" | "decline"
   let activeInqCat = "king_of_bone";
-  let currentLoadedPresetKey = "oman_knee";
+  let currentLoadedPresetKey = null;
 
   // --- View Mode Switching (Call Journey vs Inquiry) ---
   const navModeCall = document.getElementById("navModeCall");
@@ -2207,16 +2239,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getCallFormData() {
     return {
-      patientName: (callPatientName && callPatientName.value.trim()) || (currentCallLang === "ar" ? "المريض" : currentCallLang === "th" ? "คนไข้" : "Patient"),
-      staffName: (callStaffName && callStaffName.value.trim()) || (currentCallLang === "ar" ? "منسق فيجثاني" : currentCallLang === "th" ? "เจ้าหน้าที่เวชธานี" : "Vejthani Coordinator"),
+      patientName: (callPatientName && callPatientName.value.trim()) || "",
+      staffName: (callStaffName && callStaffName.value.trim()) || (currentCallLang === "ar" ? "منسق التنسيق الطبي الدولي" : currentCallLang === "th" ? "เจ้าหน้าที่เวชธานี" : "International Patient Coordinator"),
       staffPosition: (callStaffPosition && callStaffPosition.value.trim()) || "International Patient Coordinator",
       staffExt: (callStaffExt && callStaffExt.value.trim()) || "Ext. 2222 (King of Bones)",
       staffWhatsApp: (callStaffWhatsApp && callStaffWhatsApp.value.trim()) || "+66 81 234 5678",
       patientHN: (callPatientHN && callPatientHN.value.trim()) || "",
       patientPhone: (callPatientPhone && callPatientPhone.value.trim()) || "",
-      topic: (callTopic && callTopic.value.trim()) || (currentCallLang === "ar" ? "العلاج الطبي" : currentCallLang === "th" ? "การรักษา" : "Medical Treatment"),
+      topic: (callTopic && callTopic.value.trim()) || "",
       priorChannel: (callPriorChannel && callPriorChannel.value) || "WhatsApp",
-      remainingIssue: (callRemainingIssue && callRemainingIssue.value.trim()) || (currentCallLang === "ar" ? "ترتيبات السفر والعلاج" : currentCallLang === "th" ? "ข้อมูลที่ต้องการสอบถามเพิ่มเติม" : "Pending Arrangements")
+      remainingIssue: (callRemainingIssue && callRemainingIssue.value.trim()) || ""
     };
   }
 
@@ -2350,6 +2382,27 @@ document.addEventListener("DOMContentLoaded", () => {
       refreshCallScript();
     });
   });
+
+  // Clear Call Form Button - Resets inputs to blank slate
+  const btnClearCallForm = document.getElementById("btnClearCallForm");
+  if (btnClearCallForm) {
+    btnClearCallForm.addEventListener("click", () => {
+      if (callPatientName) callPatientName.value = "";
+      if (callPatientHN) callPatientHN.value = "";
+      if (callPatientPhone) callPatientPhone.value = "";
+      if (callTopic) callTopic.value = "";
+      if (callRemainingIssue) callRemainingIssue.value = "";
+
+      // Unselect all preset buttons
+      document.querySelectorAll(".call-preset-btn").forEach(b => {
+        b.classList.remove("bg-[#1B365D]", "text-white", "font-bold");
+        b.classList.add("bg-slate-50", "text-slate-700", "font-semibold");
+      });
+      currentLoadedPresetKey = null;
+
+      refreshCallScript();
+    });
+  }
 
   // Copy Post Call Summary Button
   const btnCopyPostCallSummary = document.getElementById("btnCopyPostCallSummary");
@@ -2568,7 +2621,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    if (inqProcedure) inqProcedure.value = cat.procedure;
+    if (inqProcedure) {
+      inqProcedure.placeholder = `พิมพ์หัตถการหรือโรคที่สอบถาม (ตัวอย่าง: ${cat.procedure})`;
+    }
 
     if (inqDocsList) {
       inqDocsList.innerHTML = cat.docs.map(d => `
