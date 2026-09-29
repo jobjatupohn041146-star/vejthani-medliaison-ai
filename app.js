@@ -374,50 +374,289 @@ const CALL_SOP_PRESETS = {
 // =========================================================================
 const MEDICAL_LOCALIZER = {
   topics: [
+    // 1. King of Bones & Orthopedic Surgery (Specific Multi-Word Phrases First)
     {
-      keywords: ["ข้อเข่า", "เข่า", "หุ่นยนต์", "ข้อสะโพก", "สะโพก", "กระดูก", "ข้อเสื่อม", "กระดูกพรุน", "เอ็นไขว้หน้า", "หมอนรองกระดูก", "knee", "robotic", "ركبة", "عظام", "bone", "orthopedic", "hip", "joint", "joints", "king of bone"],
+      keywords: ["ผ่าตัดเปลี่ยนข้อเข่า", "ข้อเข่าเทียม", "เปลี่ยนข้อเข่า", "หุ่นยนต์ข้อเข่า", "robotic knee replacement", "total knee replacement", "robotic-assisted knee", "robotic total knee"],
       th: "การผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Total Knee Replacement)",
       en: "Robotic-Assisted Total Knee Replacement (King of Bones)",
       ar: "جراحة استبدال مفصل الركبة بالكامل بمساعدة الروبوت (كينغ أوف بونز)"
     },
     {
-      keywords: ["มะเร็ง", "ก้อนเนื้อ", "เนื้องอก", "ชิ้นเนื้อ", "เคมีบำบัด", "คีโม", "ฉายแสง", "เต้านม", "ลำไส้", "ปอด", "ตับ", "cancer", "oncology", "tumor", "أورام", "سرطان"],
-      th: "การขอความเห็นที่สองด้านมะเร็งวิทยา (Oncology Second Opinion & MDT Tumor Board)",
-      en: "Oncology Second Opinion & MDT Tumor Board Review",
-      ar: "طلب رأي طبي ثانٍ في طب الأورام ومراجعة اللجنة الطبية متعددة التخصصات (Tumor Board)"
+      keywords: ["ผ่าตัดเปลี่ยนข้อสะโพก", "ข้อสะโพกเทียม", "เปลี่ยนข้อสะโพก", "ข้อสะโพก", "hip replacement", "total hip replacement", "hip arthroplasty"],
+      th: "การผ่าตัดเปลี่ยนข้อสะโพกเทียมแนวใหม่ (Total Hip Replacement)",
+      en: "Total Hip Replacement & Joint Reconstruction Surgery",
+      ar: "جراحة استبدال مفصل الورك بالكامل وإعادة بناء المفصل (Total Hip Replacement)"
     },
     {
-      keywords: ["เด็ก", "กุมาร", "ขาโก่ง", "ทารก", "ลูก", "ราชิด", "pediatric", "child", "أطفال", "طفل", "rashid"],
-      th: "การแก้ไขปัญหากระดูกขาส่วนล่างโก่งในเด็ก (Pediatric Orthopedic Gait Correction)",
-      en: "Pediatric Orthopedic Gait Correction & Limb Realignment",
-      ar: "تصحيح المشي وتشوهات عظام الأطراف لدى الأطفال (Pediatric Orthopedics)"
-    },
-    {
-      keywords: ["ถุงน้ำดี", "ส่องกล้อง", "ผ่าตัด", "นิ่ว", "ไส้ติ่ง", "ไส้เลื่อน", "แผลเล็ก", "cholecystectomy", "gallbladder", "مرارة", "منظار", "surgery", "laparoscopic"],
-      th: "ผ่าตัดส่องกล้องนิ่วในถุงน้ำดี แผลเล็ก (Laparoscopic Cholecystectomy)",
-      en: "Minimally Invasive Laparoscopic Cholecystectomy",
-      ar: "جراحة استئصال المرارة بالمنظار قليل التدخل الجراحي (Laparoscopic Cholecystectomy)"
-    },
-    {
-      keywords: ["กระดูกสันหลัง", "สันหลัง", "ปวดหลัง", "ทับเส้น", "spine", "spinal", "فقري"],
+      keywords: ["ผ่าตัดกระดูกสันหลัง", "กระดูกสันหลัง", "หมอนรองกระดูก", "หมอนรองกระดูกทับเส้น", "ทับเส้นประสาท", "ปวดหลังเรื้อรัง", "สันหลัง", "spine surgery", "spinal surgery", "endoscopic spine", "scoliosis", "herniated disc", "فقري"],
       th: "การรักษาโรคกระดูกสันหลังและหมอนรองกระดูกกดทับเส้นประสาท (Comprehensive Spine Care)",
       en: "Comprehensive Spine Surgery & Endoscopic Care",
       ar: "جراحة العمود الفقري المتقدمة ورعاية الانزلاق الغضروفي (Spine Care)"
     },
     {
-      keywords: ["หัวใจ", "หลอดเลือด", "บายพาส", "บอลลูน", "cardio", "cardiac", "heart", "قلب"],
+      keywords: ["ส่องกล้องข้อ", "เอ็นไขว้หน้า", "เอ็นฉีกขาด", "ผ่าตัดเอ็นไขว้", "arthroscopy", "acl reconstruction", "meniscus tear"],
+      th: "การผ่าตัดส่องกล้องข้อและซ่อมแซมเส้นเอ็นไขว้หน้า (Arthroscopic ACL Reconstruction)",
+      en: "Arthroscopic Joint Surgery & ACL Reconstruction",
+      ar: "تنظير المفاصل المتقدم وترميم أربطة الركبة (ACL Reconstruction)"
+    },
+    {
+      keywords: ["กระดูกหัก", "ผ่าตัดกระดูก", "ดามกระดูก", "fracture", "orthopedic trauma"],
+      th: "การรักษาและผ่าตัดยึดตรึงกระดูกหัก (Orthopedic Trauma & Fracture Care)",
+      en: "Orthopedic Trauma & Fracture Fixation Surgery",
+      ar: "جراحة العظام والإصابات وتثبيت الكسور المتقدمة"
+    },
+    {
+      keywords: ["ข้อเสื่อม", "กระดูกพรุน", "ข้ออักเสบ", "ข้อเข่าเสื่อม", "osteoporosis", "osteoarthritis", "rheumatoid"],
+      th: "การรักษาโรคข้อเสื่อมและโรคกระดูกพรุนขั้นสูง (Advanced Joint & Bone Health)",
+      en: "Comprehensive Osteoarthritis & Bone Density Management",
+      ar: "علاج هشاشة العظام المتقدم ورعاية تآكل المفاصل"
+    },
+    {
+      keywords: ["ข้อเข่า", "เข่า", "หุ่นยนต์", "กระดูก", "knee", "robotic", "ركبة", "عظام", "bone", "orthopedic", "hip", "joint", "joints", "king of bone"],
+      th: "การผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Total Knee Replacement)",
+      en: "Robotic-Assisted Total Knee Replacement (King of Bones)",
+      ar: "جراحة استبدال مفصل الركبة بالكامل بمساعدة الروبوت (كينغ أوف بونز)"
+    },
+
+    // 2. Ophthalmology (ศูนย์จักษุ & โรคตา)
+    {
+      keywords: ["ผ่าตัดต้อกระจก", "สลายต้อกระจก", "ต้อกระจก", "สลายต้อ", "cataract surgery", "cataract", "phacoemulsification", "إزالة المياه البيضاء"],
+      th: "ผ่าตัดต้อกระจกและใส่เลนส์แก้วตาเทียม (Cataract Surgery & Lens Implantation)",
+      en: "Cataract Surgery & Phacoemulsification Lens Implantation",
+      ar: "جراحة إزالة المياه البيضاء وزراعة العدسات بتقنية الموجات فوق الصوتية (Cataract Surgery)"
+    },
+    {
+      keywords: ["ต้อหิน", "glaucoma", "المياه الزرقاء", "الجلوكوما"],
+      th: "การรักษาโรคต้อหินและการดูแลสายตาขั้นสูง (Glaucoma Care)",
+      en: "Comprehensive Glaucoma Therapy & Advanced Eye Care",
+      ar: "علاج المياه الزرقاء (الجلوكوما) ورعاية العيون المتقدمة (Glaucoma Care)"
+    },
+    {
+      keywords: ["จอประสาทตา", "วุ้นตา", "retina", "retinal", "vitreoretinal", "شبكية"],
+      th: "การรักษาโรคจอประสาทตาและวุ้นตา (Retinal & Vitreoretinal Care)",
+      en: "Advanced Vitreoretinal Surgery & Retinal Care",
+      ar: "جراحة شبكية العين والجسم الزجاجي المتقدمة (Retinal Care)"
+    },
+    {
+      keywords: ["เลสิก", "ทำเลสิก", "สายตาสั้น", "lasik", "femto-lasik", "ليزك"],
+      th: "การผ่าตัดแก้ไขสายตาผิดปกติด้วยเลสิก (Femto-LASIK Vision Correction)",
+      en: "Femto-LASIK Refractive & Vision Correction Surgery",
+      ar: "تصحيح الإبصار بالفيمتو ليزك والجراحة الانكسارية (Femto-LASIK)"
+    },
+    {
+      keywords: ["ตา", "จักษุ", "ophthalmology", "eye surgery", "عيون"],
+      th: "การตรวจรักษาโรคตาและจักษุวิทยาเฉพาะทาง (Specialized Ophthalmology Care)",
+      en: "Specialized Ophthalmology & Advanced Eye Care",
+      ar: "طب وجراحة العيون والرعاية التخصصية (Ophthalmology Care)"
+    },
+
+    // 3. Cardiology & Vascular (ศูนย์หัวใจและหลอดเลือด)
+    {
+      keywords: ["ผ่าตัดบายพาส", "บายพาสหัวใจ", "หลอดเลือดหัวใจ", "cabg", "coronary artery bypass", "مجازة تاجي"],
+      th: "การผ่าตัดบายพาสหลอดเลือดหัวใจ (Coronary Artery Bypass Grafting - CABG)",
+      en: "Coronary Artery Bypass Graft Surgery (CABG)",
+      ar: "جراحة المجازة التاجية للقلب وترقيع الشرايين (CABG Bypass)"
+    },
+    {
+      keywords: ["สวนหัวใจ", "ฉีดสีหัวใจ", "ทำบอลลูน", "บอลลูนหัวใจ", "ขดลวดหัวใจ", "angioplasty", "cardiac catheterization", "coronary stent", "قسطرة"],
+      th: "การตรวจสวนหัวใจและขยายหลอดเลือดด้วยบอลลูนขดลวด (Cardiac Catheterization & Stenting)",
+      en: "Cardiac Catheterization & Coronary Angioplasty Stenting",
+      ar: "قسطرة القلب وتوسيع الشرايين التاجية وزراعة الدعامة (Angioplasty & Stent)"
+    },
+    {
+      keywords: ["ลิ้นหัวใจ", "เปลี่ยนลิ้นหัวใจ", "heart valve", "tavi", "tavr", "صمام القلب"],
+      th: "การผ่าตัดซ่อมแซมและเปลี่ยนลิ้นหัวใจ (Heart Valve Repair & Replacement)",
+      en: "Advanced Heart Valve Repair & Transcatheter Replacement",
+      ar: "جراحة إصلاح واستبدال صمامات القلب المتقدمة (Heart Valve Surgery)"
+    },
+    {
+      keywords: ["หัวใจเต้นผิดจังหวะ", "จี้ไฟฟ้าหัวใจ", "arrhythmia", "pacemaker", "منظم ضربات"],
+      th: "การรักษาโรคหัวใจเต้นผิดจังหวะและใส่เครื่องกระตุ้นหัวใจ (Cardiac Electrophysiology & Pacemaker)",
+      en: "Cardiac Electrophysiology & Pacemaker Implantation",
+      ar: "علاج اضطراب كهربائية القلب وزراعة منظم ضربات القلب (Pacemaker)"
+    },
+    {
+      keywords: ["โรคหัวใจ", "หัวใจ", "หลอดเลือด", "cardio", "cardiac", "heart", "vascular", "قلب", "أوعية دموية"],
       th: "การรักษาโรคหัวใจและหลอดเลือดขั้นสูง (Advanced Heart & Vascular Center)",
       en: "Advanced Cardiology & Cardiovascular Care",
       ar: "مركز رعاية وجراحة القلب والأوعية الدموية المتقدم (Cardiology Center)"
     },
+
+    // 4. Oncology & MDT Second Opinion (ศูนย์มะเร็งและเนื้องอก)
     {
-      keywords: ["สมอง", "ระบบประสาท", "สโตรก", "อัมพฤกษ์", "neuro", "brain", "stroke"],
-      th: "การรักษาโรคหลอดเลือดสมองและระบบประสาท (Neuroscience Center)",
-      en: "Comprehensive Neuroscience & Stroke Center",
-      ar: "مركز العلوم العصبية المتكامل ورعاية السكتات الدماغية"
+      keywords: ["มะเร็งเต้านม", "ผ่าตัดเต้านม", "breast cancer", "mastectomy", "أورام الثدي"],
+      th: "การรักษามะเร็งเต้านมแบบบูรณาการและการผ่าตัดสงวนเต้า (Comprehensive Breast Cancer Care)",
+      en: "Multidisciplinary Breast Cancer Care & Oncoplastic Surgery",
+      ar: "رعاية وجراحة أورام الثدي التكاملية والجراحة التجميلية (Breast Cancer)"
     },
     {
-      keywords: ["คัดกรอง", "ตรวจสุขภาพ", "เช็คอัพ", "สืบค้น", "ตรวจร่างกาย", "ความพร้อม", "investigate", "lead", "4d", "تقييم", "checkup", "screening"],
+      keywords: ["มะเร็งปอด", "lung cancer", "thoracic oncology", "أورام الرئة"],
+      th: "การรักษามะเร็งปอดด้วยยามุ่งเป้าและการผ่าตัดส่องกล้อง (Advanced Lung Cancer Therapy)",
+      en: "Advanced Targeted Lung Cancer Therapy & Thoracic Care",
+      ar: "الرعاية المتكاملة والعلاج الموجه لأورام الرئة (Lung Cancer)"
+    },
+    {
+      keywords: ["มะเร็งลำไส้", "มะเร็งลำไส้ใหญ่", "colon cancer", "colorectal cancer", "أورام القولون"],
+      th: "การรักษามะเร็งลำไส้ใหญ่และการผ่าตัดส่องกล้องแผลเล็ก (Colorectal Cancer Care)",
+      en: "Advanced Colorectal Cancer Surgery & Multimodal Therapy",
+      ar: "علاج وجراحة أورام القولون والمستقيم المتقدمة (Colorectal Cancer)"
+    },
+    {
+      keywords: ["มะเร็งตับ", "liver cancer", "hepatocellular", "أورام الكبد"],
+      th: "การรักษามะเร็งตับและโรคตับขั้นสูง (Liver Cancer & Hepatobiliary Care)",
+      en: "Comprehensive Hepatocellular Carcinoma & Liver Cancer Care",
+      ar: "الرعاية المتكاملة وعلاج أورام الكبد المتقدمة (Liver Cancer)"
+    },
+    {
+      keywords: ["มะเร็งต่อมลูกหมาก", "prostate cancer", "أورام البروستاتا"],
+      th: "การรักษามะเร็งต่อมลูกหมากด้วยการผ่าตัดหุ่นยนต์ (Robotic Prostate Cancer Surgery)",
+      en: "Robotic Prostate Cancer Surgery & Advanced Uro-Oncology",
+      ar: "جراحة أورام البروستاتا بالروبوت والرعاية المتقدمة (Prostate Cancer)"
+    },
+    {
+      keywords: ["มะเร็ง", "ก้อนเนื้อ", "เนื้องอก", "ชิ้นเนื้อ", "เคมีบำบัด", "คีโม", "ฉายแสง", "เต้านม", "ลำไส้", "ปอด", "ตับ", "cancer", "oncology", "tumor", "tumor board", "أورام", "سرطان"],
+      th: "การขอความเห็นที่สองด้านมะเร็งวิทยา (Oncology Second Opinion & MDT Tumor Board)",
+      en: "Oncology Second Opinion & MDT Tumor Board Review",
+      ar: "طلب رأي طبي ثانٍ في طب الأورام ومراجعة اللجنة الطبية متعددة التخصصات (Tumor Board)"
+    },
+
+    // 5. General & Laparoscopic Surgery (ศัลยกรรมทั่วไป & ทางเดินอาหาร)
+    {
+      keywords: ["ผ่าตัดถุงน้ำดี", "นิ่วในถุงน้ำดี", "ถุงน้ำดี", "ส่องกล้องถุงน้ำดี", "cholecystectomy", "gallbladder", "مرارة", "استئصال المرارة"],
+      th: "ผ่าตัดส่องกล้องนิ่วในถุงน้ำดี แผลเล็ก (Laparoscopic Cholecystectomy)",
+      en: "Minimally Invasive Laparoscopic Cholecystectomy",
+      ar: "جراحة استئصال المرارة بالمنظار قليل التدخل الجراحي (Laparoscopic Cholecystectomy)"
+    },
+    {
+      keywords: ["ผ่าตัดกระเพาะอาหาร", "ผ่าตัดกระเพาะ", "ตัดกระเพาะ", "บายพาสกระเพาะ", "ลดน้ำหนัก", "gastric bypass", "gastric sleeve", "sleeve gastrectomy", "bariatric", "تكميم", "تحويل مسار"],
+      th: "ผ่าตัดส่องกล้องลดขนาดกระเพาะเพื่อรักษาโรคอ้วน (Laparoscopic Bariatric Gastric Sleeve)",
+      en: "Minimally Invasive Bariatric & Gastric Sleeve Surgery",
+      ar: "جراحة تكميم وتحويل مسار المعدة بالمنظار لعلاج البدانة (Bariatric Gastric Sleeve)"
+    },
+    {
+      keywords: ["ส่องกล้องกระเพาะ", "ส่องกล้องลำไส้", "endoscopy", "colonoscopy", "gastroscopy", "تنظير الجهاز الهضمي"],
+      th: "การส่องกล้องตรวจระบบทางเดินอาหารและลำไส้ใหญ่ (GI Endoscopy & Colonoscopy)",
+      en: "Comprehensive Gastrointestinal Endoscopy & Colonoscopy Screening",
+      ar: "تنظير الجهاز الهضمي والقولون المتقدم للتشخيص والعلاج (Endoscopy & Colonoscopy)"
+    },
+    {
+      keywords: ["ผ่าตัดไส้เลื่อน", "ไส้เลื่อน", "hernia", "فتق"],
+      th: "การผ่าตัดส่องกล้องรักษาโรคไส้เลื่อน (Laparoscopic Hernia Repair)",
+      en: "Minimally Invasive Laparoscopic Hernia Repair",
+      ar: "جراحة إصلاح الفتق بالمنظار قليل التدخل (Laparoscopic Hernia Repair)"
+    },
+    {
+      keywords: ["ผ่าตัดไส้ติ่ง", "ไส้ติ่ง", "ไส้ติ่งอักเสบ", "appendectomy", "appendicitis", "الزائدة الدودية"],
+      th: "การผ่าตัดส่องกล้องไส้ติ่งอักเสบ (Laparoscopic Appendectomy)",
+      en: "Laparoscopic Appendectomy Surgery",
+      ar: "جراحة استئصال الزائدة الدودية بالمنظار (Laparoscopic Appendectomy)"
+    },
+    {
+      keywords: ["ริดสีดวง", "hemorrhoids", "piles", "بواسير"],
+      th: "การรักษาโรคริดสีดวงทวารด้วยเลเซอร์ขั้นสูง (Advanced Laser Hemorrhoidoplasty)",
+      en: "Advanced Laser Hemorrhoidoplasty & Colorectal Care",
+      ar: "علاج البواسير المتقدم بالليزر وجراحة الشرج والمستقيم"
+    },
+    {
+      keywords: ["กระเพาะ", "ลำไส้", "ทางเดินอาหาร", "gastro", "gastroenterology", "جهاز هضمي"],
+      th: "ศูนย์โรคระบบทางเดินอาหารและตับ (Gastroenterology & Hepatology Center)",
+      en: "Comprehensive Gastroenterology & Hepatology Care",
+      ar: "مركز أمراض الجهاز الهضمي والكبد المتقدم (Gastroenterology Center)"
+    },
+
+    // 6. Neurology & Neurosurgery (สมองและระบบประสาท)
+    {
+      keywords: ["เนื้องอกในสมอง", "ผ่าตัดสมอง", "brain tumor", "craniotomy", "أورام المخ"],
+      th: "การผ่าตัดเนื้องอกในสมองด้วยกล้องจุลศัลยกรรม (Microsurgical Brain Tumor Resection)",
+      en: "Advanced Microsurgical Brain Tumor Care & Neuro-navigation",
+      ar: "جراحة أورام المخ الدقيقة والمتطورة بالملاحة العصبية (Brain Tumor)"
+    },
+    {
+      keywords: ["หลอดเลือดสมอง", "เส้นเลือดสมอง", "สโตรก", "อัมพฤกษ์", "อัมพาต", "stroke", "cerebrovascular", "سكتة دماغية"],
+      th: "การรักษาโรคหลอดเลือดสมองและการฟื้นฟูระบบประสาท (Comprehensive Stroke & Neuro Care)",
+      en: "Comprehensive Stroke & Neurovascular Intervention Care",
+      ar: "مركز العلوم العصبية المتكامل ورعاية السكتات الدماغية والتدخل الوعائي"
+    },
+    {
+      keywords: ["พาร์กินสัน", "สมองเสื่อม", "อัลไซเมอร์", "parkinson", "dementia", "alzheimer", "باركنسون"],
+      th: "การรักษาโรคพาร์กินสันและความผิดปกติทางการเคลื่อนไหว (Movement Disorders & Parkinson)",
+      en: "Movement Disorders, Parkinson's & Neurodegenerative Care",
+      ar: "علاج مرض الشلل الرعاش (باركنسون) واضطرابات الحركة المتطورة"
+    },
+    {
+      keywords: ["สมอง", "ระบบประสาท", "neuro", "brain", "neurosurgery", "مخ والأعصاب"],
+      th: "การรักษาโรคระบบประสาทและสมองขั้นสูง (Neuroscience Center)",
+      en: "Comprehensive Neuroscience & Neurological Care",
+      ar: "مركز العلوم العصبية المتكامل ورعاية جراحة المخ والأعصاب"
+    },
+
+    // 7. Urology & Nephrology (ไต & ทางเดินปัสสาวะ)
+    {
+      keywords: ["ฟอกไต", "ไตวาย", "โรคไต", "ไต", "dialysis", "hemodialysis", "kidney failure", "nephrology", "renal", "كلى", "غسيل الكلى"],
+      th: "การดูแลรักษาโรคไตและบริการฟอกเลือดมาตรฐานสากล (Advanced Nephrology & Hemodialysis)",
+      en: "Advanced Nephrology, Renal Care & Hemodialysis",
+      ar: "الرعاية المتكاملة لأمراض الكلى وغسيل الكلى بمعايير عالمية (Nephrology & Dialysis)"
+    },
+    {
+      keywords: ["สลายนิ่ว", "นิ่วในไต", "นิ่วทางเดินปัสสาวะ", "kidney stones", "lithotripsy", "eswl", "حصى الكلى"],
+      th: "การรักษาและสลายนิ่วในไตด้วยเลเซอร์และการส่องกล้อง (Laser Lithotripsy & Stone Care)",
+      en: "Minimally Invasive Laser Lithotripsy & Kidney Stone Treatment",
+      ar: "تفتيت وعلاج حصى الكلى والمسالك البولية بالليزر والمنظار (Lithotripsy)"
+    },
+    {
+      keywords: ["ต่อมลูกหมากโต", "ต่อมลูกหมาก", "bph", "prostate enucleation", "تضخم البروستاتا"],
+      th: "การรักษาต่อมลูกหมากโตด้วยเลเซอร์และนวัตกรรมใหม่ (Advanced Laser Prostate Enucleation)",
+      en: "Advanced Laser Prostate Enucleation & BPH Therapy",
+      ar: "علاج تضخم البروستاتا الحميد بالليزر والتقنيات الحديثة (Laser Prostate Surgery)"
+    },
+
+    // 8. Pediatrics (กุมารเวชศาสตร์ & กระดูกเด็ก)
+    {
+      keywords: ["เด็ก", "กุมาร", "ขาโก่ง", "ทารก", "ลูก", "ราชิด", "pediatric", "child", "children", "أطفال", "طفل", "rashid"],
+      th: "การแก้ไขปัญหากระดูกขาส่วนล่างโก่งในเด็ก (Pediatric Orthopedic Gait Correction)",
+      en: "Pediatric Orthopedic Gait Correction & Limb Realignment",
+      ar: "تصحيح المشي وتشوهات عظام الأطراف لدى الأطفال (Pediatric Orthopedics)"
+    },
+
+    // 9. Endocrinology & Internal Medicine (ต่อมไร้ท่อ เบาหวาน และอายุรกรรม)
+    {
+      keywords: ["เบาหวาน", "ควบคุมน้ำตาล", "diabetes", "diabetic", "سكري"],
+      th: "การรักษาและฟื้นฟูโรคเบาหวานและเมตาบอลิก (Comprehensive Diabetes Care)",
+      en: "Comprehensive Diabetes Care & Metabolic Health",
+      ar: "الرعاية الشاملة لمرض السكري واضطرابات التمثيل الغذائي (Diabetes Care)"
+    },
+    {
+      keywords: ["ไทรอยด์", "ก้อนที่คอ", "ผ่าตัดไทรอยด์", "thyroid", "غدة درقية"],
+      th: "การรักษาและผ่าตัดไทรอยด์ส่องกล้องไร้รอยแผล (Endoscopic Scarless Thyroid Surgery)",
+      en: "Scarless Endoscopic Thyroid Surgery & Endocrinology",
+      ar: "جراحة الغدة الدرقية بالمنظار دون ندبات وعلاج الغدد الصماء (Thyroid Surgery)"
+    },
+    {
+      keywords: ["ความดัน", "ความดันโลหิตสูง", "hypertension", "ضغط الدم"],
+      th: "การรักษาโรคความดันโลหิตสูงและการป้องกันโรคหลอดเลือด (Hypertension & Vascular Prevention)",
+      en: "Comprehensive Hypertension & Vascular Risk Management",
+      ar: "إدارة وعلاج ارتفاع ضغط الدم والوقاية من أمراض الأوعية الدموية"
+    },
+
+    // 10. Dental & Maxillofacial (ศูนย์ทันตกรรม)
+    {
+      keywords: ["รากฟันเทียม", "จัดฟัน", "ฟัน", "ทันตกรรม", "dental", "dental implant", "implantology", "زراعة الأسنان", "أسنان"],
+      th: "การทำรากฟันเทียมและการฟื้นฟูสุขภาพช่องปาก (Advanced Dental Implants & Oral Care)",
+      en: "Advanced Dental Implants & Comprehensive Oral Rehabilitation",
+      ar: "زراعة الأسنان المتقدمة وإعادة تأهيل الفم المتكاملة (Dental Implants)"
+    },
+
+    // 11. Plastic & Aesthetic Surgery (ศัลยกรรมตกแต่ง)
+    {
+      keywords: ["ศัลยกรรมตกแต่ง", "เสริมจมูก", "ดูดไขมัน", "ตัดหนังหน้าท้อง", "ดึงหน้า", "plastic surgery", "cosmetic surgery", "rhinoplasty", "جراحة التجميل"],
+      th: "ศัลยกรรมตกแต่งและเสริมสร้างความงามเฉพาะทาง (Aesthetic & Plastic Surgery)",
+      en: "Specialized Aesthetic & Plastic Reconstructive Surgery",
+      ar: "جراحة التجميل والترميم التخصصية بمستشفى فيجثاني (Plastic & Aesthetic Surgery)"
+    },
+
+    // 12. Checkup & 4D Assessment (ตรวจสุขภาพ & คัดกรอง)
+    {
+      keywords: ["คัดกรอง", "ตรวจสุขภาพ", "เช็คอัพ", "สืบค้น", "ตรวจร่างกาย", "ความพร้อม", "investigate", "lead", "4d", "تقييم", "checkup", "screening", "فحص شامل"],
       th: "การคัดกรองความพร้อมคนไข้และวางแผนการเดินทางเพื่อการรักษา (4D Lead Qualification)",
       en: "4D International Patient Clinical & Travel Assessment",
       ar: "التقييم الطبي الشامل وخطة السفر للعلاج (4D Medical Assessment)"
@@ -425,10 +664,22 @@ const MEDICAL_LOCALIZER = {
   ],
   remainingIssues: [
     {
-      keywords: ["ห้องพักครอบครัว", "ครอบครัว", "วีซ่า", "สถานทูต", "โอมาน", "ฮาลาล", "อาหารฮาลาล", "ที่พัก", "โรงแรม", "family suite", "visa", "halal", "عائلية", "تأشيرة", "سفارة", "ضمان", "accommodation", "hotel", "embassy"],
+      keywords: ["ห้องพักครอบครัว", "ครอบครัว", "ที่พัก", "โรงแรม", "family suite", "accommodation", "hotel", "عائلية", "أجنحة عائلية", "فندق", "إقامة"],
       th: "การจัดเตรียมห้องพักครอบครัว VIP, บริการอาหารฮาลาล 100% และขั้นตอนการทำวีซ่าแพทย์",
       en: "VIP family suite arrangements, 100% Halal dining verification, and medical visa processing",
       ar: "ترتيبات الأجنحة العائلية الفاخرة، وتأكيد الوجبات الحلال 100%، وتنسيق إجراءات التأشيرة الطبية"
+    },
+    {
+      keywords: ["วีซ่า", "สถานทูต", "โอมาน", "หนังสือค้ำประกัน", "หนังสือรับรอง", "visa", "embassy", "guarantee letter", "oman embassy", "تأشيرة", "سفارة", "خطاب ضمان", "ملحقية صحية"],
+      th: "การประสานงานเอกสารรับรองสถานทูต การตรวจเช็คประวัติการรักษา และหนังสือค้ำประกันค่ารักษา",
+      en: "Official Embassy Guarantee Letter coordination, medical history evaluation, and medical visa processing",
+      ar: "تنسيق خطابات الضمان المالي الصادرة من السفارة والملحقية الصحية وإجراءات التأشيرة الطبية"
+    },
+    {
+      keywords: ["ฮาลาล", "อาหารฮาลาล", "halal", "حلال", "وجبات حلال"],
+      th: "การจัดเตรียมบริการอาหารฮาลาล 100% ที่ได้รับการรับรอง และสิ่งอำนวยความสะดวกทางวัฒนธรรม",
+      en: "100% certified Halal dining verification and cultural concierge arrangements",
+      ar: "تأكيد الوجبات الحلال 100% المعتمدة وتوفير كافة التسهيلات الثقافية الإسلامية"
     },
     {
       keywords: ["แพทย์หญิง", "หมอผู้หญิง", "ชิ้นเนื้อ", "ผลตรวจ", "biopsy", "female oncologist", "female doctor", "عينة", "نسائي", "طبيبة"],
@@ -437,25 +688,25 @@ const MEDICAL_LOCALIZER = {
       ar: "تنسيق كادر طبي نسائي متخصص، ومراجعة تقرير فحص العينة (Biopsy)، وإصدار خطاب الدعوة لتأشيرة العلاج"
     },
     {
-      keywords: ["video call", "วิดีโอคอล", "เทเลเมด", "telemed", "ปรึกษาแพทย์", "ออนไลน์", "استشارة فيديو", "فيديو", "consultation"],
+      keywords: ["video call", "วิดีโอคอล", "เทเลเมด", "telemed", "telemedicine", "ปรึกษาแพทย์", "ออนไลน์", "استشارة فيديو", "فيديو", "consultation"],
       th: "ต้องการปรึกษาแพทย์ผ่าน Video Call ก่อนเดินทาง และข้อมูลห้องพักเด็กที่เป็นมิตรต่อครอบครัว",
       en: "Pre-travel surgeon video consultation and child-friendly family suite accommodation",
       ar: "ترتيب استشارة فيديو مسبقة مع الجراح، وتفاصيل أجنحة الأطفال العائلية المجهزة"
     },
     {
-      keywords: ["fit-to-fly", "ฟิตทูฟลาย", "พักฟื้น", "ประกัน", "เคลม", "บิน", "เครื่องบิน", "ใบรับรองแพทย์", "لياقة", "تأمين", "insurance", "flight", "certificate"],
+      keywords: ["fit-to-fly", "ฟิตทูฟลาย", "พักฟื้น", "ประกัน", "เคลม", "บิน", "เครื่องบิน", "ใบรับรองแพทย์", "لياقة", "تأمين", "insurance", "flight", "certificate", "direct billing"],
       th: "การยืนยันระยะเวลาพักฟื้น Fit-to-fly ภายใน 5 วัน และการเคลมประกันสุขภาพต่างประเทศ",
       en: "5-day Fit-to-Fly medical certificate clearance and international health insurance direct billing",
       ar: "تأكيد شهادة اللياقة الطبية للسفر بالطائرة (Fit-to-Fly) في غضون 5 أيام وإجراءات التأمين الصحي الدولي"
     },
     {
-      keywords: ["สถานทูต", "รับรอง", "ใบเสนอราคา", "ประวัติการรักษา", "ราคา", "ค่ารักษา", "ค่าใช้จ่าย", "ประมาณการ", "quotation", "price", "cost", "guarantee letter", "ضمان", "تقدير"],
-      th: "การประสานงานเอกสารรับรองสถานทูต การตรวจเช็คประวัติการรักษา และจัดทำใบเสนอราคาอย่างเป็นทางการ",
-      en: "Embassy guarantee letter coordination, medical history evaluation, and official quotation preparation",
-      ar: "تنسيق خطابات الضمان المالي الصادرة من السفارة ومراجعة التقارير الطبية وإصدار التقدير المالي المعتمد"
+      keywords: ["ราคา", "ค่ารักษา", "ค่าใช้จ่าย", "ประมาณการ", "ใบเสนอราคา", "quotation", "price", "cost", "تقدير مالي", "أسعار", "تكلفة"],
+      th: "การจัดทำใบเสนอราคาอย่างเป็นทางการ และการแจกแจงค่าใช้จ่ายในการรักษาอย่างโปร่งใส",
+      en: "Official itemized quotation and transparent treatment cost breakdown",
+      ar: "إصدار وإرسال التقدير المالي الرسمي وتفاصيل التكلفة العلاجية بكل شفافية"
     },
     {
-      keywords: ["สนามบิน", "รับส่ง", "ลีมูซีน", "รถพยาบาล", "airport", "transfer", "limousine", "مطار"],
+      keywords: ["สนามบิน", "รับส่ง", "ลีมูซีน", "รถพยาบาล", "airport", "transfer", "limousine", "مطار", "استقبال"],
       th: "บริการรถลีมูซีนรับ-ส่งสนามบินสุวรรณภูมิและการประสานงานแผนกต้อนรับ",
       en: "Complimentary Suvarnabhumi Airport VIP limousine transfer and arrival coordination",
       ar: "خدمة الاستقبال المجاني بسيارات ليموزين فاخرة من مطار سوفارنابومي الدولي"
@@ -464,7 +715,13 @@ const MEDICAL_LOCALIZER = {
       keywords: ["ล่าม", "ภาษา", "แปล", "interpreter", "translation", "مترجم"],
       th: "การจัดสรรล่ามภาษาอาหรับและภาษาอังกฤษส่วนตัวดูแลตลอดการรักษา",
       en: "Dedicated Arabic and English medical interpreter allocation throughout the hospital stay",
-      ar: "تنسيق وتخصيص المترجم الطبي المعتمد لمرافقتكم في كافة المواعิด مجاناً"
+      ar: "تنسيق وتخصيص المترجم الطبي المعتمد لمرافقتكم في كافة المواعيد مجاناً"
+    },
+    {
+      keywords: ["วันนัด", "เลื่อนนัด", "ตารางแพทย์", "เวลานัด", "appointment", "doctor schedule", "booking", "موعد"],
+      th: "การประสานงานตารางตรวจของแพทย์ผู้เชี่ยวชาญ และการยืนยันวันนัดหมายที่สะดวก",
+      en: "Consulting specialist doctor schedule and confirming preferred appointment dates",
+      ar: "تنسيق جدول مواعيد الطبيب الاستشاري وتأكيد موعد الحجز الأنسب لكم"
     }
   ],
   staffNames: [
@@ -496,7 +753,13 @@ const MEDICAL_LOCALIZER = {
       keywords: ["สมชาย", "somchai"],
       th: "สมชาย",
       en: "Somchai",
-      ar: "สมชาย (Somchai)"
+      ar: "سومتشاي (Somchai)"
+    },
+    {
+      keywords: ["กิตติพงษ์", "kittipong"],
+      th: "กิตติพงษ์",
+      en: "Kittipong",
+      ar: "كيتيبونغ (Kittipong)"
     }
   ],
   patients: [
@@ -596,9 +859,10 @@ const MEDICAL_LOCALIZER = {
 function localizeField(value, targetLang, fieldType) {
   if (!value || typeof value !== "string") return value || "";
   const trimmed = value.trim();
+  if (!trimmed) return "";
   const lower = trimmed.toLowerCase();
 
-  // If targetLang is "th" and value already has Thai, preserve the user's custom Thai input!
+  // If targetLang is "th" and value contains Thai characters, always preserve the user's exact Thai input!
   if (targetLang === "th" && /[\u0E00-\u0E7F]/.test(trimmed)) {
     return trimmed;
   }
@@ -609,19 +873,122 @@ function localizeField(value, targetLang, fieldType) {
   else if (fieldType === "staffName") dictList = MEDICAL_LOCALIZER.staffNames;
   else if (fieldType === "patientName") dictList = MEDICAL_LOCALIZER.patients;
 
+  // Specificity priority: find the match with the LONGEST matching keyword
+  // (Prevents generic terms like "ผ่าตัด" or "ข้อ" from capturing specific "ผ่าตัดต้อกระจก" or "ข้อสะโพก")
+  let bestMatch = null;
+  let maxKeywordLen = 0;
+
   for (const item of dictList) {
-    if (item.keywords.some(k => lower.includes(k.toLowerCase()))) {
-      return item[targetLang] || item.en || trimmed;
+    for (const kw of item.keywords) {
+      const kwLower = kw.toLowerCase();
+      if (lower.includes(kwLower)) {
+        if (kwLower.length > maxKeywordLen) {
+          maxKeywordLen = kwLower.length;
+          bestMatch = item;
+        }
+      }
     }
   }
 
-  // Fallbacks avoiding language leakage
+  if (bestMatch) {
+    if (targetLang === "th") return bestMatch.th || trimmed;
+    if (targetLang === "en") return bestMatch.en || trimmed;
+    if (targetLang === "ar") return bestMatch.ar || bestMatch.en || trimmed;
+  }
+
+  // --- Dynamic Medical Topic Translation (for unlisted/custom diseases) ---
+  if (fieldType === "topic") {
+    // Check if user provided an English term in parentheses, e.g. "ผ่าตัดกระเพาะ (Gastric Sleeve)"
+    const parenMatch = trimmed.match(/\(([A-Za-z0-9\s\-_/]+)\)/) || trimmed.match(/\[([A-Za-z0-9\s\-_/]+)\]/);
+    const extractedEn = parenMatch ? parenMatch[1].trim() : null;
+
+    if (targetLang === "th") {
+      return trimmed;
+    }
+
+    if (targetLang === "en") {
+      if (extractedEn) {
+        return `${extractedEn} Specialized Medical Care`;
+      }
+      // Check if user typed in English
+      const nonThaiClean = trimmed.replace(/[\u0E00-\u0E7F]/g, "").replace(/\(\s*\)/g, "").trim();
+      if (nonThaiClean.length > 2) {
+        return nonThaiClean;
+      }
+      // Dynamic Thai root composition for English
+      if (lower.includes("ผ่าตัด")) return "Specialized Surgical Procedure & Consultation";
+      if (lower.includes("มะเร็ง") || lower.includes("เนื้องอก")) return "Specialized Oncology Consultation & Therapy";
+      if (lower.includes("หัวใจ")) return "Advanced Cardiology Care & Evaluation";
+      if (lower.includes("กระดูก") || lower.includes("ข้อ")) return "Advanced Orthopedic & Joint Care";
+      if (lower.includes("ตา") || lower.includes("ต้อ")) return "Specialized Ophthalmology & Eye Surgery";
+      if (lower.includes("สมอง")) return "Comprehensive Neuroscience & Brain Care";
+      if (lower.includes("เด็ก") || lower.includes("กุมาร")) return "Pediatric Specialized Medical Care";
+      if (lower.includes("ไต")) return "Advanced Nephrology & Renal Care";
+      if (lower.includes("ตรวจ") || lower.includes("เช็ค")) return "Comprehensive Medical Evaluation & Health Screening";
+      return "Specialized Medical Treatment & Consultation";
+    }
+
+    if (targetLang === "ar") {
+      if (extractedEn) {
+        return `الرعاية والعلاج التخصصي (${extractedEn})`;
+      }
+      // Check if user typed in Arabic
+      if (/[\u0600-\u06FF]/.test(trimmed)) {
+        return trimmed.replace(/[\u0E00-\u0E7F]/g, "").trim();
+      }
+      // Check if user typed in English
+      const nonThaiClean = trimmed.replace(/[\u0E00-\u0E7F]/g, "").replace(/\(\s*\)/g, "").trim();
+      if (nonThaiClean.length > 2) {
+        return `الرعاية والعلاج التخصصي (${nonThaiClean})`;
+      }
+      // Dynamic Thai root composition for Arabic (Zero Thai leakage)
+      if (lower.includes("ผ่าตัด")) return "الرعاية والتدخل الجراحي التخصصي بمستشفى فيجثاني";
+      if (lower.includes("มะเร็ง") || lower.includes("เนื้องอก")) return "طلب رأي طبي ثانٍ ورعاية الأورام التخصصية";
+      if (lower.includes("หัวใจ")) return "رعاية وجراحة القلب والأوعية الدموية المتقدمة";
+      if (lower.includes("กระดูก") || lower.includes("ข้อ")) return "رعاية وجراحة العظام والمفاصل المتطورة (كينغ أوف بونز)";
+      if (lower.includes("ตา") || lower.includes("ต้อ")) return "طب وجراحة العيون والرعاية التخصصية بمستشفى فيجثاني";
+      if (lower.includes("สมอง")) return "مركز العلوم العصبية ورعاية جراحة المخ والأعصاب";
+      if (lower.includes("เด็ก") || lower.includes("กุมาร")) return "رعاية طب وجراحة الأطفال التخصصية";
+      if (lower.includes("ไต")) return "الرعاية المتكاملة لأمراض الكلى وغسيل الكلى";
+      if (lower.includes("ตรวจ") || lower.includes("เช็ค")) return "الفحص والتقييم الطبي الشامل وخطة السفر للعلاج";
+      return "العلاج الطبي والرعاية التخصصية بمستشفى فيجثاني";
+    }
+  }
+
+  // --- Dynamic Remaining Issue Translation ---
+  if (fieldType === "remainingIssue") {
+    if (targetLang === "th") {
+      return trimmed;
+    }
+    const nonThai = trimmed.replace(/[\u0E00-\u0E7F]/g, "").replace(/\(\s*\)/g, "").trim();
+    if (targetLang === "en") {
+      if (nonThai.length > 2) return nonThai;
+      if (lower.includes("วีซ่า") || lower.includes("visa")) return "Medical visa invitation letter and embassy coordination";
+      if (lower.includes("ห้องพัก") || lower.includes("โรงแรม") || lower.includes("ที่พัก")) return "VIP family suite arrangements and Halal dining";
+      if (lower.includes("ล่าม") || lower.includes("ภาษา")) return "Dedicated Arabic medical interpreter allocation";
+      if (lower.includes("ราคา") || lower.includes("ค่า")) return "Official itemized quotation and treatment pricing";
+      if (lower.includes("นัด") || lower.includes("แพทย์")) return "Doctor consultation scheduling and appointment dates";
+      if (lower.includes("ผลตรวจ") || lower.includes("ฟิล์ม") || lower.includes("mri")) return "Reviewing additional medical reports and diagnostic scans";
+      return "Medical travel arrangements and customized patient assistance";
+    }
+    if (targetLang === "ar") {
+      if (/[\u0600-\u06FF]/.test(trimmed)) return trimmed.replace(/[\u0E00-\u0E7F]/g, "").trim();
+      if (nonThai.length > 2) return `تنسيق ومتابعة (${nonThai})`;
+      if (lower.includes("วีซ่า") || lower.includes("visa")) return "إجراءات التأشيرة الطبية وتنسيق خطابات السفارة الرسمية";
+      if (lower.includes("ห้องพัก") || lower.includes("โรงแรม") || lower.includes("ที่พัก")) return "ترتيبات الأجنحة العائلية الفاخرة والخدمات الفندقية";
+      if (lower.includes("ล่าม") || lower.includes("ภาษา")) return "تخصيص المترجم الطبي المعتمد لمرافقتكم مجاناً";
+      if (lower.includes("ราคา") || lower.includes("ค่า")) return "إعداد وإرسال التقدير المالي الرسمي وتفاصيل التكلفة";
+      if (lower.includes("นัด") || lower.includes("แพทย์")) return "تنسيق جدول مواعيد الطبيب وتأكيد موعد الاستشارة";
+      if (lower.includes("ผลตรวจ") || lower.includes("ฟิล์ม") || lower.includes("mri")) return "مراجعة التقارير والتحاليل الطبية الإضافية وصور الأشعة";
+      return "الترتيبات الطبية اللوجستية وتأكيد متطلبات السفر والعلاج";
+    }
+  }
+
+  // --- Staff & Patient Name fallbacks ---
   if (targetLang === "ar") {
     let cleaned = trimmed.replace(/[\u0E00-\u0E7F]/g, "").trim();
     cleaned = cleaned.replace(/\(\s*\)/g, "").trim();
     if (!cleaned) {
-      if (fieldType === "topic") return "العلاج الطبي والرعاية التخصصية بمستشفى فيجثاني";
-      if (fieldType === "remainingIssue") return "الترتيبات الطبية اللوجستية وتأكيد موعد السفر";
       if (fieldType === "staffName") return "منسق التنسيق الطبي الدولي";
       if (fieldType === "patientName") return "المريض الكريم";
     }
@@ -632,8 +999,6 @@ function localizeField(value, targetLang, fieldType) {
     let cleaned = trimmed.replace(/[\u0E00-\u0E7F]/g, "").trim();
     cleaned = cleaned.replace(/\(\s*\)/g, "").trim();
     if (!cleaned) {
-      if (fieldType === "topic") return "Specialized Medical Treatment at Vejthani Hospital";
-      if (fieldType === "remainingIssue") return "Medical travel logistics and hospital appointments";
       if (fieldType === "staffName") return "International Patient Coordinator";
       if (fieldType === "patientName") return "Esteemed Patient";
     }
@@ -2042,7 +2407,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentStage = inqStage ? inqStage.value : "stage_1";
     const stageMod = INQUIRY_STAGE_MODIFIERS[currentStage] || INQUIRY_STAGE_MODIFIERS.stage_1;
     const cat = INQUIRY_SPECIALTIES[activeInqCat] || INQUIRY_SPECIALTIES.king_of_bone;
-    const customProc = (inqProcedure && inqProcedure.value.trim()) ? inqProcedure.value.trim() : cat.procedure;
+    const rawProc = (inqProcedure && inqProcedure.value.trim()) ? inqProcedure.value.trim() : cat.procedure;
 
     // Checkbox and missing documents logic
     const docItems = inqDocsList ? Array.from(inqDocsList.querySelectorAll(".doc-item-row")) : [];
@@ -2056,22 +2421,66 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    const isCustomProc = (rawProc !== cat.procedure);
+    const procEn = localizeField(rawProc, "en", "topic");
+    const procAr = localizeField(rawProc, "ar", "topic");
+
     let waEnText = cat.waEn;
     let waArText = cat.waAr;
-    let emailSubText = `Medical Treatment Plan & ${customProc} Evaluation - Vejthani Hospital`;
+    let emailSubText = `Medical Treatment Plan & ${procEn} Evaluation - Vejthani Hospital`;
     let emailBodyText = cat.emailBody;
 
-    // Reflect procedure change
-    if (customProc && customProc !== cat.procedure) {
+    // Reflect procedure change across all templates in real-time
+    if (isCustomProc) {
+      // 1. English WhatsApp
       if (waEnText.includes(cat.procedure)) {
-        waEnText = waEnText.replaceAll(cat.procedure, customProc);
+        waEnText = waEnText.replaceAll(cat.procedure, procEn);
+      } else if (activeInqCat === "king_of_bone") {
+        waEnText = waEnText.replace("regarding the robotic knee replacement treatment plan", `regarding the ${procEn} treatment plan`);
+      } else if (activeInqCat === "cancer") {
+        waEnText = waEnText.replace("request for an oncology second opinion", `request regarding ${procEn}`);
+      } else if (activeInqCat === "pediatric") {
+        waEnText = waEnText.replace("inquiry for pediatric limb correction", `inquiry regarding ${procEn}`);
+      } else if (activeInqCat === "general_surgery") {
+        waEnText = waEnText.replace("Laparoscopic Cholecystectomy (gallbladder removal)", procEn);
+      } else if (activeInqCat === "investigate") {
+        waEnText = waEnText.replace("comprehensive medical travel assessment", `${procEn} & travel assessment`);
       } else {
-        waEnText = waEnText.replace(/(regarding the )([^.]+?)( treatment plan)/i, `$1${customProc}$3`);
+        waEnText = waEnText.replace(/(regarding the |regarding your inquiry for |request for an |inquiry for )([^.\n,]+)/i, `$1${procEn}`);
       }
-      if (emailBodyText.includes(cat.procedure)) {
-        emailBodyText = emailBodyText.replaceAll(cat.procedure, customProc);
+
+      // 2. Arabic WhatsApp (Zero Thai Leakage)
+      if (waArText.includes(cat.procedure)) {
+        waArText = waArText.replaceAll(cat.procedure, procAr);
+      } else if (activeInqCat === "king_of_bone") {
+        waArText = waArText.replace("لجراحة استبدال مفصل الركبة بالكامل بمساعدة الروبوت (Robotic Total Knee Replacement)", `لـ ${procAr}`);
+      } else if (activeInqCat === "cancer") {
+        waArText = waArText.replace("أن حالتكم تحظى بأعلى درجات الاهتمام", `بأن طلبكم بخصوص ${procAr} يحظى بأعلى درجات الاهتمام`);
+      } else if (activeInqCat === "pediatric") {
+        waArText = waArText.replace("بخصوص الخطة العلاجية للطفل.", `بخصوص ${procAr} للطفل.`);
+      } else if (activeInqCat === "general_surgery") {
+        waArText = waArText.replace("جراحة استئصال المرارة بالمنظار قليل التدخل الجراحي (Laparoscopic Cholecystectomy)", procAr);
+      } else if (activeInqCat === "investigate") {
+        waArText = waArText.replace("جاهز لإصدار التقارير الطبية الرسمية", `جاهز لمتابعة ${procAr} وإصدار التقارير الطبية الرسمية`);
       } else {
-        emailBodyText = emailBodyText.replace(/(Following your inquiry regarding )([^,]+)/i, `$1${customProc}`);
+        waArText = waArText.replace(/(بخصوص |المتعلقة بـ |بشأن )([^.\n،]+)/, `$1${procAr}`);
+      }
+
+      // 3. Email Body
+      if (emailBodyText.includes(cat.procedure)) {
+        emailBodyText = emailBodyText.replaceAll(cat.procedure, procEn);
+      } else if (activeInqCat === "king_of_bone") {
+        emailBodyText = emailBodyText.replace("Robotic Knee Replacement", procEn);
+      } else if (activeInqCat === "cancer") {
+        emailBodyText = emailBodyText.replace("is ready to evaluate your case through", `is ready to evaluate your case regarding ${procEn} through`);
+      } else if (activeInqCat === "pediatric") {
+        emailBodyText = emailBodyText.replace("gentle, world-class surgical care for your child", `gentle, world-class ${procEn} for your child`);
+      } else if (activeInqCat === "general_surgery") {
+        emailBodyText = emailBodyText.replace("Laparoscopic Cholecystectomy", procEn);
+      } else if (activeInqCat === "investigate") {
+        emailBodyText = emailBodyText.replace("Comprehensive Medical Travel Assessment", procEn);
+      } else {
+        emailBodyText = emailBodyText.replace(/(Following your inquiry regarding |regarding )([^,.\n]+)/i, `$1${procEn}`);
       }
     }
 
