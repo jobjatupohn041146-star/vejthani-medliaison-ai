@@ -143,11 +143,8 @@
       <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Arabic Center (GCC)</span>
     </button>
 
-    <!-- Dock Item 4: Lead Investigation -->
-    <button id="navDockLead" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewLeadInvestigation" title="Lead Investigation (4D Qualifier)">
-      <i data-lucide="search" class="w-5 h-5"></i>
-      <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Lead Investigation</span>
-    </button>
+    <!-- Dock Item 4: Lead Investigation (Hidden from UI as requested) -->
+    <button id="navDockLead" class="dock-btn hidden" data-target="viewLeadInvestigation" title="Lead Investigation"></button>
 
     <!-- Dock Item 5: Settings -->
     <button id="navDockSettings" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewSettings" title="Settings & System Config">
@@ -172,10 +169,7 @@
       <i data-lucide="compass" class="w-5 h-5"></i>
       <span class="text-[9px] font-semibold">Arabic</span>
     </button>
-    <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewLeadInvestigation" title="Lead Investigation">
-      <i data-lucide="search" class="w-5 h-5"></i>
-      <span class="text-[9px] font-semibold">Leads</span>
-    </button>
+    <button class="dock-btn hidden" data-target="viewLeadInvestigation" title="Lead Investigation"></button>
     <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewSettings" title="Settings">
       <i data-lucide="settings" class="w-5 h-5"></i>
       <span class="text-[9px] font-semibold">Config</span>
@@ -1202,7 +1196,7 @@
     <!-- ============================================================ -->
     <!-- VIEW 4: LEAD INVESTIGATION (4D Qualifier Console)            -->
     <!-- ============================================================ -->
-    <section id="viewLeadInvestigation" class="hidden space-y-6">
+    <section id="viewLeadInvestigation" class="hidden space-y-6" style="display: none !important;">
       
       <!-- Lead Qualifier Header Banner -->
       <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
