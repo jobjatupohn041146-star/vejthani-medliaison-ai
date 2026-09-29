@@ -375,31 +375,49 @@ const CALL_SOP_PRESETS = {
 const MEDICAL_LOCALIZER = {
   topics: [
     {
-      keywords: ["ข้อเข่า", "หุ่นยนต์", "knee", "robotic", "ركبة", "عظام", "bone", "orthopedic"],
+      keywords: ["ข้อเข่า", "เข่า", "หุ่นยนต์", "ข้อสะโพก", "สะโพก", "กระดูก", "ข้อเสื่อม", "กระดูกพรุน", "เอ็นไขว้หน้า", "หมอนรองกระดูก", "knee", "robotic", "ركبة", "عظام", "bone", "orthopedic", "hip", "joint", "joints", "king of bone"],
       th: "การผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Total Knee Replacement)",
       en: "Robotic-Assisted Total Knee Replacement (King of Bones)",
       ar: "جراحة استبدال مفصل الركبة بالكامل بمساعدة الروبوت (كينغ أوف بونز)"
     },
     {
-      keywords: ["มะเร็ง", "cancer", "oncology", "tumor", "أورام", "سرطان"],
+      keywords: ["มะเร็ง", "ก้อนเนื้อ", "เนื้องอก", "ชิ้นเนื้อ", "เคมีบำบัด", "คีโม", "ฉายแสง", "เต้านม", "ลำไส้", "ปอด", "ตับ", "cancer", "oncology", "tumor", "أورام", "سرطان"],
       th: "การขอความเห็นที่สองด้านมะเร็งวิทยา (Oncology Second Opinion & MDT Tumor Board)",
       en: "Oncology Second Opinion & MDT Tumor Board Review",
       ar: "طلب رأي طبي ثانٍ في طب الأورام ومراجعة اللجنة الطبية متعددة التخصصات (Tumor Board)"
     },
     {
-      keywords: ["เด็ก", "pediatric", "ขาโก่ง", "أطفال", "طفل", "rashid"],
+      keywords: ["เด็ก", "กุมาร", "ขาโก่ง", "ทารก", "ลูก", "ราชิด", "pediatric", "child", "أطفال", "طفل", "rashid"],
       th: "การแก้ไขปัญหากระดูกขาส่วนล่างโก่งในเด็ก (Pediatric Orthopedic Gait Correction)",
       en: "Pediatric Orthopedic Gait Correction & Limb Realignment",
       ar: "تصحيح المشي وتشوهات عظام الأطراف لدى الأطفال (Pediatric Orthopedics)"
     },
     {
-      keywords: ["ถุงน้ำดี", "ส่องกล้อง", "cholecystectomy", "gallbladder", "مرارة", "منظار"],
+      keywords: ["ถุงน้ำดี", "ส่องกล้อง", "ผ่าตัด", "นิ่ว", "ไส้ติ่ง", "ไส้เลื่อน", "แผลเล็ก", "cholecystectomy", "gallbladder", "مرارة", "منظار", "surgery", "laparoscopic"],
       th: "ผ่าตัดส่องกล้องนิ่วในถุงน้ำดี แผลเล็ก (Laparoscopic Cholecystectomy)",
       en: "Minimally Invasive Laparoscopic Cholecystectomy",
       ar: "جراحة استئصال المرارة بالمنظار قليل التدخل الجراحي (Laparoscopic Cholecystectomy)"
     },
     {
-      keywords: ["คัดกรอง", "investigate", "lead", "4d", "تقييم"],
+      keywords: ["กระดูกสันหลัง", "สันหลัง", "ปวดหลัง", "ทับเส้น", "spine", "spinal", "فقري"],
+      th: "การรักษาโรคกระดูกสันหลังและหมอนรองกระดูกกดทับเส้นประสาท (Comprehensive Spine Care)",
+      en: "Comprehensive Spine Surgery & Endoscopic Care",
+      ar: "جراحة العمود الفقري المتقدمة ورعاية الانزلاق الغضروفي (Spine Care)"
+    },
+    {
+      keywords: ["หัวใจ", "หลอดเลือด", "บายพาส", "บอลลูน", "cardio", "cardiac", "heart", "قلب"],
+      th: "การรักษาโรคหัวใจและหลอดเลือดขั้นสูง (Advanced Heart & Vascular Center)",
+      en: "Advanced Cardiology & Cardiovascular Care",
+      ar: "مركز رعاية وجراحة القلب والأوعية الدموية المتقدم (Cardiology Center)"
+    },
+    {
+      keywords: ["สมอง", "ระบบประสาท", "สโตรก", "อัมพฤกษ์", "neuro", "brain", "stroke"],
+      th: "การรักษาโรคหลอดเลือดสมองและระบบประสาท (Neuroscience Center)",
+      en: "Comprehensive Neuroscience & Stroke Center",
+      ar: "مركز العلوم العصبية المتكامل ورعاية السكتات الدماغية"
+    },
+    {
+      keywords: ["คัดกรอง", "ตรวจสุขภาพ", "เช็คอัพ", "สืบค้น", "ตรวจร่างกาย", "ความพร้อม", "investigate", "lead", "4d", "تقييم", "checkup", "screening"],
       th: "การคัดกรองความพร้อมคนไข้และวางแผนการเดินทางเพื่อการรักษา (4D Lead Qualification)",
       en: "4D International Patient Clinical & Travel Assessment",
       ar: "التقييم الطبي الشامل وخطة السفر للعلاج (4D Medical Assessment)"
@@ -407,28 +425,46 @@ const MEDICAL_LOCALIZER = {
   ],
   remainingIssues: [
     {
-      keywords: ["ห้องพักครอบครัว", "วีซ่า", "สถานทูต", "family suite", "visa", "halal", "عائلية", "تأشيرة", "سفارة", "ضمان"],
+      keywords: ["ห้องพักครอบครัว", "ครอบครัว", "วีซ่า", "สถานทูต", "โอมาน", "ฮาลาล", "อาหารฮาลาล", "ที่พัก", "โรงแรม", "family suite", "visa", "halal", "عائلية", "تأشيرة", "سفارة", "ضمان", "accommodation", "hotel", "embassy"],
       th: "การจัดเตรียมห้องพักครอบครัว VIP, บริการอาหารฮาลาล 100% และขั้นตอนการทำวีซ่าแพทย์",
       en: "VIP family suite arrangements, 100% Halal dining verification, and medical visa processing",
       ar: "ترتيبات الأجنحة العائلية الفاخرة، وتأكيد الوجبات الحلال 100%، وتنسيق إجراءات التأشيرة الطبية"
     },
     {
-      keywords: ["แพทย์หญิง", "ชิ้นเนื้อ", "biopsy", "female oncologist", "عينة", "نسائي"],
+      keywords: ["แพทย์หญิง", "หมอผู้หญิง", "ชิ้นเนื้อ", "ผลตรวจ", "biopsy", "female oncologist", "female doctor", "عينة", "نسائي", "طبيبة"],
       th: "การประสานงานแพทย์หญิงเฉพาะทาง ผลตรวจชิ้นเนื้อเพิ่มเติม และหนังสือเชิญทำวีซ่าแพทย์",
       en: "Female oncologist coordination, pathology biopsy review, and medical visa invitation letter",
       ar: "تنسيق كادر طبي نسائي متخصص، ومراجعة تقرير فحص العينة (Biopsy)، وإصدار خطاب الدعوة لتأشيرة العلاج"
     },
     {
-      keywords: ["video call", "วิดีโอคอล", "استشارة فيديو", "فيديو"],
+      keywords: ["video call", "วิดีโอคอล", "เทเลเมด", "telemed", "ปรึกษาแพทย์", "ออนไลน์", "استشارة فيديو", "فيديو", "consultation"],
       th: "ต้องการปรึกษาแพทย์ผ่าน Video Call ก่อนเดินทาง และข้อมูลห้องพักเด็กที่เป็นมิตรต่อครอบครัว",
       en: "Pre-travel surgeon video consultation and child-friendly family suite accommodation",
       ar: "ترتيب استشارة فيديو مسبقة مع الجراح، وتفاصيل أجنحة الأطفال العائلية المجهزة"
     },
     {
-      keywords: ["fit-to-fly", "ฟิตทูฟลาย", "พักฟื้น", "ประกัน", "لياقة", "تأمين"],
+      keywords: ["fit-to-fly", "ฟิตทูฟลาย", "พักฟื้น", "ประกัน", "เคลม", "บิน", "เครื่องบิน", "ใบรับรองแพทย์", "لياقة", "تأمين", "insurance", "flight", "certificate"],
       th: "การยืนยันระยะเวลาพักฟื้น Fit-to-fly ภายใน 5 วัน และการเคลมประกันสุขภาพต่างประเทศ",
       en: "5-day Fit-to-Fly medical certificate clearance and international health insurance direct billing",
       ar: "تأكيد شهادة اللياقة الطبية للسفر بالطائرة (Fit-to-Fly) في غضون 5 أيام وإجراءات التأمين الصحي الدولي"
+    },
+    {
+      keywords: ["สถานทูต", "รับรอง", "ใบเสนอราคา", "ประวัติการรักษา", "ราคา", "ค่ารักษา", "ค่าใช้จ่าย", "ประมาณการ", "quotation", "price", "cost", "guarantee letter", "ضمان", "تقدير"],
+      th: "การประสานงานเอกสารรับรองสถานทูต การตรวจเช็คประวัติการรักษา และจัดทำใบเสนอราคาอย่างเป็นทางการ",
+      en: "Embassy guarantee letter coordination, medical history evaluation, and official quotation preparation",
+      ar: "تنسيق خطابات الضمان المالي الصادرة من السفارة ومراجعة التقارير الطبية وإصدار التقدير المالي المعتمد"
+    },
+    {
+      keywords: ["สนามบิน", "รับส่ง", "ลีมูซีน", "รถพยาบาล", "airport", "transfer", "limousine", "مطار"],
+      th: "บริการรถลีมูซีนรับ-ส่งสนามบินสุวรรณภูมิและการประสานงานแผนกต้อนรับ",
+      en: "Complimentary Suvarnabhumi Airport VIP limousine transfer and arrival coordination",
+      ar: "خدمة الاستقبال المجاني بسيارات ليموزين فاخرة من مطار سوفارنابومي الدولي"
+    },
+    {
+      keywords: ["ล่าม", "ภาษา", "แปล", "interpreter", "translation", "مترجم"],
+      th: "การจัดสรรล่ามภาษาอาหรับและภาษาอังกฤษส่วนตัวดูแลตลอดการรักษา",
+      en: "Dedicated Arabic and English medical interpreter allocation throughout the hospital stay",
+      ar: "تنسيق وتخصيص المترجم الطبي المعتمد لمرافقتكم في كافة المواعิด مجاناً"
     }
   ],
   staffNames: [
@@ -455,6 +491,12 @@ const MEDICAL_LOCALIZER = {
       th: "อแมนด้า คลาร์ก",
       en: "Amanda Clark",
       ar: "أماندا كلارك (Amanda Clark)"
+    },
+    {
+      keywords: ["สมชาย", "somchai"],
+      th: "สมชาย",
+      en: "Somchai",
+      ar: "สมชาย (Somchai)"
     }
   ],
   patients: [
@@ -481,6 +523,72 @@ const MEDICAL_LOCALIZER = {
       th: "คุณโจนาธาน บรูคส์",
       en: "Mr. Johnathan Brooks",
       ar: "جوناثان بروكس"
+    },
+    {
+      keywords: ["hamad", "kuwari", "ฮาหมัด", "คูวารี", "حمد", "الكواري"],
+      th: "คุณฮาหมัด อัล-คูวารี",
+      en: "Mr. Hamad Al-Kuwari",
+      ar: "حمد الكواري"
+    },
+    {
+      keywords: ["abdullah", "อับดุลลาห์", "อับดุลลอฮ์", "عبد الله"],
+      th: "คุณอับดุลลาห์",
+      en: "Mr. Abdullah",
+      ar: "عبد الله"
+    },
+    {
+      keywords: ["ahmed", "อาห์เหม็ด", "أحمد"],
+      th: "คุณอาห์เหม็ด",
+      en: "Mr. Ahmed",
+      ar: "أحمد"
+    },
+    {
+      keywords: ["khalid", "คาลิด", "خالد"],
+      th: "คุณคาลิด",
+      en: "Mr. Khalid",
+      ar: "خالد"
+    },
+    {
+      keywords: ["salem", "ซาเล็ม", "سالم"],
+      th: "คุณซาเล็ม",
+      en: "Mr. Salem",
+      ar: "سالم"
+    },
+    {
+      keywords: ["sultan", "สุลต่าน", "سلطان"],
+      th: "คุณสุลต่าน",
+      en: "Mr. Sultan",
+      ar: "سلطان"
+    },
+    {
+      keywords: ["fatima", "ฟาติมา", "فاطمة"],
+      th: "คุณฟาติมา",
+      en: "Mrs. Fatima",
+      ar: "فاطمة"
+    },
+    {
+      keywords: ["maryam", "มัรยัม", "مريم"],
+      th: "คุณมัรยัม",
+      en: "Ms. Maryam",
+      ar: "مريم"
+    },
+    {
+      keywords: ["nasser", "นัสเซอร์", "ناصر"],
+      th: "คุณนัสเซอร์",
+      en: "Mr. Nasser",
+      ar: "ناصر"
+    },
+    {
+      keywords: ["omar", "โอมาร์", "อุมัร", "عمر"],
+      th: "คุณโอมาร์",
+      en: "Mr. Omar",
+      ar: "عمر"
+    },
+    {
+      keywords: ["ali", "อาลี", "علي"],
+      th: "คุณอาลี",
+      en: "Mr. Ali",
+      ar: "علي"
     }
   ]
 };
@@ -489,6 +597,11 @@ function localizeField(value, targetLang, fieldType) {
   if (!value || typeof value !== "string") return value || "";
   const trimmed = value.trim();
   const lower = trimmed.toLowerCase();
+
+  // If targetLang is "th" and value already has Thai, preserve the user's custom Thai input!
+  if (targetLang === "th" && /[\u0E00-\u0E7F]/.test(trimmed)) {
+    return trimmed;
+  }
 
   let dictList = [];
   if (fieldType === "topic") dictList = MEDICAL_LOCALIZER.topics;
@@ -544,10 +657,10 @@ function formatPatientSalutation(name, lang = "en") {
       .replace(/^(mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ)\s+/i, "")
       .replace(/[\u0E00-\u0E7F]/g, "")
       .trim();
-    if (cleanAr.startsWith("حضرة") || cleanAr.startsWith("السيد") || cleanAr.startsWith("السيدة") || cleanAr.startsWith("سعادة") || cleanAr.startsWith("معالي")) {
-      return cleanAr;
+    if (!cleanAr || cleanAr.startsWith("حضرة") || cleanAr.startsWith("السيد") || cleanAr.startsWith("السيدة") || cleanAr.startsWith("سعادة") || cleanAr.startsWith("معالي") || cleanAr === "المريض الكريم") {
+      return cleanAr || "حضرة الفاضل المحترم / المريض الكريم";
     }
-    return `حضرة الفاضل المحترم / ${cleanAr || 'المريض الكريم'}`;
+    return `حضرة الفاضل المحترم / ${cleanAr}`;
   }
 
   if (lang === "th") {
@@ -560,11 +673,14 @@ function formatPatientSalutation(name, lang = "en") {
 
   // English
   const cleanEn = trimmed.replace(/^(คุณ|ท่าน)\s*/, "").replace(/[\u0E00-\u0E7F]/g, "").trim();
+  if (!cleanEn || cleanEn.toLowerCase().startsWith("esteemed") || cleanEn.toLowerCase() === "patient") {
+    return cleanEn || "Esteemed Patient";
+  }
   const hasHonorific = /^(mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|sheikh|sheikha|h\.e\.)\s+/i.test(cleanEn);
   if (hasHonorific) {
     return cleanEn;
   }
-  return `Mr./Ms. ${cleanEn || 'Patient'}`;
+  return `Mr./Ms. ${cleanEn}`;
 }
 
 // Generate Vejthani Hospital Call Script
@@ -632,7 +748,7 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
     if (outcome === "ready") {
       closing = `“بناءً على حديثنا الموقر، سأتولى شخصياً متابعة ${scriptRemainingIssue}. بخصوص موعد مقابلة الطبيب، هل تفضلون أن نحجز لكم خلال هذا الشهر، أم هناك فترة أخرى تناسب جدول سفركم بشكل أفضل؟ سأقوم بالتنسيق مع جدول العمليات وتأكيد المترجم الخاص بكم. هل ستسافرون بمفردكم أم بصحبة مرافقين؟ وهل توجد أية ترتيبات إضافية تودون منا التحقق منها قبل مغادرتكم؟”`;
     } else if (outcome === "not_ready") {
-      closing = `“بكل تأكيد وسرور. سأقوم بتجهيز وموافاتكم بكافة المعلومات التفصيلية حول ${scriptRemainingIssue} أولاً. ما هو اليوم والوقت المحلي الأنسب لسعادتكم حتى أقوم بإعادة الاتصال بكم؟ وإذا كنتم تفضلون التريث حالياً، فنرجو ألا تترددوا بإبلاغنا، ونحنใน خدمتكم دائماً.”`;
+      closing = `“بكل تأكيد وسرور. سأقوم بتجهيز وموافاتكم بكافة المعلومات التفصيلية حول ${scriptRemainingIssue} أولاً. ما هو اليوم والوقت المحلي الأنسب لسعادتكم حتى أقوم بإعادة الاتصال بكم؟ وإذا كنتم تفضلون التريث حالياً، فنرجو ألا تترددوا بإبلاغنا، ونحن في خدمتكم دائماً.”`;
     } else {
       closing = `“لا بأس على الإطلاق، ونشكركم جزيل الشكر على إفادتنا ووقتكم الثمين. إذا سمحتم لنا بسؤال سريع، هل هناك سبب رئيسي يمكننا الاستفادة منه لتطوير خدماتنا ومراعاته مستقبلاً؟ نود التأكيد على أن أبواب مستشفى فيجثاني مفتوحة لكم دائماً، ويسعدنا تقديم الرعاية لكم ولعائلتكم في أي وقت تشاؤون. دمتم بحفظ الله ورعايته.”`;
     }
@@ -678,10 +794,11 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
     const politeEnd = isMale ? "นะครับ" : "นะคะ";
     const politeQuestion = isMale ? "ไหมครับ" : "ไหมคะ";
     const formalPatientName = formatPatientSalutation(scriptPatientName, 'th');
+    const displayPatientName = scriptPatientName.replace(/^(คุณ|ท่าน)\s*/, '');
 
     p1 = `“อัสสลามุอะลัยกุม ${formalPatientName} ${pronoun} ${scriptStaffName} จากโรงพยาบาลเวชธานี${polite} ที่เราเคยคุยกันทาง ${channelDisplay} ก่อนหน้านี้ คุณสบายดี${politeQuestion}? ตอนนี้สะดวกคุยสัก 2–3 นาที${politeQuestion}? ${pronoun}โทรมาเพื่อดูว่ามีอะไรที่เราช่วยเตรียมเพิ่มเติมให้คุณได้ ก่อนวางแผนมาพบแพทย์${polite}”`;
 
-    p2 = `“ครั้งก่อนคุณ ${scriptPatientName} แจ้งว่าอยากทราบเรื่อง ${scriptTopic} เราได้ส่งข้อมูลให้ทาง ${channelDisplay} แล้ว${polite} คุณได้ดูข้อมูลหรือยัง${politeQuestion}? มีส่วนไหนที่อยากให้เราอธิบายเพิ่มเติม${politeQuestion}?”`;
+    p2 = `“ครั้งก่อนคุณ ${displayPatientName} แจ้งว่าอยากทราบเรื่อง ${scriptTopic} เราได้ส่งข้อมูลให้ทาง ${channelDisplay} แล้ว${polite} คุณได้ดูข้อมูลหรือยัง${politeQuestion}? มีส่วนไหนที่อยากให้เราอธิบายเพิ่มเติม${politeQuestion}?”`;
 
     p3 = `“ตอนนี้เรื่องไหนที่ยังทำให้คุณไม่สบายใจ หรือยังต้องจัดเตรียมก่อนเดินทางมารักษา${politeQuestion}?”
 (คำแนะนำสำหรับเจ้าหน้าที่: ถามทีละคำถาม เว้นจังหวะให้ตอบ แล้วทวนความเข้าใจ)`;
@@ -699,7 +816,7 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
       closing = `“ไม่เป็นไร${polite} ขอบคุณที่แจ้งให้ทราบ${politeEnd} หากไม่สะดวก ขออนุญาตสอบถามเหตุผลหลักสั้นๆ เพื่อให้โรงพยาบาลนำไปปรับปรุงบริการได้${politeQuestion}? หากต้องการความช่วยเหลือหรือปรึกษาเรื่องสุขภาพในอนาคต ติดต่อเวชธานีได้เสมอเลย${politeEnd} ขอบคุณมาก${polite}”`;
     }
 
-    p6 = `“ขอสรุป${politeEnd} คุณ ${scriptPatientName} ${pronoun}จะตรวจสอบเรื่อง ${scriptRemainingIssue} และแจ้งกลับทาง WhatsApp ${polite} ส่วนเอกสารจะส่งทาง ${channelDisplay} หากมีคำถามเพิ่มเติม ฝากข้อความถึง${pronoun}ได้ตลอดเวลาเลย${politeEnd} ขอบคุณที่สละเวลาคุยกัน${politeEnd}”`;
+    p6 = `“ขอสรุป${politeEnd} คุณ ${displayPatientName} ${pronoun}จะตรวจสอบเรื่อง ${scriptRemainingIssue} และแจ้งกลับทาง WhatsApp ${polite} ส่วนเอกสารจะส่งทาง ${channelDisplay} หากมีคำถามเพิ่มเติม ฝากข้อความถึง${pronoun}ได้ตลอดเวลาเลย${politeEnd} ขอบคุณที่สละเวลาคุยกัน${politeEnd}”`;
   }
 
   // =========================================================================
@@ -1621,60 +1738,22 @@ document.addEventListener("DOMContentLoaded", () => {
     currentCallLang = lang;
     if (btnCallLangThai) {
       btnCallLangThai.className = (lang === "th")
-        ? "px-2 py-0.5 rounded bg-blue-600 text-white shadow-sm transition font-bold"
-        : "px-2 py-0.5 rounded text-slate-400 hover:text-white transition";
+        ? "px-2 py-0.5 rounded bg-[#1B365D] text-white shadow-xs transition font-bold"
+        : "px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 transition";
     }
     if (btnCallLangEn) {
       btnCallLangEn.className = (lang === "en")
-        ? "px-2 py-0.5 rounded bg-blue-600 text-white shadow-sm transition font-bold"
-        : "px-2 py-0.5 rounded text-slate-400 hover:text-white transition";
+        ? "px-2 py-0.5 rounded bg-[#1B365D] text-white shadow-xs transition font-bold"
+        : "px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 transition";
     }
     if (btnCallLangAr) {
       btnCallLangAr.className = (lang === "ar")
-        ? "px-2 py-0.5 rounded bg-blue-600 text-white shadow-sm transition font-arabic text-xs font-bold"
-        : "px-2 py-0.5 rounded text-slate-400 hover:text-white transition font-arabic text-xs";
+        ? "px-2 py-0.5 rounded bg-[#1B365D] text-white shadow-xs transition font-arabic text-xs font-bold"
+        : "px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 transition font-arabic text-xs";
     }
 
-    // Adapt preset fields if currently matching a preset
-    let pKey = currentLoadedPresetKey;
-    if (!pKey) {
-      const curTopic = (callTopic && callTopic.value) ? callTopic.value.toLowerCase() : "";
-      if (curTopic.includes("เข่า") || curTopic.includes("knee") || curTopic.includes("bone") || curTopic.includes("ركبة")) pKey = "oman_knee";
-      else if (curTopic.includes("มะเร็ง") || curTopic.includes("cancer") || curTopic.includes("tumor") || curTopic.includes("أورام")) pKey = "saudi_cancer";
-      else if (curTopic.includes("เด็ก") || curTopic.includes("pediatric") || curTopic.includes("أطفال")) pKey = "uae_pediatric";
-      else if (curTopic.includes("ถุงน้ำดี") || curTopic.includes("surgery") || curTopic.includes("cholecystectomy") || curTopic.includes("مرارة")) pKey = "uk_surgery";
-      else pKey = "oman_knee";
-      currentLoadedPresetKey = pKey;
-    }
-
-    if (pKey && CALL_SOP_PRESETS[pKey]) {
-      const p = CALL_SOP_PRESETS[pKey];
-      if (lang === "en") {
-        if (callPatientName) callPatientName.value = p.patientName;
-        if (callStaffName) callStaffName.value = p.staffNameEn || p.staffName;
-        if (callTopic) callTopic.value = p.topicEn || p.topic;
-        if (callPriorChannel) callPriorChannel.value = p.priorChannelEn || p.priorChannel;
-        if (callRemainingIssue) callRemainingIssue.value = p.remainingIssueEn || p.remainingIssue;
-      } else if (lang === "ar") {
-        if (callPatientName) callPatientName.value = p.patientNameAr || p.patientName;
-        if (callStaffName) callStaffName.value = p.staffNameAr || p.staffName;
-        if (callTopic) callTopic.value = p.topicAr || p.topic;
-        if (callPriorChannel) callPriorChannel.value = p.priorChannelAr || p.priorChannel;
-        if (callRemainingIssue) callRemainingIssue.value = p.remainingIssueAr || p.remainingIssue;
-      } else {
-        if (callPatientName) callPatientName.value = p.patientNameTh || p.patientName;
-        if (callStaffName) callStaffName.value = p.staffNameTh || p.staffName;
-        if (callTopic) callTopic.value = p.topicTh || p.topic;
-        if (callPriorChannel) callPriorChannel.value = p.priorChannelTh || p.priorChannel;
-        if (callRemainingIssue) callRemainingIssue.value = p.remainingIssueTh || p.remainingIssue;
-      }
-    } else {
-      if (callTopic) callTopic.value = localizeField(callTopic.value, lang, "topic");
-      if (callRemainingIssue) callRemainingIssue.value = localizeField(callRemainingIssue.value, lang, "remainingIssue");
-      if (callStaffName) callStaffName.value = localizeField(callStaffName.value, lang, "staffName");
-      if (callPatientName) callPatientName.value = localizeField(callPatientName.value, lang, "patientName");
-    }
-
+    // Changing script language in Step 2 updates the teleprompter cards & summary
+    // without wiping or altering the user's typed Thai inputs in Step 1.
     refreshCallScript();
   }
 
@@ -1689,11 +1768,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function setStaffGender(gender) {
     currentStaffGender = gender;
     if (gender === "male") {
-      if (btnStaffGenderMale) btnStaffGenderMale.className = "px-2 py-0.5 rounded bg-blue-600/30 text-blue-300 border border-blue-500/30 font-bold";
-      if (btnStaffGenderFemale) btnStaffGenderFemale.className = "px-2 py-0.5 rounded text-slate-400 hover:text-white";
+      if (btnStaffGenderMale) btnStaffGenderMale.className = "px-2 py-0.5 rounded bg-white text-[#1B365D] shadow-xs font-bold";
+      if (btnStaffGenderFemale) btnStaffGenderFemale.className = "px-2 py-0.5 rounded text-slate-500 hover:text-slate-900";
     } else {
-      if (btnStaffGenderFemale) btnStaffGenderFemale.className = "px-2 py-0.5 rounded bg-blue-600/30 text-blue-300 border border-blue-500/30 font-bold";
-      if (btnStaffGenderMale) btnStaffGenderMale.className = "px-2 py-0.5 rounded text-slate-400 hover:text-white";
+      if (btnStaffGenderFemale) btnStaffGenderFemale.className = "px-2 py-0.5 rounded bg-white text-[#1B365D] shadow-xs font-bold";
+      if (btnStaffGenderMale) btnStaffGenderMale.className = "px-2 py-0.5 rounded text-slate-500 hover:text-slate-900";
     }
     refreshCallScript();
   }
@@ -1710,18 +1789,18 @@ document.addEventListener("DOMContentLoaded", () => {
     currentSummaryLang = lang;
     if (btnSummaryLangAr) {
       btnSummaryLangAr.className = (lang === "ar")
-        ? "px-1.5 py-0.5 rounded bg-emerald-600/40 text-emerald-300 font-bold font-arabic shadow-sm"
-        : "px-1.5 py-0.5 rounded text-slate-400 hover:text-white font-arabic";
+        ? "px-1.5 py-0.5 rounded bg-emerald-600 text-white font-bold font-arabic shadow-2xs"
+        : "px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900 font-arabic";
     }
     if (btnSummaryLangEn) {
       btnSummaryLangEn.className = (lang === "en")
-        ? "px-1.5 py-0.5 rounded bg-emerald-600/40 text-emerald-300 font-bold shadow-sm"
-        : "px-1.5 py-0.5 rounded text-slate-400 hover:text-white";
+        ? "px-1.5 py-0.5 rounded bg-emerald-600 text-white font-bold shadow-2xs"
+        : "px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900";
     }
     if (btnSummaryLangTh) {
       btnSummaryLangTh.className = (lang === "th")
-        ? "px-1.5 py-0.5 rounded bg-emerald-600/40 text-emerald-300 font-bold shadow-sm"
-        : "px-1.5 py-0.5 rounded text-slate-400 hover:text-white";
+        ? "px-1.5 py-0.5 rounded bg-emerald-600 text-white font-bold shadow-2xs"
+        : "px-1.5 py-0.5 rounded text-slate-600 hover:text-slate-900";
     }
     refreshCallScript();
   }
