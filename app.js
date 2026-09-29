@@ -1272,11 +1272,8 @@ Vejthani Hospital, Bangkok, Thailand`;
     // Thai summary
     const isMale = (staffGender === "male");
     const polite = isMale ? "ครับ" : "ค่ะ";
+    const formalPatientName = formatPatientSalutation(waPatientName, 'th');
     const waDisplayPatientName = waPatientName.startsWith("[") ? waPatientName : `คุณ ${waPatientName.replace(/^(คุณ|ท่าน)\s*/, '')}`;
-
-    if (outcome === "ready") {
-      // ready
-    }
 
     summaryWA = `السلام عليكم ورحمة الله وبركاته
 เรียน ${formalPatientName},
