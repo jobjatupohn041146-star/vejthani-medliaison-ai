@@ -5,13 +5,55 @@
 // 1. TIME ZONE & COUNTRY CONFIGURATION (Gulf & International)
 // =========================================================================
 const COUNTRY_TIMEZONES = {
-  oman: { name: "Muscat, Oman", offset: 4, label: "โอมาน (GST / GMT+4)", diffFromTh: -3, prayers: ["04:50", "12:15", "15:40", "18:10", "19:25"] },
-  uae: { name: "Dubai / Abu Dhabi, UAE", offset: 4, label: "สหรัฐอาหรับเอมิเรตส์ (GST / GMT+4)", diffFromTh: -3, prayers: ["04:55", "12:20", "15:45", "18:15", "19:30"] },
-  saudi: { name: "Riyadh / Jeddah, Saudi Arabia", offset: 3, label: "ซาอุดีอาระเบีย (AST / GMT+3)", diffFromTh: -4, prayers: ["04:30", "11:55", "15:20", "17:50", "19:05"] },
-  qatar: { name: "Doha, Qatar", offset: 3, label: "กาตาร์ (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:15", "17:45", "19:00"] },
-  kuwait: { name: "Kuwait City, Kuwait", offset: 3, label: "คูเวต (AST / GMT+3)", diffFromTh: -4, prayers: ["04:20", "11:45", "15:10", "17:40", "18:55"] },
-  uk: { name: "London, UK", offset: 1, label: "สหราชอาณาจักร (BST / GMT+1)", diffFromTh: -6, prayers: [] },
-  usa: { name: "New York, USA", offset: -4, label: "สหรัฐอเมริกา (EDT / GMT-4)", diffFromTh: -11, prayers: [] }
+  // -------------------------------------------------------------------------
+  // กลุ่มประเทศอาหรับ / ตะวันออกกลาง (Arab / Middle East - 19 ประเทศ)
+  // -------------------------------------------------------------------------
+  qatar: { name: "Doha, Qatar", offset: 3, label: "กาตาร์ (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:15", "17:45", "19:00"], category: "arab", dialCode: "+974" },
+  uae: { name: "Dubai / Abu Dhabi, UAE", offset: 4, label: "สหรัฐอาหรับเอมิเรตส์ (GST / GMT+4)", diffFromTh: -3, prayers: ["04:55", "12:20", "15:45", "18:15", "19:30"], category: "arab", dialCode: "+971" },
+  kuwait: { name: "Kuwait City, Kuwait", offset: 3, label: "คูเวต (AST / GMT+3)", diffFromTh: -4, prayers: ["04:20", "11:45", "15:10", "17:40", "18:55"], category: "arab", dialCode: "+965" },
+  oman: { name: "Muscat, Oman", offset: 4, label: "โอมาน (GST / GMT+4)", diffFromTh: -3, prayers: ["04:50", "12:15", "15:40", "18:10", "19:25"], category: "arab", dialCode: "+968" },
+  yemen: { name: "Sana'a / Aden, Yemen", offset: 3, label: "เยเมน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:40", "12:05", "15:25", "18:05", "19:15"], category: "arab", dialCode: "+967" },
+  saudi: { name: "Riyadh / Jeddah, Saudi Arabia", offset: 3, label: "ซาอุดีอาระเบีย (AST / GMT+3)", diffFromTh: -4, prayers: ["04:30", "11:55", "15:20", "17:50", "19:05"], category: "arab", dialCode: "+966" },
+  sudan: { name: "Khartoum, Sudan", offset: 2, label: "ซูดาน (CAT / GMT+2)", diffFromTh: -5, prayers: ["04:45", "12:00", "15:20", "18:00", "19:10"], category: "arab", dialCode: "+249" },
+  comoros: { name: "Moroni, Comoros", offset: 3, label: "คอโมโรส (EAT / GMT+3)", diffFromTh: -4, prayers: ["04:50", "12:10", "15:30", "18:15", "19:25"], category: "arab", dialCode: "+269" },
+  bahrain: { name: "Manama, Bahrain", offset: 3, label: "บาห์เรน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:15", "17:45", "19:00"], category: "arab", dialCode: "+973" },
+  morocco: { name: "Rabat / Casablanca, Morocco", offset: 1, label: "โมร็อกโก (WEST / GMT+1)", diffFromTh: -6, prayers: ["05:30", "12:40", "16:05", "18:45", "20:00"], category: "arab", dialCode: "+212" },
+  jordan: { name: "Amman, Jordan", offset: 3, label: "จอร์แดน (AST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+962" },
+  iraq: { name: "Baghdad, Iraq", offset: 3, label: "อิรัก (AST / GMT+3)", diffFromTh: -4, prayers: ["04:25", "11:50", "15:20", "17:48", "19:05"], category: "arab", dialCode: "+964" },
+  palestine: { name: "Jerusalem / Ramallah, Palestine", offset: 3, label: "ปาเลสไตน์ (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+970" },
+  egypt: { name: "Cairo, Egypt", offset: 3, label: "อียิปต์ (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "18:00", "19:15"], category: "arab", dialCode: "+20" },
+  algeria: { name: "Algiers, Algeria", offset: 1, label: "แอลจีเรีย (CET / GMT+1)", diffFromTh: -6, prayers: ["05:15", "12:35", "16:00", "18:40", "19:55"], category: "arab", dialCode: "+213" },
+  syria: { name: "Damascus, Syria", offset: 3, label: "ซีเรีย (AST / GMT+3)", diffFromTh: -4, prayers: ["04:30", "11:50", "15:20", "17:50", "19:10"], category: "arab", dialCode: "+963" },
+  tunisia: { name: "Tunis, Tunisia", offset: 1, label: "ตูนิเซีย (CET / GMT+1)", diffFromTh: -6, prayers: ["05:10", "12:30", "15:55", "18:35", "19:50"], category: "arab", dialCode: "+216" },
+  lebanon: { name: "Beirut, Lebanon", offset: 3, label: "เลบานอน (EEST / GMT+3)", diffFromTh: -4, prayers: ["04:35", "11:55", "15:25", "17:55", "19:15"], category: "arab", dialCode: "+961" },
+  mauritania: { name: "Nouakchott, Mauritania", offset: 0, label: "มอริเตเนีย (GMT / GMT+0)", diffFromTh: -7, prayers: ["05:40", "13:00", "16:20", "19:00", "20:15"], category: "arab", dialCode: "+222" },
+
+  // -------------------------------------------------------------------------
+  // กลุ่มประเทศนานาชาติ (International - 23 ประเทศ)
+  // -------------------------------------------------------------------------
+  myanmar: { name: "Yangon, Myanmar", offset: 6.5, label: "เมียนมา (MMT / GMT+6.5)", diffFromTh: -0.5, prayers: [], category: "inter", dialCode: "+95" },
+  ethiopia: { name: "Addis Ababa, Ethiopia", offset: 3, label: "เอธิโอเปีย (EAT / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+251" },
+  usa: { name: "New York, USA", offset: -4, label: "สหรัฐอเมริกา (EDT / GMT-4)", diffFromTh: -11, prayers: [], category: "inter", dialCode: "+1" },
+  bangladesh: { name: "Dhaka, Bangladesh", offset: 6, label: "บังกลาเทศ (BST / GMT+6)", diffFromTh: -1, prayers: ["04:30", "11:55", "15:15", "17:50", "19:05"], category: "inter", dialCode: "+880" },
+  vietnam: { name: "Hanoi / Ho Chi Minh, Vietnam", offset: 7, label: "เวียดนาม (ICT / GMT+7)", diffFromTh: 0, prayers: [], category: "inter", dialCode: "+84" },
+  uk: { name: "London, UK", offset: 1, label: "สหราชอาณาจักร (BST / GMT+1)", diffFromTh: -6, prayers: [], category: "inter", dialCode: "+44" },
+  china: { name: "Beijing / Shanghai, China", offset: 8, label: "จีน (CST / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+86" },
+  canada: { name: "Toronto / Montreal, Canada", offset: -4, label: "แคนาดา (EDT / GMT-4)", diffFromTh: -11, prayers: [], category: "inter", dialCode: "+1" },
+  singapore: { name: "Singapore", offset: 8, label: "สิงคโปร์ (SGT / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+65" },
+  australia: { name: "Sydney, Australia", offset: 10, label: "ออสเตรเลีย (AEST / GMT+10)", diffFromTh: 3, prayers: [], category: "inter", dialCode: "+61" },
+  russia: { name: "Moscow, Russia", offset: 3, label: "รัสเซีย (MSK / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+7" },
+  germany: { name: "Berlin / Frankfurt, Germany", offset: 2, label: "เยอรมนี (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+49" },
+  cambodia: { name: "Phnom Penh, Cambodia", offset: 7, label: "กัมพูชา (ICT / GMT+7)", diffFromTh: 0, prayers: [], category: "inter", dialCode: "+855" },
+  philippines: { name: "Manila, Philippines", offset: 8, label: "ฟิลิปปินส์ (PST / GMT+8)", diffFromTh: 1, prayers: [], category: "inter", dialCode: "+63" },
+  france: { name: "Paris, France", offset: 2, label: "ฝรั่งเศส (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+33" },
+  india: { name: "New Delhi / Mumbai, India", offset: 5.5, label: "อินเดีย (IST / GMT+5.5)", diffFromTh: -1.5, prayers: [], category: "inter", dialCode: "+91" },
+  netherlands: { name: "Amsterdam, Netherlands", offset: 2, label: "เนเธอร์แลนด์ (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+31" },
+  maldives: { name: "Male, Maldives", offset: 5, label: "มัลดีฟส์ (MVT / GMT+5)", diffFromTh: -2, prayers: ["04:55", "12:05", "15:25", "18:10", "19:20"], category: "inter", dialCode: "+960" },
+  swiss: { name: "Zurich / Geneva, Switzerland", offset: 2, label: "สวิตเซอร์แลนด์ (CEST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+41" },
+  turkey: { name: "Istanbul / Ankara, Turkey", offset: 3, label: "ตุรกี (TRT / GMT+3)", diffFromTh: -4, prayers: ["05:10", "12:50", "16:20", "19:00", "20:25"], category: "inter", dialCode: "+90" },
+  ukraine: { name: "Kyiv, Ukraine", offset: 3, label: "ยูเครน (EEST / GMT+3)", diffFromTh: -4, prayers: [], category: "inter", dialCode: "+380" },
+  iran: { name: "Tehran, Iran", offset: 3.5, label: "อิหร่าน (IRST / GMT+3.5)", diffFromTh: -3.5, prayers: ["04:40", "12:05", "15:35", "18:15", "19:35"], category: "inter", dialCode: "+98" },
+  south_africa: { name: "Johannesburg / Cape Town, South Africa", offset: 2, label: "แอฟริกาใต้ (SAST / GMT+2)", diffFromTh: -5, prayers: [], category: "inter", dialCode: "+27" }
 };
 
 function calculateCountryTime(countryKey) {
@@ -91,9 +133,14 @@ function calculateCountryTime(countryKey) {
     };
   }
 
+  const tzSign = config.offset >= 0 ? `+${config.offset}` : `${config.offset}`;
+  const tzBadge = `GMT${tzSign}`;
+
   return {
     timeStr,
     countryLabel: config.name,
+    tzBadge,
+    config,
     suitability
   };
 }
@@ -1170,6 +1217,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (quickCountrySelect2 && quickCountrySelect2.value !== countryKey) {
       quickCountrySelect2.value = countryKey;
+    }
+    const countryData = COUNTRY_TIMEZONES[countryKey];
+    if (countryData && callPatientPhone) {
+      const currentVal = callPatientPhone.value.trim();
+      callPatientPhone.placeholder = `${countryData.dialCode}...`;
+      // If phone is empty or has a standard GCC template or previous prefix, adjust dial code
+      if (!currentVal || /^\+\d{1,4}\s*$/.test(currentVal)) {
+        callPatientPhone.value = `${countryData.dialCode} `;
+      }
     }
     updateCountryClock();
     refreshCallScript();

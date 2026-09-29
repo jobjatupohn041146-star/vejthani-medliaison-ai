@@ -434,6 +434,31 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         is_valid, err_msg = self.script.check_syntax()
         self.assertTrue(is_valid, f"JavaScript syntax error detected in app.js:\n{err_msg}")
 
+    @milestone("baseline")
+    def test_t1_37_all_42_countries_configured(self):
+        """T1.37: All 42 nationalities (19 Arab + 23 International) are configured in app.js and DOM dropdowns."""
+        arab_keys = [
+            "qatar", "uae", "kuwait", "oman", "yemen", "saudi", "sudan", "comoros",
+            "bahrain", "morocco", "jordan", "iraq", "palestine", "egypt", "algeria",
+            "syria", "tunisia", "lebanon", "mauritania"
+        ]
+        inter_keys = [
+            "myanmar", "ethiopia", "usa", "bangladesh", "vietnam", "uk", "china",
+            "canada", "singapore", "australia", "russia", "germany", "cambodia",
+            "philippines", "france", "india", "netherlands", "maldives", "swiss",
+            "turkey", "ukraine", "iran", "south_africa"
+        ]
+        self.assertEqual(len(arab_keys), 19, "Must have exactly 19 Arab countries")
+        self.assertEqual(len(inter_keys), 23, "Must have exactly 23 International countries")
+
+        # Verify all 42 exist in COUNTRY_TIMEZONES in app.js
+        for k in arab_keys + inter_keys:
+            self.assertIn(f"{k}:", self.script.raw_js, f"Missing country key '{k}' in app.js COUNTRY_TIMEZONES")
+
+        # Verify all 42 exist in DOM dropdowns
+        for k in arab_keys + inter_keys:
+            self.assertIn(f'value="{k}"', self.dom.raw_html, f"Missing country option value '{k}' in index.html")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -206,15 +206,52 @@ class ScriptInspector:
 class TimezoneAndPrayerOracle:
     """Authoritative reference mathematical model for GCC time offsets and Islamic prayer windows."""
 
-    # Authoritative offsets from UTC
+    # Authoritative offsets from UTC for all 42 countries
     OFFSETS = {
-        "oman": 4,      # GST (GMT+4)
-        "uae": 4,       # GST (GMT+4)
-        "saudi": 3,     # AST (GMT+3)
-        "qatar": 3,     # AST (GMT+3)
-        "kuwait": 3,    # AST (GMT+3)
-        "uk": 1,        # BST / GMT+1
-        "usa": -4       # EDT / GMT-4
+        # Arab (19)
+        "qatar": 3,
+        "uae": 4,
+        "kuwait": 3,
+        "oman": 4,
+        "yemen": 3,
+        "saudi": 3,
+        "sudan": 2,
+        "comoros": 3,
+        "bahrain": 3,
+        "morocco": 1,
+        "jordan": 3,
+        "iraq": 3,
+        "palestine": 3,
+        "egypt": 3,
+        "algeria": 1,
+        "syria": 3,
+        "tunisia": 1,
+        "lebanon": 3,
+        "mauritania": 0,
+        # International (23)
+        "myanmar": 6.5,
+        "ethiopia": 3,
+        "usa": -4,
+        "bangladesh": 6,
+        "vietnam": 7,
+        "uk": 1,
+        "china": 8,
+        "canada": -4,
+        "singapore": 8,
+        "australia": 10,
+        "russia": 3,
+        "germany": 2,
+        "cambodia": 7,
+        "philippines": 8,
+        "france": 2,
+        "india": 5.5,
+        "netherlands": 2,
+        "maldives": 5,
+        "swiss": 2,
+        "turkey": 3,
+        "ukraine": 3,
+        "iran": 3.5,
+        "south_africa": 2,
     }
 
     # Reference 5 daily prayers (approximate standard Gulf window in local 24h time)
