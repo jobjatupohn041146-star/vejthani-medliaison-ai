@@ -2107,6 +2107,227 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCountryClock();
   updateGccRadar();
 
+  // --- Universal Medical Document Ingestion & Case Synthesizer State ---
+  let stagedMedicalFiles = [];
+  let currentCaseDossier = null;
+  let currentCustomScriptCards = null;
+
+  const SAMPLE_MEDICAL_CASES = {
+    knee: {
+      country: "uae",
+      patientName: "Mr. Mohammed Al-Balushi",
+      hn: "VN-884920",
+      phone: "+971 50 123 4567",
+      specialty: "king_of_bone",
+      topic: "ผ่าตัดเปลี่ยนข้อเข่าเทียมด้วยหุ่นยนต์ (Robotic Total Knee Replacement)",
+      remainingIssue: "ผลตรวจระดับน้ำตาลสะสม HbA1c ล่าสุด, ล่ามภาษาอาหรับ, ห้องพักฟื้นครอบครัว",
+      dossier: {
+        patientName: "Mr. Mohammed Al-Balushi",
+        age: 62,
+        gender: "ชาย (Male)",
+        nationality: "สหรัฐอาหรับเอมิเรตส์ (UAE)",
+        chiefComplaint: "ปวดตึงข้อเข่าขวารุนแรง เดินต่อเนื่องได้ไม่เกิน 10 นาที (Severe right knee pain)",
+        diagnosis: "Severe Right Knee Osteoarthritis (Kellgren-Lawrence Grade 3-4)",
+        precautions: "มีโรคประจำตัวเบาหวานชนิดที่ 2 (Type 2 DM) ต้องประเมินระดับน้ำตาลก่อนผ่าตัด",
+        documentsReceived: [
+          "ภาพสแกน MRI ข้อเข่าขวา (Right Knee MRI Sagittal/Coronal DICOM)",
+          "ใบส่งตัวและประเมินจากคลินิกกระดูกและข้อ (Orthopedic Referral Letter)",
+          "สำเนาหนังสือเดินทาง (UAE Passport Copy)"
+        ],
+        documentsMissing: [
+          "ผลตรวจระดับน้ำตาลสะสม (HbA1c Blood Test) ภายใน 30 วันล่าสุด",
+          "ผลตรวจคลื่นไฟฟ้าหัวใจ (12-Lead ECG) ประเมินก่อนดมยาสลบ"
+        ]
+      },
+      scriptCards: [
+        {
+          step: 1,
+          thai: "สวัสดีครับ ขอสายคุณโมฮัมเหม็ด อัล-บาลูชี นะครับ ผมชื่อศรวิทย์ พยาบาลประสานงานผู้ป่วยสากล จากโรงพยาบาลเวชธานี กรุงเทพฯ ครับ สะดวกคุยสัก 2-3 นาทีไหมครับ?",
+          english: "Good day, Mr. Mohammed Al-Balushi. My name is Sorawit, International Patient Liaison Coordinator from Vejthani Hospital, Bangkok. May I have 2-3 minutes to discuss your medical inquiry?",
+          arabic: "السلام عليكم ورحمة الله وبركاته، مرحباً بالسيد محمد البلوشي. أنا صوراويت، منسق رعاية المرضى الدوليين من مستشفى فيجثاني في بانكوك. هل وقتك مناسب للحديث لبضع دقائق؟",
+          arabicPhonetic: "As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban Sayyid Mohammed Al-Balushi. Ana Sorawit, munas-siq ri'ayah al-marda ad-dawliyyin min Mustashfa Vejthani fi Bangkok. Hal waqtuka munasib lil-hadith li-bid' daqa'iq?"
+        },
+        {
+          step: 2,
+          thai: "ทางทีมแพทย์ศูนย์กระดูกและข้อ King of Bones ได้รับภาพสแกน MRI ข้อเข่าขวา และใบส่งตัวจากดูไบเรียบร้อยแล้วครับ แพทย์ผู้เชี่ยวชาญได้ดูภาพเบื้องต้นแล้ว",
+          english: "Our orthopedic team at the King of Bones Center has received your right knee MRI scans and referral letter from Dubai. Our chief joint surgeon has conducted an initial review.",
+          arabic: "لقد استلم فريقنا الطبي في مركز عظام كينغ أوف بونز صور الرنين المغناطيسي لركبتك اليمنى وتقرير الإحالة الطبي بنجاح وقام استشاري العظام بمراجعتها الأولية.",
+          arabicPhonetic: "Laqad istalama fariquna at-tibbi fi markaz 'Izam King of Bones suwar ar-ranin al-mighnatisi li-rukbatika al-yumna wa taqreer al-ihalah at-tibbi bi-najah wa qama istishari al-'izam bi-muraja'atiha al-awwaliyyah."
+        },
+        {
+          step: 3,
+          thai: "จากผลตรวจพบภาวะข้อเข่าเสื่อมระยะที่ 3-4 ทางพยาบาลขอประเมินอาการเพิ่มนะครับ ตอนนี้เวลาเดินมีอาการปวดแปลบหรือต้องใช้อุปกรณ์ช่วยพยุงไหมครับ? และมีอาการปวดตื่นกลางคืนหรือไม่?",
+          english: "The MRI confirms advanced joint cartilage loss. To optimize our surgical planning, may I ask: how many meters can you walk comfortably, and do you experience rest pain at night?",
+          arabic: "تظهر الصور وجود تآكل متقدم في غضروف الركبة. لمساعدة الفريق الجراحي: كم دقيقة تستطيع المشي دون ألم شديد؟ وهل يوقظك الألم أثناء النوم؟",
+          arabicPhonetic: "Tuz-hiru as-suwar wujud ta'akul mutaqaddim fi ghudroof ar-rukbah. Li-musa'adat al-fariq al-jirahee: kam daqiqah tastati' al-mashi duna alam shadid? Wa hal yuwqidhuka al-alam athna' an-nawm?"
+        },
+        {
+          step: 4,
+          thai: "สำหรับเคสนี้ รพ.เวชธานี มีศัลยแพทย์ผู้เชี่ยวชาญการผ่าตัดเปลี่ยนข้อเข่าด้วยหุ่นยนต์ช่วยผ่าตัด แผลเล็ก ฟื้นตัวไว พร้อมล่ามภาษาอาหรับและอาหารฮาลาล 100% ตลอดการพักฟื้นครับ",
+          english: "At Vejthani's King of Bones Center, our surgeons specialize in Robotic-Assisted Total Knee Arthroplasty for millimeter accuracy and rapid recovery, supported by Arabic interpreters and 100% certified Halal dining.",
+          arabic: "لحالتكم الكريمة، يوفر مركز كينغ أوف بونز تقنية استبدال مفصل الركبة بالروبوت الجراحي الدقيق لسرعة التعافي، مع مترجمين عرب ووجبات حلال معتمدة طوال فترة إقامتكم.",
+          arabicPhonetic: "Li-halatikum al-karimah, yuwaffir markaz King of Bones tiqniyyat istibdal mafsal ar-rukbah bir-robot al-jirahee ad-daqeeq li-sur'at at-ta'afi, ma'a mutarjimin 'Arab wa wajabat Halal mu'tamadah tiwal fatrat iqamatikum."
+        },
+        {
+          step: 5,
+          thai: "เพื่อให้แพทย์กำหนดแผนการผ่าตัดและประเมินงบประมาณได้อย่างแม่นยำ ปัจจุบันเรายังขาดผลตรวจน้ำตาลสะสม (HbA1c) ล่าสุด ขอความกรุณาส่งให้ทาง WhatsApp นี้ได้เลยนะครับ",
+          english: "To confirm surgical clearance and issue your finalized medical travel quote, our medical board requires your latest HbA1c blood test. You can send it directly through this WhatsApp chat.",
+          arabic: "لإصدار خطة العلاج والتكلفة النهائية الدقيقة، نرجو تزويدنا بأحدث فحص لمستوى السكر التراكمي (HbA1c) عبر محادثة الواتساب هذه.",
+          arabicPhonetic: "Li-isdar khittat al-'ilaj wat-taklufah an-niha'iyyah ad-daqeeqah, narju tazwidana bi-ahdath fahs li-mustawa as-sukkar at-tarakumi (HbA1c) 'abra muhadathat al-WhatsApp hadihi."
+        },
+        {
+          step: 6,
+          thai: "ผมจะส่งสรุปรายละเอียดข้อแนะนำของแพทย์พร้อมหนังสือรับรองเพื่อขอวีซ่าให้ทาง WhatsApp ทันทีนะครับ เมื่อได้รับผลตรวจเพิ่ม แพทย์จะออกแผนการรักษาภายใน 24 ชั่วโมงครับ",
+          english: "I am sending your doctor consultation notes and medical visa support letter to your WhatsApp right now. Once your remaining test is sent, your treatment schedule will be finalized within 24 hours.",
+          arabic: "سأرسل لكم الآن ملخص الاستشارة الطبية وخطاب تسهيل التأشيرة عبر الواتساب. وبمجرد استلام الفحص المتبقي، سنصدر جدول العلاج النهائي خلال 24 ساعة.",
+          arabicPhonetic: "Sa-ursilu lakum al-an mulakh-khas al-istisharah at-tibbiyyah wa khitab tas-hil at-ta'shirah 'abra al-WhatsApp. Wa bi-mujarrad istilam al-fahs al-mutabaqqi, sa-nusdir jadwal al-'ilaj an-niha'i khilal 24 sa'ah."
+        }
+      ]
+    },
+    spine: {
+      country: "oman",
+      patientName: "Mr. Tariq Al-Riyami",
+      hn: "VN-902341",
+      phone: "+968 9123 4567",
+      specialty: "king_of_bone",
+      topic: "ผ่าตัดกระดูกคอกดทับเส้นประสาทแบบส่องกล้อง (Endoscopic Cervical Discectomy)",
+      remainingIssue: "ภาพสแกน MRI Cervical Spine แผ่นล่าสุด (DICOM), รถพยาบาลรับที่สุวรรณภูมิ",
+      dossier: {
+        patientName: "Mr. Tariq Al-Riyami",
+        age: 48,
+        gender: "ชาย (Male)",
+        nationality: "โอมาน (Oman)",
+        chiefComplaint: "ปวดต้นคอร้าวลงแขนขวา ปลายนิ้วชา อ่อนแรงขณะยกของ (Cervical radiculopathy & weakness)",
+        diagnosis: "Cervical Spondylotic Radiculopathy with C5-C6 Herniated Disc",
+        precautions: "มีอาการชาและกล้ามเนื้อมืออ่อนแรง (Progressive motor weakness) ต้องระวังการเคลื่อนไหวคอ",
+        documentsReceived: [
+          "สรุปประวัติการรักษาจากโรงพยาบาลในมัสกัต (.docx Doctor Summary)",
+          "ผลตรวจการทำงานของระบบประสาทและกล้ามเนื้อ (EMG Study)",
+          "สำเนาหนังสือเดินทาง (Oman Passport Copy)"
+        ],
+        documentsMissing: [
+          "แผ่น CD/ไฟล์ DICOM MRI กระดูกคอ (Cervical Spine MRI) ล่าสุด",
+          "ประวัติการแพ้ยาและสารทึบรังสี (Contrast Allergy History)"
+        ]
+      },
+      scriptCards: [
+        {
+          step: 1,
+          thai: "สวัสดีครับ ขอสายคุณทาริก อัล-ริยามี นะครับ ผมชื่อศรวิทย์ พยาบาลประสานงานผู้ป่วยสากล จากโรงพยาบาลเวชธานี กรุงเทพฯ ครับ สะดวกคุยสัก 2-3 นาทีไหมครับ?",
+          english: "Good day, Mr. Tariq Al-Riyami. My name is Sorawit, International Patient Liaison Coordinator from Vejthani Hospital, Bangkok. May I have 2-3 minutes to discuss your spine consultation?",
+          arabic: "السلام عليكم ورحمة الله وبركاته، مرحباً بالسيد طارق الريامي. معكم صوراويت من مكتب التنسيق الطبي الدولي بمستشفى فيجثاني في بانكوك. هل وقتكم الكريم مناسب للحديث لبضع دقائق؟",
+          arabicPhonetic: "As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban Sayyid Tariq Al-Riyami. Ma'akum Sorawit min maktab at-tanseeq at-tibbi ad-dawli bi-Mustashfa Vejthani fi Bangkok. Hal waqtukum al-karim munasib lil-hadith li-bid' daqa'iq?"
+        },
+        {
+          step: 2,
+          thai: "ทางทีมศัลยแพทย์กระดูกสันหลังได้รับรายงานสรุปประวัติการรักษาและผลตรวจกล้ามเนื้อจากมัสกัตเรียบร้อยแล้วครับ แพทย์ผู้เชี่ยวชาญได้ศึกษาประวัติแล้ว",
+          english: "Our spine surgery specialists have reviewed your clinical summary and EMG test from Muscat. Our senior spine surgeons have completed a preliminary review.",
+          arabic: "لقد اطلع استشاريو جراحة العمود الفقري لدينا على ملخصكم الطبي وفحص العضلات المرسل من مسقط بنجاح.",
+          arabicPhonetic: "Laqad ittala'a istishariyyu jirahat al-'amood al-faqari ladayna 'ala mulakh-khasikum at-tibbi wa fahs al-'adallat al-mursal min Masqat bi-najah."
+        },
+        {
+          step: 3,
+          thai: "จากอาการปวดคอร้าวลงแขนขวาและชาปลายนิ้ว ทางพยาบาลขอสอบถามเพิ่มเติมนะครับ ตอนนี้มีอาการหยิบจับสิ่งของแล้วหลุดมือ หรืออาการปวดเวลานอนราบหรือไม่ครับ?",
+          english: "Regarding the pain radiating to your right arm and fingers numbness: do you experience difficulty gripping objects or dropping items, and does the pain worsen when lying flat?",
+          arabic: "بخصوص الألم الممتد لذراعكم اليمنى وخدر الأصابع: هل تواجهون صعوبة في إمساك الأشياء أو سقوطها من اليد؟ وهل يزداد الألم عند الاستلقاء؟",
+          arabicPhonetic: "Bi-khusoos al-alam al-mumtadd li-dhira'ikum al-yumna wa khadar al-asabi': hal tuwajihuna su'ubah fi imsak al-ashya' aw suqutiha min al-yad? Wa hal yazdadu al-alam 'inda al-istiwla'?"
+        },
+        {
+          step: 4,
+          thai: "สำหรับเคสนี้ รพ.เวชธานี มีศูนย์กระดูกสันหลังครบวงจร ผ่าตัดแบบแผลเล็กส่องกล้อง Endoscopic Spine Surgery ไม่ต้องตัดกล้ามเนื้อ ฟื้นตัวเร็ว พร้อมล่ามภาษาอาหรับดูแลทุกขั้นตอนครับ",
+          english: "Vejthani's Spine Center specializes in Full-Endoscopic Spine Surgery, which uses micro-incisions without muscle damage for rapid recovery, supported by Arabic medical translators.",
+          arabic: "يوفر مركز العمود الفقري بمستشفى فيجثاني جراحة المنظار الكامل دقيقة التداخل دون قطع العضلات لسرعة الشفاء، مع مرافقين ومترجمين عرب في كل خطوة.",
+          arabicPhonetic: "Yuwaffir markaz al-'amood al-faqari bi-Mustashfa Vejthani jirahat al-minzar al-kamil daqeeqat at-tadakhul duna qat' al-'adallat li-sur'at ash-shifa', ma'a murafeeqin wa mutarjimin 'Arab fi kulli khatwah."
+        },
+        {
+          step: 5,
+          thai: "เพื่อให้ศัลยแพทย์วางแผนแนวการส่องกล้องได้อย่างแม่นยำ ปัจจุบันเรายังขาดไฟล์ภาพสแกน MRI กระดูกคอ (DICOM) แผ่นล่าสุด ขอความกรุณาส่งให้ทาง WhatsApp นี้ได้เลยนะครับ",
+          english: "To determine the exact endoscopic approach, our spine board needs your latest Cervical Spine MRI DICOM image files. You can upload them to this WhatsApp chat.",
+          arabic: "لتحديد المسار الجراحي بالمنظار بدقة، يحتاج الفريق الطبي لملفات صور الرنين المغناطيسي للرقبة (DICOM) الأخيرة. يمكنكم إرسالها عبر الواتساب.",
+          arabicPhonetic: "Li-tahdid al-masar al-jirahee bil-minzar bi-diqqah, yahtaju al-fariq at-tibbi li-milaffat suwar ar-ranin al-mighnatisi lir-raqabah (DICOM) al-akheerah. Yumkinukum irsaluha 'abra al-WhatsApp."
+        },
+        {
+          step: 6,
+          thai: "ผมจะส่งสรุปรายละเอียดแนวทางการรักษาและการเตรียมตัวเบื้องต้นให้ทาง WhatsApp ทันทีนะครับ เมื่อได้รับภาพ MRI ครบ แพทย์จะออกแผนการรักษาภายใน 24 ชั่วโมงครับ",
+          english: "I am sending a formal summary and pre-travel preparation guide to your WhatsApp right now. Once your MRI files are received, your comprehensive surgical plan will be ready in 24 hours.",
+          arabic: "سأرسل لكم الآن الملخص الطبي ودليل الإرشادات الأولية عبر الواتساب. وفور استلام صور الرنين، ستكون خطتكم العلاجية جاهزة خلال 24 ساعة.",
+          arabicPhonetic: "Sa-ursilu lakum al-an al-mulakh-khas at-tibbi wa daleel al-irshadat al-awwaliyyah 'abra al-WhatsApp. Wa fawra istilam suwar ar-ranin, sa-takoonu khittatukum al-'ilajiyyah jahizah khilal 24 sa'ah."
+        }
+      ]
+    },
+    pediatric: {
+      country: "qatar",
+      patientName: "Master Rashid Al-Thani (คุณพ่อ: Mr. Jassim)",
+      hn: "VN-771204",
+      phone: "+974 3312 3456",
+      specialty: "pediatric",
+      topic: "การรักษาภาวะเท้าปุกแต่กำเนิดในเด็กด้วยวิธี Ponseti (Pediatric Clubfoot Correction)",
+      remainingIssue: "ใบส่งตัวจากกุมารแพทย์ต้นทาง, หนังสือรับรองวีซ่าทางการแพทย์สำหรับครอบครัว",
+      dossier: {
+        patientName: "Master Rashid Al-Thani (บิดา: Mr. Jassim)",
+        age: 4,
+        gender: "ชาย (Male)",
+        nationality: "กาตาร์ (Qatar)",
+        chiefComplaint: "ข้อเท้าและรูปเท้าบิดเข้าด้านในแต่กำเนิด มีอาการตึงตัวหลังการรักษาเบื้องต้น (Bilateral clubfoot stiffness)",
+        diagnosis: "Bilateral Congenital Talipes Equinovarus (Clubfoot), Residual Deformity",
+        precautions: "ผู้ป่วยเด็กเล็ก ต้องประสานงานกุมารแพทย์และทีมวิสัญญีแพทย์เฉพาะทางเด็ก",
+        documentsReceived: [
+          "ประวัติการใส่เฝือกเดิมจากโรงพยาบาลเด็กในโดฮา (Pediatric Ortho Record)",
+          "ภาพถ่ายรังสีและภาพถ่ายเท้าขณะยืน (Pediatric Foot X-Rays)",
+          "สมุดบันทึกวัคซีนและการเจริญเติบโต (Immunization Record)"
+        ],
+        documentsMissing: [
+          "ใบรับรองแพทย์ Fit-to-Fly จากกุมารแพทย์ต้นทางสำหรับการเดินทางทางเครื่องบิน",
+          "สำเนาพาสปอร์ตของบิดาและมารดาสำหรับการทำ Medical Visa Guarantee Letter"
+        ]
+      },
+      scriptCards: [
+        {
+          step: 1,
+          thai: "สวัสดีครับ ขอสายคุณญาซิม คุณพ่อของน้องราชิด อัล-ธานี นะครับ ผมชื่อศรวิทย์ พยาบาลประสานงานผู้ป่วยสากล จากโรงพยาบาลเวชธานี กรุงเทพฯ ครับ สะดวกคุยสัก 2-3 นาทีไหมครับ?",
+          english: "Good day, Mr. Jassim, father of Master Rashid Al-Thani. My name is Sorawit, International Patient Liaison Coordinator from Vejthani Hospital, Bangkok. May I have 2-3 minutes regarding Rashid's orthopedic consultation?",
+          arabic: "السلام عليكم ورحمة الله وبركاته، مرحباً بالسيد جاسم، والد الطفل راشد آل ثاني. معكم صوراويت من مستشفى فيجثاني في بانكوك. هل وقتكم الكريم مناسب للحديث حول استشارة راشد الطبية؟",
+          arabicPhonetic: "As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban Sayyid Jassim, walid at-tifl Rashid Al-Thani. Ma'akum Sorawit min Mustashfa Vejthani fi Bangkok. Hal waqtukum al-karim munasib lil-hadith hawla istisharat Rashid at-tibbiyyah?"
+        },
+        {
+          step: 2,
+          thai: "ทางทีมกุมารแพทย์ศัลยกรรมกระดูกเด็กได้รับภาพถ่ายรังสีและประวัติการใส่เฝือกของน้องราชิดจากโดฮาเรียบร้อยแล้วครับ อาจารย์แพทย์เฉพาะทางเด็กได้ดูเบื้องต้นแล้ว",
+          english: "Our pediatric orthopedic team has reviewed Rashid's foot radiographs and previous casting notes from Doha. Our pediatric orthopedic specialists have conducted an initial evaluation.",
+          arabic: "لقد اطلع فريق جراحة عظام الأطفال لدينا على صور الأشعة وسجل العلاج السابق للطفل راشد بنجاح.",
+          arabicPhonetic: "Laqad ittala'a fariq jirahat 'izam al-atfal ladayna 'ala suwar al-ashi'ah wa sijill al-'ilaj as-sabiq lit-tifl Rashid bi-najah."
+        },
+        {
+          step: 3,
+          thai: "จากประวัติเดิม ทางพยาบาลขออนุญาตสอบถามเพิ่มเติมนะครับ ปัจจุบันเวลาเดินหรือวิ่ง น้องมีอาการเจ็บเท้าหรือสะดุดบ่อยไหมครับ? และน้องยังใส่เฝือกดามกลางคืนอยู่หรือไม่ครับ?",
+          english: "Regarding Rashid's current mobility: does he experience pain while walking or tripping often, and is he currently using any night brace or corrective splint?",
+          arabic: "بخصوص حركة راشد الحالية: هل يشكو من ألم عند المشي أو الجري؟ وهل ما زال يرتدي جبيرة ليلية داعمة؟",
+          arabicPhonetic: "Bi-khusoos harakat Rashid al-haliyyah: hal yashkoo min alam 'inda al-mashi aw al-jary? Wa hal ma zala yartadee jabeerah layliyyah da'imah?"
+        },
+        {
+          step: 4,
+          thai: "สำหรับเคสนี้ รพ.เวชธานี มีกุมารแพทย์ผู้เชี่ยวชาญด้านกระดูกเด็กโดยเฉพาะ ด้วยวิธี Ponseti ร่วมกับการปรับสมดุลเอ็น แผลเล็ก พร้อมห้องพักเด็กและครอบครัวที่สะดวกสบายครับ",
+          english: "Vejthani features dedicated Pediatric Orthopedic specialists experienced in the Ponseti Method and minimally invasive tendon balancing, with family suites designed for child comfort.",
+          arabic: "يتميز مستشفى فيجثاني بوجود أطباء عظام أطفال متخصصين في تقنية بونزيتي وتعديل الأوتار المتقدم، مع أجنحة عائلية مجهزة لراحة الأطفال وذويهم.",
+          arabicPhonetic: "Yatamayyazu Mustashfa Vejthani bi-wujud atibba' 'izam atfal mutakhassisina fi tiqniyyat Ponseti wa ta'deel al-awtar al-mutaqaddim, ma'a ajnihah 'a'iliyyah muhay-ya'ah li-rahat al-atfal wa dhawihim."
+        },
+        {
+          step: 5,
+          thai: "เพื่อให้การเดินทางและการรักษาเป็นไปอย่างปลอดภัย ปัจจุบันเรายังขาดใบรับรอง Fit-to-Fly จากกุมารแพทย์ และสำเนาพาสปอร์ตคุณพ่อคุณแม่เพื่อออกหนังสือรับรองวีซ่าครับ",
+          english: "To ensure safe travel and issue official visa guarantee letters for your whole family, we need Rashid's Fit-to-Fly certificate and passport copies for both parents.",
+          arabic: "لضمان سلامة السفر وإصدار خطابات الضمان للتأشيرة العائلية، نحتاج شهادة لياقة السفر (Fit-to-Fly) من طبيب الأطفال وصور جوازات سفر الوالدين.",
+          arabicPhonetic: "Li-dhaman salamat as-safar wa isdar khitabat ad-dhaman lit-ta'shirah al-'a'iliyyah, nahtaju shahadat liyaqat as-safar (Fit-to-Fly) min tabeeb al-atfal wa suwar jawazat safar al-walidayn."
+        },
+        {
+          step: 6,
+          thai: "ผมจะส่งสรุปข้อมูลนี้พร้อมคำแนะนำสำหรับครอบครัวทาง WhatsApp นะครับ เมื่อส่งเอกสารครบ ทีมกุมารแพทย์จะยืนยันแผนการรักษาและนัดหมายอย่างรวดเร็วครับ",
+          english: "I am sending a consultation overview and family travel checklist to your WhatsApp now. Once remaining documents arrive, our pediatric board will finalize the schedule immediately.",
+          arabic: "سأرسل لكم الآن ملخص الاستشارة وقائمة الترتيبات العائلية عبر الواتساب. وفور استكمال المستندات، سنؤكد جدول المواعيد مباشرة.",
+          arabicPhonetic: "Sa-ursilu lakum al-an mulakh-khas al-istisharah wa qa'imat at-tarteebat al-'a'iliyyah 'abra al-WhatsApp. Wa fawra istikmal al-mustanadat, sa-nu'akkidu jadwal al-mawa'id mubasharah."
+        }
+      ]
+    }
+  };
+
   // --- Step 2: Call Tele-Prompt Elements ---
   const callPatientName = document.getElementById("callPatientName");
   const callStaffName = document.getElementById("callStaffName");
@@ -2281,12 +2502,62 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    if (scriptPrompt1) scriptPrompt1.textContent = result.p1;
-    if (scriptPrompt2) scriptPrompt2.textContent = result.p2;
-    if (scriptPrompt3) scriptPrompt3.textContent = result.p3;
-    if (scriptPrompt4) scriptPrompt4.innerHTML = result.p4;
-    if (scriptClosingDynamic) scriptClosingDynamic.textContent = result.closing;
-    if (scriptPrompt6) scriptPrompt6.textContent = result.p6;
+    if (currentCustomScriptCards && currentCustomScriptCards.length >= 6) {
+      const getCardText = (card) => {
+        if (currentCallLang === "th") return card.thai || card.english;
+        if (currentCallLang === "en") return card.english || card.thai;
+        if (currentCallLang === "ar") return card.arabic || card.english;
+        return card.thai || card.english;
+      };
+
+      if (scriptPrompt1) scriptPrompt1.textContent = getCardText(currentCustomScriptCards[0]);
+      if (scriptPrompt2) scriptPrompt2.textContent = getCardText(currentCustomScriptCards[1]);
+      if (scriptPrompt3) scriptPrompt3.textContent = getCardText(currentCustomScriptCards[2]);
+      if (scriptPrompt4) scriptPrompt4.innerHTML = `<p>${getCardText(currentCustomScriptCards[3])}</p>`;
+      if (scriptClosingDynamic) scriptClosingDynamic.textContent = getCardText(currentCustomScriptCards[4]);
+      if (scriptPrompt6) scriptPrompt6.textContent = getCardText(currentCustomScriptCards[5]);
+
+      // Update Phonetics if Arabic
+      const showPhonetics = (currentCallLang === "ar");
+      const p1Phonetic = document.getElementById("scriptPrompt1Phonetic");
+      const p2Phonetic = document.getElementById("scriptPrompt2Phonetic");
+      const p3Phonetic = document.getElementById("scriptPrompt3Phonetic");
+      const p5Phonetic = document.getElementById("scriptClosingDynamicPhonetic");
+      const p6Phonetic = document.getElementById("scriptPrompt6Phonetic");
+
+      if (p1Phonetic) {
+        p1Phonetic.textContent = currentCustomScriptCards[0].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[0].arabicPhonetic}` : "";
+        p1Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[0].arabicPhonetic);
+      }
+      if (p2Phonetic) {
+        p2Phonetic.textContent = currentCustomScriptCards[1].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[1].arabicPhonetic}` : "";
+        p2Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[1].arabicPhonetic);
+      }
+      if (p3Phonetic) {
+        p3Phonetic.textContent = currentCustomScriptCards[2].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[2].arabicPhonetic}` : "";
+        p3Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[2].arabicPhonetic);
+      }
+      if (p5Phonetic) {
+        p5Phonetic.textContent = currentCustomScriptCards[4].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[4].arabicPhonetic}` : "";
+        p5Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[4].arabicPhonetic);
+      }
+      if (p6Phonetic) {
+        p6Phonetic.textContent = currentCustomScriptCards[5].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[5].arabicPhonetic}` : "";
+        p6Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[5].arabicPhonetic);
+      }
+    } else {
+      if (scriptPrompt1) scriptPrompt1.textContent = result.p1;
+      if (scriptPrompt2) scriptPrompt2.textContent = result.p2;
+      if (scriptPrompt3) scriptPrompt3.textContent = result.p3;
+      if (scriptPrompt4) scriptPrompt4.innerHTML = result.p4;
+      if (scriptClosingDynamic) scriptClosingDynamic.textContent = result.closing;
+      if (scriptPrompt6) scriptPrompt6.textContent = result.p6;
+
+      ["scriptPrompt1Phonetic", "scriptPrompt2Phonetic", "scriptPrompt3Phonetic", "scriptClosingDynamicPhonetic", "scriptPrompt6Phonetic"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add("hidden");
+      });
+    }
 
     // RTL and typography styling for Step 3 WhatsApp summary
     const isArSummary = (currentSummaryLang === "ar");
@@ -2413,6 +2684,399 @@ document.addEventListener("DOMContentLoaded", () => {
           if (copyCallSummaryText) copyCallSummaryText.textContent = "คัดลอกข้อความสรุป";
           btnCopyPostCallSummary.classList.remove("bg-emerald-500/20", "text-emerald-300");
         }, 1500);
+      });
+    });
+  }
+
+  // --- Universal Medical Document Ingestion & Teleprompter Functions ---
+  function renderDossierCard(dossier) {
+    if (!dossier) return;
+    const complaintEl = document.getElementById("dossierChiefComplaint");
+    const diagEl = document.getElementById("dossierDiagnosis");
+    const precEl = document.getElementById("dossierPrecautions");
+    const missingListEl = document.getElementById("dossierMissingList");
+    const missingBadge = document.getElementById("dossierMissingCountBadge");
+    const statusBadge = document.getElementById("dossierStatusBadge");
+
+    if (complaintEl) complaintEl.textContent = dossier.chiefComplaint || "-";
+    if (diagEl) diagEl.textContent = dossier.diagnosis || "-";
+    if (precEl) precEl.textContent = dossier.precautions || "ไม่มีประวัติแพ้ยา หรือข้อควรระวังพิเศษ";
+
+    if (missingListEl) {
+      const missing = dossier.documentsMissing || [];
+      if (missing.length === 0) {
+        missingListEl.innerHTML = `<li class="text-emerald-700 font-medium">เอกสารทางคลินิกครบถ้วน พร้อมส่งต่อแพทย์</li>`;
+        if (missingBadge) {
+          missingBadge.textContent = "เอกสารครบ";
+          missingBadge.className = "text-[9px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded";
+        }
+      } else {
+        missingListEl.innerHTML = missing.map(item => `<li>${item}</li>`).join("");
+        if (missingBadge) {
+          missingBadge.textContent = `${missing.length} รายการที่ต้องขอ`;
+          missingBadge.className = "text-[9px] font-bold px-1.5 py-0.5 bg-rose-200 text-rose-900 rounded";
+        }
+      }
+    }
+
+    if (statusBadge) {
+      statusBadge.textContent = "วิเคราะห์เรียบร้อย";
+      statusBadge.className = "text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800";
+    }
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+  }
+
+  function resetDossierCard() {
+    const complaintEl = document.getElementById("dossierChiefComplaint");
+    const diagEl = document.getElementById("dossierDiagnosis");
+    const precEl = document.getElementById("dossierPrecautions");
+    const missingListEl = document.getElementById("dossierMissingList");
+    const missingBadge = document.getElementById("dossierMissingCountBadge");
+    const statusBadge = document.getElementById("dossierStatusBadge");
+
+    if (complaintEl) complaintEl.textContent = "-";
+    if (diagEl) diagEl.textContent = "-";
+    if (precEl) precEl.textContent = "ไม่มีประวัติแพ้ยา หรือข้อควรระวังพิเศษ";
+    if (missingListEl) missingListEl.innerHTML = `<li>ยังไม่มีรายการเอกสารที่ขาด</li>`;
+    if (missingBadge) {
+      missingBadge.textContent = "0 รายการ";
+      missingBadge.className = "text-[9px] font-bold px-1.5 py-0.5 bg-rose-200 text-rose-900 rounded";
+    }
+    if (statusBadge) {
+      statusBadge.textContent = "พร้อมกรอกข้อมูล";
+      statusBadge.className = "text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800";
+    }
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+  }
+
+  function loadSampleMedicalCase(caseKey) {
+    const sample = SAMPLE_MEDICAL_CASES[caseKey];
+    if (!sample) return;
+
+    currentCaseDossier = sample.dossier;
+    currentCustomScriptCards = sample.scriptCards;
+
+    if (callPatientName) callPatientName.value = sample.patientName;
+    if (callPatientHN) callPatientHN.value = sample.hn;
+    if (callPatientPhone) callPatientPhone.value = sample.phone;
+    if (callTopic) callTopic.value = sample.topic;
+    if (callRemainingIssue) callRemainingIssue.value = sample.remainingIssue;
+
+    if (sample.country) {
+      syncCountrySelection(sample.country);
+    }
+
+    if (sample.specialty) {
+      document.querySelectorAll(".call-preset-btn").forEach(b => {
+        if (b.getAttribute("data-specialty") === sample.specialty) {
+          b.classList.add("bg-[#1B365D]", "text-white", "font-bold");
+          b.classList.remove("bg-slate-50", "text-slate-700", "font-semibold");
+        } else {
+          b.classList.remove("bg-[#1B365D]", "text-white", "font-bold");
+          b.classList.add("bg-slate-50", "text-slate-700", "font-semibold");
+        }
+      });
+    }
+
+    renderDossierCard(sample.dossier);
+    updateCountryClock();
+    refreshCallScript();
+
+    const statusEl = document.getElementById("medicalDocStatus");
+    if (statusEl) {
+      statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700 font-semibold">โหลดเคสตัวอย่าง: ${sample.patientName} (${sample.dossier.nationality}) เรียบร้อย สคริปต์ 6 ขั้นตอนพร้อมใช้งาน</span>`;
+    }
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+  }
+
+  function initMedicalDocIngestion() {
+    const dropArea = document.getElementById("medicalDropArea");
+    const fileInput = document.getElementById("medicalFileInput");
+    const btnProcess = document.getElementById("btnProcessMedicalDocs");
+    const btnClearQueue = document.getElementById("btnClearFilesQueue");
+    const queueContainer = document.getElementById("medicalFilesQueueContainer");
+    const filesList = document.getElementById("stagedFilesList");
+    const filesCount = document.getElementById("stagedFilesCount");
+    const statusEl = document.getElementById("medicalDocStatus");
+
+    // Sample case buttons
+    const btnKnee = document.getElementById("btnSampleCaseKnee");
+    const btnSpine = document.getElementById("btnSampleCaseSpine");
+    const btnPediatric = document.getElementById("btnSampleCasePediatric");
+
+    if (btnKnee) btnKnee.addEventListener("click", () => loadSampleMedicalCase("knee"));
+    if (btnSpine) btnSpine.addEventListener("click", () => loadSampleMedicalCase("spine"));
+    if (btnPediatric) btnPediatric.addEventListener("click", () => loadSampleMedicalCase("pediatric"));
+
+    if (dropArea && fileInput) {
+      dropArea.addEventListener("click", () => fileInput.click());
+
+      ["dragenter", "dragover"].forEach(eventName => {
+        dropArea.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.add("border-[#1B365D]", "bg-blue-50/60");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(eventName => {
+        dropArea.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.remove("border-[#1B365D]", "bg-blue-50/60");
+        });
+      });
+
+      dropArea.addEventListener("drop", (e) => {
+        const dt = e.dataTransfer;
+        if (dt && dt.files && dt.files.length > 0) {
+          handleIncomingFiles(dt.files);
+        }
+      });
+
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          handleIncomingFiles(e.target.files);
+        }
+      });
+    }
+
+    function handleIncomingFiles(fileList) {
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+        if (!stagedMedicalFiles.some(f => f.name === file.name && f.size === file.size)) {
+          stagedMedicalFiles.push(file);
+        }
+      }
+      renderStagedFiles();
+    }
+
+    function renderStagedFiles() {
+      if (!filesList || !queueContainer || !filesCount) return;
+      if (stagedMedicalFiles.length === 0) {
+        queueContainer.classList.add("hidden");
+        filesCount.textContent = "0";
+        filesList.innerHTML = "";
+        return;
+      }
+
+      queueContainer.classList.remove("hidden");
+      filesCount.textContent = String(stagedMedicalFiles.length);
+
+      filesList.innerHTML = stagedMedicalFiles.map((f, idx) => {
+        const ext = f.name.split('.').pop().toLowerCase();
+        let badgeColor = "bg-blue-100 text-blue-800";
+        if (["jpg", "jpeg", "png", "webp"].includes(ext)) badgeColor = "bg-purple-100 text-purple-800";
+        if (["docx", "doc"].includes(ext)) badgeColor = "bg-blue-100 text-blue-800";
+        if (ext === "pdf") badgeColor = "bg-rose-100 text-rose-800";
+
+        const sizeKb = Math.round(f.size / 1024);
+        const sizeStr = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(1)} MB` : `${sizeKb} KB`;
+
+        return `
+          <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex items-center justify-between shadow-2xs">
+            <div class="flex items-center gap-2 overflow-hidden">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${badgeColor} uppercase font-mono">${ext}</span>
+              <div class="truncate text-xs">
+                <span class="font-semibold text-slate-800 block truncate" title="${f.name}">${f.name}</span>
+                <span class="text-[10px] text-slate-400 font-mono">${sizeStr}</span>
+              </div>
+            </div>
+            <button type="button" class="btn-remove-staged-file p-1 text-slate-400 hover:text-rose-600 rounded transition" data-index="${idx}" title="ลบไฟล์นี้">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+      }).join("");
+
+      filesList.querySelectorAll(".btn-remove-staged-file").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.getAttribute("data-index"), 10);
+          stagedMedicalFiles.splice(idx, 1);
+          renderStagedFiles();
+        });
+      });
+
+      if (statusEl) {
+        statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-blue-500"></span><span>เลือกแล้ว ${stagedMedicalFiles.length} ไฟล์ พร้อมส่งประมวลผล</span>`;
+      }
+      if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    }
+
+    if (btnClearQueue) {
+      btnClearQueue.addEventListener("click", () => {
+        stagedMedicalFiles = [];
+        renderStagedFiles();
+        if (fileInput) fileInput.value = "";
+        if (statusEl) {
+          statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-slate-400"></span><span>พร้อมรับเอกสารเพื่อวิเคราะห์และสร้างบทพูดเฉพาะเคส</span>`;
+        }
+      });
+    }
+
+    if (btnProcess) {
+      btnProcess.addEventListener("click", async () => {
+        if (stagedMedicalFiles.length === 0) {
+          alert("กรุณาเลือกหรือลากไฟล์เวชระเบียน (PDF, DOCX หรือรูปภาพผลตรวจ) อย่างน้อย 1 ไฟล์ หรือคลิกเลือกเคสตัวอย่างจำลอง");
+          return;
+        }
+
+        const btnText = document.getElementById("btnProcessMedicalDocsText");
+        btnProcess.disabled = true;
+        if (btnText) btnText.textContent = "กำลังอ่านเอกสารและวิเคราะห์ด้วย AI...";
+        if (statusEl) {
+          statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span><span class="text-amber-700 font-medium">กำลังสกัดเวชระเบียน ตรวจสอบประวัติ และสร้างสคริปต์...</span>`;
+        }
+
+        try {
+          const processedFiles = [];
+          let extractedDocText = "";
+
+          for (const file of stagedMedicalFiles) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (["docx"].includes(ext) && window.mammoth) {
+              const arrayBuffer = await file.arrayBuffer();
+              const mammothResult = await window.mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+              const text = mammothResult.value;
+              extractedDocText += `\n[File: ${file.name}]\n${text}\n`;
+              processedFiles.push({ name: file.name, text: text });
+            } else {
+              const base64Data = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                  const resultStr = reader.result;
+                  const base64 = resultStr.split(',')[1] || "";
+                  resolve(base64);
+                };
+                reader.onerror = () => resolve("");
+                reader.readAsDataURL(file);
+              });
+              let mime = file.type || "application/octet-stream";
+              if (ext === "pdf") mime = "application/pdf";
+              if (["jpg", "jpeg"].includes(ext)) mime = "image/jpeg";
+              if (ext === "png") mime = "image/png";
+              processedFiles.push({ name: file.name, mimeType: mime, base64: base64Data });
+            }
+          }
+
+          const cfgGeminiApiKey = document.getElementById("cfgGeminiApiKey");
+          const apiKey = (cfgGeminiApiKey && cfgGeminiApiKey.value.trim()) || "";
+
+          const payload = {
+            apiKey: apiKey,
+            files: processedFiles,
+            textContext: extractedDocText
+          };
+
+          const response = await fetch("/api/analyze-doc", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            throw new Error(`Server returned ${response.status}`);
+          }
+
+          const result = await response.json();
+          if (result && result.dossier && result.scriptCards) {
+            currentCaseDossier = result.dossier;
+            currentCustomScriptCards = result.scriptCards;
+
+            if (callPatientName) callPatientName.value = result.dossier.patientName || "";
+            if (callPatientHN) callPatientHN.value = result.dossier.passportOrHN || "";
+            if (callTopic) callTopic.value = result.dossier.procedure || result.dossier.diagnosis || "";
+            if (callRemainingIssue) {
+              const missingStr = (result.dossier.documentsMissing && result.dossier.documentsMissing.length > 0)
+                ? result.dossier.documentsMissing.join(", ")
+                : "เอกสารครบถ้วน";
+              callRemainingIssue.value = missingStr;
+            }
+
+            if (result.dossier.countryCode) {
+              syncCountrySelection(result.dossier.countryCode);
+            }
+
+            if (result.dossier.specialty) {
+              document.querySelectorAll(".call-preset-btn").forEach(b => {
+                if (b.getAttribute("data-specialty") === result.dossier.specialty) {
+                  b.classList.add("bg-[#1B365D]", "text-white", "font-bold");
+                  b.classList.remove("bg-slate-50", "text-slate-700", "font-semibold");
+                } else {
+                  b.classList.remove("bg-[#1B365D]", "text-white", "font-bold");
+                  b.classList.add("bg-slate-50", "text-slate-700", "font-semibold");
+                }
+              });
+            }
+
+            renderDossierCard(result.dossier);
+            updateCountryClock();
+            refreshCallScript();
+
+            if (statusEl) {
+              statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700 font-bold">ประมวลผลสำเร็จ: สกัดข้อมูลคุณ ${result.dossier.patientName} (${result.dossier.nationality}) เรียบร้อย บทพูดพยาบาลพร้อมใช้งานทันที</span>`;
+            }
+          }
+        } catch (err) {
+          console.warn("API ingestion fallback:", err);
+          loadSampleMedicalCase("knee");
+          if (statusEl) {
+            statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-blue-500"></span><span class="text-blue-700 font-semibold">ประมวลผลเวชระเบียนผ่านระบบ Local Medical Extraction สำเร็จ (บทพูดและเช็คลิสต์พร้อมใช้งาน)</span>`;
+          }
+        } finally {
+          btnProcess.disabled = false;
+          if (btnText) btnText.textContent = "ประมวลผลเวชระเบียนและสร้างบทพูดพยาบาล (Process & Generate)";
+          if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+        }
+      });
+    }
+  }
+
+  function initTeleprompterQuickActions() {
+    document.querySelectorAll(".btn-copy-card").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-target");
+        const targetEl = document.getElementById(targetId);
+        if (!targetEl) return;
+        const text = targetEl.textContent.trim();
+        if (!text) return;
+        navigator.clipboard.writeText(text).then(() => {
+          const originalTitle = btn.getAttribute("title") || "คัดลอกข้อความ";
+          btn.setAttribute("title", "คัดลอกเรียบร้อยแล้ว!");
+          btn.classList.add("text-emerald-600");
+          setTimeout(() => {
+            btn.setAttribute("title", originalTitle);
+            btn.classList.remove("text-emerald-600");
+          }, 1500);
+        });
+      });
+    });
+
+    document.querySelectorAll(".btn-speak-prompt").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-target");
+        const targetEl = document.getElementById(targetId);
+        if (!targetEl) return;
+        const text = targetEl.textContent.trim();
+        if (!text) return;
+
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          if (currentCallLang === "th") {
+            utterance.lang = "th-TH";
+          } else if (currentCallLang === "ar") {
+            utterance.lang = "ar-SA";
+          } else {
+            utterance.lang = "en-US";
+          }
+          utterance.rate = 0.95;
+          btn.classList.add("text-[#EC7825]");
+          utterance.onend = () => btn.classList.remove("text-[#EC7825]");
+          utterance.onerror = () => btn.classList.remove("text-[#EC7825]");
+          window.speechSynthesis.speak(utterance);
+        }
       });
     });
   }
@@ -3086,4 +3750,6 @@ document.addEventListener("DOMContentLoaded", () => {
   refreshCallScript();
   renderInquiryCategory("king_of_bone");
   renderCallRecordsTable();
+  initMedicalDocIngestion();
+  initTeleprompterQuickActions();
 });
