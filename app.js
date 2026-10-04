@@ -2808,8 +2808,33 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnSpine) btnSpine.addEventListener("click", () => loadSampleMedicalCase("spine"));
     if (btnPediatric) btnPediatric.addEventListener("click", () => loadSampleMedicalCase("pediatric"));
 
+    const btnAttach = document.getElementById("btnAttachMedicalDocs");
+    const btnStep1Attach = document.getElementById("btnStep1AttachDoc");
+    const btnInqAttach = document.getElementById("btnInqAttachDoc");
+
+    function triggerFileSelect(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      if (fileInput) {
+        fileInput.click();
+      }
+    }
+
+    if (btnAttach) btnAttach.addEventListener("click", triggerFileSelect);
+    if (btnStep1Attach) btnStep1Attach.addEventListener("click", triggerFileSelect);
+    if (btnInqAttach) btnInqAttach.addEventListener("click", triggerFileSelect);
+
     if (dropArea && fileInput) {
-      dropArea.addEventListener("click", () => fileInput.click());
+      dropArea.addEventListener("click", (e) => {
+        if (e.target.closest("button") || e.target === fileInput) return;
+        triggerFileSelect(e);
+      });
+
+      fileInput.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
 
       ["dragenter", "dragover"].forEach(eventName => {
         dropArea.addEventListener(eventName, (e) => {
@@ -2837,6 +2862,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fileInput.addEventListener("change", (e) => {
         if (e.target.files && e.target.files.length > 0) {
           handleIncomingFiles(e.target.files);
+          fileInput.value = "";
         }
       });
     }

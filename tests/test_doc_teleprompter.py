@@ -92,7 +92,10 @@ class TestMedicalDocTeleprompter(unittest.TestCase):
             "scriptPrompt2Phonetic",
             "scriptPrompt3Phonetic",
             "scriptClosingDynamicPhonetic",
-            "scriptPrompt6Phonetic"
+            "scriptPrompt6Phonetic",
+            "btnAttachMedicalDocs",
+            "btnStep1AttachDoc",
+            "btnInqAttachDoc"
         ]
 
         for el_id in required_ids:
