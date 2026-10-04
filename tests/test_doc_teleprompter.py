@@ -78,9 +78,6 @@ class TestMedicalDocTeleprompter(unittest.TestCase):
             "stagedFilesCount",
             "btnProcessMedicalDocs",
             "medicalDocStatus",
-            "btnSampleCaseKnee",
-            "btnSampleCaseSpine",
-            "btnSampleCasePediatric",
             "clinicalDossierCard",
             "dossierChiefComplaint",
             "dossierDiagnosis",
@@ -106,6 +103,7 @@ class TestMedicalDocTeleprompter(unittest.TestCase):
             "docPrompt2",
             "docPrompt3",
             "docPrompt4",
+            "docPrompt4Phonetic",
             "docClosingDynamic",
             "docPrompt6"
         ]
@@ -124,7 +122,16 @@ class TestMedicalDocTeleprompter(unittest.TestCase):
         self.assertIn("resetDossierCard", js)
         self.assertIn("initMedicalDocIngestion", js)
         self.assertIn("initTeleprompterQuickActions", js)
-        self.assertIn("/api/analyze-doc", js)
+        self.assertIn("extractClinicalDossierAndScripts", js)
+        self.assertNotIn("renderCallPrompts()", js, "renderCallPrompts() ReferenceError bug should not exist")
+
+    def test_demo_case_buttons_removed_from_html(self):
+        """Verify user request: demo case buttons removed from index.html"""
+        with open("index.html", "r", encoding="utf-8") as f:
+            html = f.read()
+        self.assertNotIn('id="btnSampleCaseKnee"', html)
+        self.assertNotIn('id="btnSampleCaseSpine"', html)
+        self.assertNotIn('id="btnSampleCasePediatric"', html)
 
     def test_zero_emojis(self):
         """Enforce strict zero emojis rule in all web files"""
