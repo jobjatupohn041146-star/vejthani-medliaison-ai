@@ -133,22 +133,28 @@
       <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">3-Step Call Journey</span>
     </button>
 
-    <!-- Dock Item 2: 5 Inquiry Groups -->
+    <!-- Dock Item 2: Medical Document Ingestion & Teleprompter -->
+    <button id="navDockDocScript" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewDocTeleprompter" title="สแกนเอกสาร &amp; สคริปต์เฉพาะบุคคล (Medical Docs &amp; Teleprompter)">
+      <i data-lucide="file-text" class="w-5 h-5 text-[#EC7825]"></i>
+      <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">สแกนเอกสาร &amp; สคริปต์รายบุคคล</span>
+    </button>
+
+    <!-- Dock Item 3: 5 Inquiry Groups -->
     <button id="navDockInquiry" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewInquiryConsole" title="5 Inquiry Groups">
       <i data-lucide="message-square" class="w-5 h-5"></i>
       <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">5 Inquiry Groups</span>
     </button>
 
-    <!-- Dock Item 3: Arabic Center -->
+    <!-- Dock Item 4: Arabic Center -->
     <button id="navDockArabic" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewArabicCenter" title="Arabic Center & GCC Concierge">
       <i data-lucide="compass" class="w-5 h-5"></i>
       <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Arabic Center (GCC)</span>
     </button>
 
-    <!-- Dock Item 4: Lead Investigation (Hidden from UI as requested) -->
+    <!-- Dock Item 5: Lead Investigation (Hidden from UI as requested) -->
     <button id="navDockLead" class="dock-btn hidden" data-target="viewLeadInvestigation" title="Lead Investigation"></button>
 
-    <!-- Dock Item 5: Settings -->
+    <!-- Dock Item 6: Settings -->
     <button id="navDockSettings" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewSettings" title="Settings & System Config">
       <i data-lucide="settings" class="w-5 h-5"></i>
       <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Settings</span>
@@ -162,6 +168,10 @@
     <button class="dock-btn active p-2.5 rounded-xl text-[#1B365D] flex flex-col items-center gap-0.5" data-target="viewCallJourney" title="Call Journey">
       <i data-lucide="phone-call" class="w-5 h-5"></i>
       <span class="text-[9px] font-bold">Journey</span>
+    </button>
+    <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewDocTeleprompter" title="Docs & Script">
+      <i data-lucide="file-text" class="w-5 h-5"></i>
+      <span class="text-[9px] font-semibold">Docs/สคริปต์</span>
     </button>
     <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewInquiryConsole" title="Inquiries">
       <i data-lucide="message-square" class="w-5 h-5"></i>
@@ -200,12 +210,18 @@
         </div>
       </div>
 
-      <!-- Header Mode Switcher (Retaining legacy IDs #navModeCall & #navModeInquiry for app.js) -->
+      <!-- Header Mode Switcher -->
       <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold shadow-2xs">
         <button id="navModeCall" class="mode-nav-btn active px-3 py-1.5 rounded-lg bg-[#1B365D] text-white shadow-xs flex items-center gap-1.5 transition duration-200">
           <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
-          <span class="hidden sm:inline">บทพูดโทร SOP เวชธานี (3-Step Journey)</span>
+          <span class="hidden sm:inline">บทพูดโทร SOP เวชธานี (3-Step)</span>
           <span class="sm:hidden">3-Step</span>
+        </button>
+        <button id="navModeDocScript" class="mode-nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/70 flex items-center gap-1.5 transition duration-200">
+          <i data-lucide="file-text" class="w-3.5 h-3.5 text-[#EC7825]"></i>
+          <span class="hidden sm:inline">สแกนเอกสาร &amp; สคริปต์รายบุคคล</span>
+          <span class="sm:hidden">สคริปต์เอกสาร</span>
+          <span class="px-1.5 py-0.2 text-[9px] font-extrabold bg-[#EC7825] text-white rounded-full">New</span>
         </button>
         <button id="navModeInquiry" class="mode-nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/70 flex items-center gap-1.5 transition duration-200">
           <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
@@ -376,113 +392,24 @@
         </div>
       </div>
 
-      <!-- ========================================================================= -->
-      <!-- UNIVERSAL MEDICAL DOCUMENT INGESTION & CASE SYNTHESIZER (PDF/DOCX/SCAN) -->
-      <!-- ========================================================================= -->
-      <div id="medicalDocIngestionSection" class="bg-white rounded-2xl border-2 border-dashed border-[#1B365D]/30 p-5 shadow-sm space-y-4">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+      <!-- Gateway to Medical Document AI Teleprompter -->
+      <div class="bg-gradient-to-r from-blue-50/90 via-indigo-50/50 to-white border border-blue-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#1B365D] text-white flex items-center justify-center shrink-0 shadow-xs">
+            <i data-lucide="file-check-2" class="w-5 h-5 text-[#EC7825]"></i>
+          </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded-full bg-[#EC7825] text-white text-xs font-bold flex items-center justify-center shadow-xs">
-                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-              </span>
-              <h2 class="text-base font-bold text-[#1B365D]">ศูนย์รับไฟล์เวชระเบียนและสร้างสคริปต์รายบุคคล (Universal Medical Record Ingestion & Teleprompter)</h2>
+              <h3 class="text-sm font-bold text-[#1B365D]">มีเอกสารเวชระเบียนของผู้ป่วย (PDF / Word / ภาพสแกน)?</h3>
+              <span class="text-[9px] font-bold bg-[#EC7825] text-white px-2 py-0.5 rounded-full">AI Multimodal</span>
             </div>
-            <p class="text-xs text-slate-500 mt-1">
-              รองรับเอกสารการแพทย์ทุกฟอร์แมต: PDF (ทั้งสแกนและดิจิทัล), Word (.docx), ภาพถ่ายผล MRI / X-ray / ใบรับรองแพทย์ (JPG/PNG) โดย AI สกัดประวัติคนไข้และสร้างบทพูดเฉพาะเคสทันที
-            </p>
-          </div>
-          <div class="flex items-center gap-2 self-start md:self-auto">
-            <span class="text-[11px] font-bold text-[#1B365D] bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
-              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#EC7825]"></i> Gemini 2.5 Flash Multimodal OCR
-            </span>
+            <p class="text-xs text-slate-500 mt-0.5">เปิดหน้าสแกนเอกสารเพื่อวิเคราะห์ประวัติคนไข้ อาการ ความเสี่ยง เอกสารที่ยังขาด และสร้างสคริปต์พูดเฉพาะบุคคล</p>
           </div>
         </div>
-
-        <!-- One-Click Sample Medical Records Bar -->
-        <div class="bg-slate-50/80 p-3 rounded-xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-2.5">
-          <div class="flex items-center gap-1.5 text-xs text-slate-700 font-semibold">
-            <i data-lucide="zap" class="w-4 h-4 text-[#EC7825]"></i>
-            <span>หรือคลิกทดสอบเคสตัวอย่างจำลองทันที (One-Click Demo Medical Cases):</span>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <button type="button" id="btnSampleCaseKnee" class="sample-case-btn text-xs px-3 py-1.5 rounded-xl font-bold bg-white text-[#1B365D] border border-blue-200 hover:border-[#1B365D] hover:bg-blue-50 shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
-              <i data-lucide="activity" class="w-3.5 h-3.5 text-blue-600"></i>
-              <span>เคสที่ 1: โอมาน - ข้อเข่าเสื่อม (Scanned MRI & Referral)</span>
-            </button>
-            <button type="button" id="btnSampleCaseSpine" class="sample-case-btn text-xs px-3 py-1.5 rounded-xl font-bold bg-white text-[#1B365D] border border-blue-200 hover:border-[#1B365D] hover:bg-blue-50 shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
-              <i data-lucide="file-check" class="w-3.5 h-3.5 text-amber-600"></i>
-              <span>เคสที่ 2: ซาอุดีฯ - มะเร็งตับ / CT Abdomen (DOCX + CT)</span>
-            </button>
-            <button type="button" id="btnSampleCasePediatric" class="sample-case-btn text-xs px-3 py-1.5 rounded-xl font-bold bg-white text-[#1B365D] border border-blue-200 hover:border-[#1B365D] hover:bg-blue-50 shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
-              <i data-lucide="heart-pulse" class="w-3.5 h-3.5 text-rose-600"></i>
-              <span>เคสที่ 3: กาตาร์ - ภาวะเท้าปุกในเด็ก (Pediatric Scan)</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Hidden Native File Input (placed outside dropArea to guarantee clean event handling) -->
-        <input type="file" id="medicalFileInput" multiple accept=".pdf,.docx,.doc,.jpg,.jpeg,.png,.webp" class="hidden">
-
-        <!-- Drag & Drop Zone Area -->
-        <div id="medicalDropArea" class="border-2 border-dashed border-slate-300 hover:border-[#1B365D] bg-slate-50/50 hover:bg-blue-50/30 rounded-xl p-6 text-center transition cursor-pointer group">
-          <div class="flex flex-col items-center justify-center space-y-3 pointer-events-none">
-            <div class="w-12 h-12 rounded-full bg-blue-100/70 text-[#1B365D] flex items-center justify-center group-hover:scale-105 transition shadow-2xs">
-              <i data-lucide="upload-cloud" class="w-6 h-6 text-[#1B365D]"></i>
-            </div>
-            <div>
-              <p class="text-sm font-bold text-slate-800">
-                ลากไฟล์เวชระเบียนมาวางที่นี่ หรือคลิกปุ่มเพื่อเลือกไฟล์จากเครื่อง
-              </p>
-              <p class="text-[11px] text-slate-500 mt-0.5">
-                รองรับหลายไฟล์พร้อมกัน: Scanned PDF, Digital PDF, Word (.docx), ภาพถ่าย X-Ray/MRI, บัตรคนไข้, พาสปอร์ต (ขนาดสูงสุด 25MB ต่อไฟล์)
-              </p>
-            </div>
-            <div class="pointer-events-auto pt-1">
-              <button type="button" id="btnAttachMedicalDocs" class="px-5 py-2.5 bg-[#1B365D] hover:bg-[#152a48] text-white text-xs font-bold rounded-xl transition shadow-sm flex items-center gap-2 cursor-pointer">
-                <i data-lucide="paperclip" class="w-4 h-4 text-[#EC7825]"></i>
-                <span>แนบเอกสารทางการแพทย์ (Attach Files)</span>
-              </button>
-            </div>
-            <div class="flex flex-wrap items-center justify-center gap-1.5 pt-1">
-              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">PDF Scans</span>
-              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">Word DOCX</span>
-              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">MRI / CT Images</span>
-              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">Lab Slips</span>
-              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">Passports</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Staged Files Queue -->
-        <div id="medicalFilesQueueContainer" class="hidden space-y-2">
-          <div class="flex items-center justify-between text-xs font-bold text-slate-700">
-            <span class="flex items-center gap-1.5">
-              <i data-lucide="layers" class="w-3.5 h-3.5 text-[#1B365D]"></i>
-              <span>ไฟล์ที่เลือกเตรียมประมวลผล (<span id="stagedFilesCount">0</span> ไฟล์):</span>
-            </span>
-            <button type="button" id="btnClearFilesQueue" class="text-slate-500 hover:text-rose-600 text-[11px] transition">
-              ล้างรายการทั้งหมด
-            </button>
-          </div>
-          <div id="stagedFilesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-            <!-- Dynamically populated files -->
-          </div>
-        </div>
-
-        <!-- Ingestion Status & Process Action Bar -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-          <div id="medicalDocStatus" class="text-xs text-slate-600 flex items-center gap-2">
-            <span class="inline-block w-2 h-2 rounded-full bg-slate-400"></span>
-            <span>พร้อมรับเอกสารเพื่อวิเคราะห์และสร้างบทพูดเฉพาะเคส</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <button type="button" id="btnProcessMedicalDocs" class="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#1B365D] to-[#00A3E0] hover:opacity-95 shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-              <i data-lucide="sparkles" class="w-4 h-4 text-[#EC7825]"></i>
-              <span id="btnProcessMedicalDocsText">ประมวลผลเวชระเบียนและสร้างบทพูดพยาบาล (Process & Generate)</span>
-            </button>
-          </div>
-        </div>
+        <button type="button" id="btnGoToDocPage" onclick="if(window.activateView) window.activateView('viewDocTeleprompter');" class="px-4 py-2 bg-[#1B365D] hover:bg-[#152a48] text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-2 shrink-0 cursor-pointer">
+          <span>เปิดหน้าระบบสแกนเอกสาร &amp; สคริปต์</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 text-[#EC7825]"></i>
+        </button>
       </div>
 
       <!-- 3-Step Journey Grid -->
@@ -538,54 +465,6 @@
             <p class="text-[11px] text-slate-600 leading-snug" id="patientPrayerNotice">
               เวลาท้องถิ่นห่างจากเวลาไทย 3 ชม. พ้นช่วงละหมาดซุบฮิแล้ว เป็นช่วงเวลาทำงานที่สะดวกในการรับสาย
             </p>
-          </div>
-
-          <!-- Extracted Clinical Intake Dossier & Missing Records Alert Card -->
-          <div id="clinicalDossierCard" class="bg-gradient-to-br from-blue-50/80 via-white to-slate-50 p-4 rounded-xl border border-blue-200 space-y-3 shadow-2xs">
-            <div class="flex items-center justify-between border-b border-blue-100 pb-2">
-              <span class="text-xs font-bold text-[#1B365D] flex items-center gap-1.5">
-                <i data-lucide="clipboard-check" class="w-4 h-4 text-[#00A3E0]"></i>
-                สรุปเวชระเบียนเฉพาะบุคคล (Clinical Intake Dossier)
-              </span>
-              <span id="dossierStatusBadge" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
-                พร้อมกรอกข้อมูล
-              </span>
-            </div>
-
-            <!-- Demographics Overview -->
-            <div class="grid grid-cols-2 gap-2 text-[11px]">
-              <div class="bg-white p-2 rounded-lg border border-slate-200">
-                <span class="text-[10px] text-slate-400 block font-semibold">อาการสำคัญ (Chief Complaint):</span>
-                <span id="dossierChiefComplaint" class="font-medium text-slate-800">-</span>
-              </div>
-              <div class="bg-white p-2 rounded-lg border border-slate-200">
-                <span class="text-[10px] text-slate-400 block font-semibold">การวินิจฉัย (Diagnosis):</span>
-                <span id="dossierDiagnosis" class="font-bold text-[#1B365D]">-</span>
-              </div>
-            </div>
-
-            <!-- Red Flags & Precautions -->
-            <div class="bg-amber-50/70 p-2.5 rounded-lg border border-amber-200 text-[11px] text-amber-900 space-y-1">
-              <span class="font-bold flex items-center gap-1 text-[10px] text-amber-800">
-                <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
-                ข้อควรระวังทางคลินิก (Clinical Precautions & Red Flags):
-              </span>
-              <p id="dossierPrecautions" class="text-[11px] text-slate-700">ไม่มีประวัติแพ้ยา หรือข้อควรระวังพิเศษ</p>
-            </div>
-
-            <!-- Missing Documents Checklist (Call Priority) -->
-            <div id="dossierMissingDocsContainer" class="bg-rose-50/80 p-2.5 rounded-lg border border-rose-200 text-[11px] space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-rose-800 flex items-center gap-1 text-[10px]">
-                  <i data-lucide="file-question" class="w-3.5 h-3.5 text-rose-600"></i>
-                  เอกสารสำคัญที่ยังขาด (ต้องขอเพิ่มในการโทร):
-                </span>
-                <span id="dossierMissingCountBadge" class="text-[9px] font-bold px-1.5 py-0.5 bg-rose-200 text-rose-900 rounded">0 รายการ</span>
-              </div>
-              <ul id="dossierMissingList" class="list-disc list-inside text-rose-700 space-y-0.5 text-[11px]">
-                <li>ยังไม่มีรายการเอกสารที่ขาด</li>
-              </ul>
-            </div>
           </div>
 
           <!-- Patient Input Form for Call -->
@@ -1031,7 +910,380 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- VIEW 2: 5 SPECIALTIES INQUIRY & NURTURING CONSOLE            -->
+    <!-- VIEW 2: MEDICAL DOCUMENT INGESTION & CLINICAL TELEPROMPTER   -->
+    <!-- ============================================================ -->
+    <section id="viewDocTeleprompter" class="hidden space-y-6">
+      
+      <!-- Vejthani Clinical AI OCR Banner -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative overflow-hidden text-slate-800">
+        <div class="absolute -right-10 -top-10 w-56 h-56 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-10 -bottom-10 w-56 h-56 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+          <div class="space-y-1.5 max-w-3xl">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-0.5 text-[10px] font-extrabold bg-[#1B365D] text-white rounded-full">
+                VEJTHANI CLINICAL AI OCR
+              </span>
+              <span class="px-2.5 py-0.5 text-[10px] font-extrabold bg-amber-50 text-amber-900 border border-amber-300 rounded-full tracking-wide">
+                Universal Medical Document Ingestion
+              </span>
+              <span class="px-2.5 py-0.5 text-[10px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-300 rounded-full tracking-wide flex items-center gap-1">
+                <i data-lucide="shield-check" class="w-3 h-3 text-emerald-600"></i> JCI Protocol &amp; Multimodal
+              </span>
+            </div>
+            <h2 class="text-xl font-black text-[#1B365D] tracking-tight">
+              ศูนย์รับไฟล์เวชระเบียนและสร้างสคริปต์เฉพาะบุคคล (Medical Document AI Teleprompter)
+            </h2>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              โยนไฟล์เวชระเบียนทุกรูปแบบของผู้ป่วย (Scanned/Digital PDF, Word .docx, ภาพถ่ายฟิล์ม X-ray / MRI / CT, ใบรับรองแพทย์) ระบบจะสกัดประวัติการรักษา วินิจฉัยเบื้องต้น ตรวจเช็คเอกสารที่ยังขาด และแปลงเป็นสคริปต์พูด 6 ขั้นตอนพร้อมคำอ่านภาษาอาหรับสำหรับฝ่ายพยาบาลโทรตามเคสทันที
+            </p>
+          </div>
+
+          <!-- Quick Navigation / Actions -->
+          <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-2">
+            <button type="button" onclick="if(window.activateView) window.activateView('viewCallJourney');" class="px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-[#1B365D] border border-blue-200 text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-2xs cursor-pointer">
+              <i data-lucide="phone-call" class="w-4 h-4 text-[#1B365D]"></i>
+              <span>เปิดหน้าบทพูดโทร SOP เวชธานี</span>
+            </button>
+            <button type="button" onclick="if(window.activateView) window.activateView('viewInquiryConsole');" class="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-2xs cursor-pointer">
+              <i data-lucide="message-square" class="w-4 h-4 text-slate-600"></i>
+              <span>เปิดหน้าตอบ Inquiry (Claude)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIVERSAL MEDICAL DOCUMENT INGESTION & CASE SYNTHESIZER (PDF/DOCX/SCAN) -->
+      <div id="medicalDocIngestionSection" class="bg-white rounded-2xl border-2 border-dashed border-[#1B365D]/30 p-5 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-[#EC7825] text-white text-xs font-bold flex items-center justify-center shadow-xs">
+                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              </span>
+              <h3 class="text-base font-bold text-[#1B365D]">อัปโหลดไฟล์เวชระเบียนผู้ป่วย (Medical Document Ingestion)</h3>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">
+              รองรับเอกสารการแพทย์ทุกฟอร์แมต: PDF (ทั้งสแกนและดิจิทัล), Word (.docx), ภาพถ่ายผล MRI / X-ray / ใบรับรองแพทย์ (JPG/PNG) โดย AI สกัดประวัติคนไข้และสร้างบทพูดเฉพาะเคสทันที
+            </p>
+          </div>
+          <div class="flex items-center gap-2 self-start md:self-auto">
+            <span class="text-[11px] font-bold text-[#1B365D] bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#EC7825]"></i> Gemini 2.5 Flash Multimodal OCR
+            </span>
+          </div>
+        </div>
+
+        <!-- One-Click Sample Medical Records Bar -->
+        <div class="bg-slate-50/80 p-3 rounded-xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+          <div class="flex items-center gap-1.5 text-xs text-slate-700 font-semibold">
+            <i data-lucide="zap" class="w-4 h-4 text-[#EC7825]"></i>
+            <span>หรือคลิกทดสอบเคสตัวอย่างจำลองทันที (One-Click Demo Medical Cases):</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btnSampleCaseKnee" class="sample-case-btn text-xs px-3 py-1.5 rounded-xl font-bold bg-white text-[#1B365D] border border-blue-200 hover:border-[#1B365D] hover:bg-blue-50 shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="activity" class="w-3.5 h-3.5 text-blue-600"></i>
+              <span>เคสที่ 1: โอมาน - ข้อเข่าเสื่อม (Scanned MRI & Referral)</span>
+            </button>
+            <button type="button" id="btnSampleCaseSpine" class="sample-case-btn text-xs px-3 py-1.5 rounded-xl font-bold bg-white text-[#1B365D] border border-blue-200 hover:border-[#1B365D] hover:bg-blue-50 shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="file-check" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>เคสที่ 2: ซาอุดีฯ - มะเร็งตับ / CT Abdomen (DOCX + CT)</span>
+            </button>
+            <button type="button" id="btnSampleCasePediatric" class="sample-case-btn text-xs px-3 py-1.5 rounded-xl font-bold bg-white text-[#1B365D] border border-blue-200 hover:border-[#1B365D] hover:bg-blue-50 shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="heart-pulse" class="w-3.5 h-3.5 text-rose-600"></i>
+              <span>เคสที่ 3: กาตาร์ - ภาวะเท้าปุกในเด็ก (Pediatric Scan)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hidden Native File Input (placed outside dropArea to guarantee clean event handling) -->
+        <input type="file" id="medicalFileInput" multiple accept=".pdf,.docx,.doc,.jpg,.jpeg,.png,.webp" class="hidden">
+
+        <!-- Drag & Drop Zone Area -->
+        <div id="medicalDropArea" class="border-2 border-dashed border-slate-300 hover:border-[#1B365D] bg-slate-50/50 hover:bg-blue-50/30 rounded-xl p-6 text-center transition cursor-pointer group">
+          <div class="flex flex-col items-center justify-center space-y-3 pointer-events-none">
+            <div class="w-12 h-12 rounded-full bg-blue-100/70 text-[#1B365D] flex items-center justify-center group-hover:scale-105 transition shadow-2xs">
+              <i data-lucide="upload-cloud" class="w-6 h-6 text-[#1B365D]"></i>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-slate-800">
+                ลากไฟล์เวชระเบียนมาวางที่นี่ หรือคลิกปุ่มเพื่อเลือกไฟล์จากเครื่อง
+              </p>
+              <p class="text-[11px] text-slate-500 mt-0.5">
+                รองรับหลายไฟล์พร้อมกัน: Scanned PDF, Digital PDF, Word (.docx), ภาพถ่าย X-Ray/MRI, บัตรคนไข้, พาสปอร์ต (ขนาดสูงสุด 25MB ต่อไฟล์)
+              </p>
+            </div>
+            <div class="pointer-events-auto pt-1">
+              <button type="button" id="btnAttachMedicalDocs" class="px-5 py-2.5 bg-[#1B365D] hover:bg-[#152a48] text-white text-xs font-bold rounded-xl transition shadow-sm flex items-center gap-2 cursor-pointer">
+                <i data-lucide="paperclip" class="w-4 h-4 text-[#EC7825]"></i>
+                <span>แนบเอกสารทางการแพทย์ (Attach Files)</span>
+              </button>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-1.5 pt-1">
+              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">PDF Scans</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">Word DOCX</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">MRI / CT Images</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">Lab Slips</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded">Passports</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Staged Files Queue -->
+        <div id="medicalFilesQueueContainer" class="hidden space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="layers" class="w-3.5 h-3.5 text-[#1B365D]"></i>
+              <span>ไฟล์ที่เลือกเตรียมประมวลผล (<span id="stagedFilesCount">0</span> ไฟล์):</span>
+            </span>
+            <button type="button" id="btnClearFilesQueue" class="text-slate-500 hover:text-rose-600 text-[11px] transition">
+              ล้างรายการทั้งหมด
+            </button>
+          </div>
+          <div id="stagedFilesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            <!-- Dynamically populated files -->
+          </div>
+        </div>
+
+        <!-- Ingestion Status & Process Action Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+          <div id="medicalDocStatus" class="text-xs text-slate-600 flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-slate-400"></span>
+            <span>พร้อมรับเอกสารเพื่อวิเคราะห์และสร้างบทพูดเฉพาะเคส</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btnProcessMedicalDocs" class="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#1B365D] to-[#00A3E0] hover:opacity-95 shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+              <i data-lucide="sparkles" class="w-4 h-4 text-[#EC7825]"></i>
+              <span id="btnProcessMedicalDocsText">ประมวลผลเวชระเบียนและสร้างบทพูดพยาบาล (Process &amp; Generate)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKSPACE: Clinical Intake Dossier (Left) + Nurse Teleprompter (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- LEFT COLUMN: Clinical Intake Dossier & Missing Records (5 Cols) -->
+        <div class="lg:col-span-5 space-y-4">
+          <div id="clinicalDossierCard" class="bg-gradient-to-br from-blue-50/80 via-white to-slate-50 p-5 rounded-2xl border border-blue-200 space-y-3.5 shadow-sm">
+            <div class="flex items-center justify-between border-b border-blue-100 pb-2.5">
+              <span class="text-xs font-bold text-[#1B365D] flex items-center gap-1.5">
+                <i data-lucide="clipboard-check" class="w-4 h-4 text-[#00A3E0]"></i>
+                <span>สรุปเวชระเบียนเฉพาะบุคคล (Clinical Intake Dossier)</span>
+              </span>
+              <span id="dossierStatusBadge" class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                พร้อมกรอกข้อมูล
+              </span>
+            </div>
+
+            <!-- Demographics Overview -->
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+              <div class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs">
+                <span class="text-[10px] text-slate-400 block font-semibold">อาการสำคัญ (Chief Complaint):</span>
+                <span id="dossierChiefComplaint" class="font-medium text-slate-800">-</span>
+              </div>
+              <div class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs">
+                <span class="text-[10px] text-slate-400 block font-semibold">การวินิจฉัย (Diagnosis):</span>
+                <span id="dossierDiagnosis" class="font-bold text-[#1B365D]">-</span>
+              </div>
+            </div>
+
+            <!-- Red Flags & Precautions -->
+            <div class="bg-amber-50/70 p-3 rounded-xl border border-amber-200 text-[11px] text-amber-900 space-y-1">
+              <span class="font-bold flex items-center gap-1 text-[10px] text-amber-800">
+                <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
+                <span>ข้อควรระวังทางคลินิก (Clinical Precautions &amp; Red Flags):</span>
+              </span>
+              <p id="dossierPrecautions" class="text-[11px] text-slate-700">ไม่มีประวัติแพ้ยา หรือข้อควรระวังพิเศษ</p>
+            </div>
+
+            <!-- Missing Documents Checklist (Call Priority) -->
+            <div id="dossierMissingDocsContainer" class="bg-rose-50/80 p-3 rounded-xl border border-rose-200 text-[11px] space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-rose-800 flex items-center gap-1 text-[10px]">
+                  <i data-lucide="file-question" class="w-3.5 h-3.5 text-rose-600"></i>
+                  <span>เอกสารสำคัญที่ยังขาด (ต้องขอเพิ่มในการโทร):</span>
+                </span>
+                <span id="dossierMissingCountBadge" class="text-[9px] font-bold px-1.5 py-0.5 bg-rose-200 text-rose-900 rounded">0 รายการ</span>
+              </div>
+              <ul id="dossierMissingList" class="list-disc list-inside text-rose-700 space-y-0.5 text-[11px]">
+                <li>ยังไม่มีรายการเอกสารที่ขาด</li>
+              </ul>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="pt-2 border-t border-blue-100 flex flex-col gap-2">
+              <button type="button" id="btnSyncToCallSop" class="w-full px-4 py-2.5 bg-[#1B365D] hover:bg-[#152a48] text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                <i data-lucide="external-link" class="w-4 h-4 text-[#EC7825]"></i>
+                <span>เปิดข้อมูลนี้ในหน้าบทพูดโทร SOP เวชธานี (Sync to Call SOP)</span>
+              </button>
+              <button type="button" id="btnDocSendWhatsApp" class="w-full px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+                <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
+                <span>ส่ง WhatsApp สรุปให้คนไข้ (WhatsApp Patient)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Case-by-Case Nurse Teleprompter (7 Cols) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="border-b border-slate-100 pb-3 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-[#EC7825] text-white text-xs font-bold flex items-center justify-center shadow-xs">
+                <i data-lucide="mic" class="w-3.5 h-3.5"></i>
+              </span>
+              <h3 class="text-sm font-bold text-[#1B365D]">สคริปต์พูดโทรเฉพาะบุคคล (Personalized Clinical Teleprompter)</h3>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <!-- Staff Tone Toggle -->
+              <div class="flex items-center space-x-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px] font-bold">
+                <button type="button" id="docStaffGenderMale" class="px-2 py-0.5 rounded bg-white text-[#1B365D] shadow-xs font-bold">ครับ</button>
+                <button type="button" id="docStaffGenderFemale" class="px-2 py-0.5 rounded text-slate-500 hover:text-slate-900">ค่ะ</button>
+              </div>
+
+              <!-- Language Toggle for Script -->
+              <div class="flex items-center space-x-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[11px] font-bold">
+                <button type="button" id="docCallLangThai" class="px-2 py-0.5 rounded bg-[#1B365D] text-white shadow-xs transition">ไทย</button>
+                <button type="button" id="docCallLangEn" class="px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 transition">English</button>
+                <button type="button" id="docCallLangAr" class="px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 transition font-arabic text-xs">العربية</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Teleprompter Flow Cards (1 to 6) -->
+          <div class="space-y-3 custom-scroll max-h-[620px] overflow-y-auto pr-1">
+            <!-- Card 1: ทักทายและระบุตัวตนคนไข้ -->
+            <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">
+                  1. ทักทายและระบุตัวตนคนไข้ (Opening &amp; Respectful Identification)
+                </span>
+                <div class="flex items-center gap-1">
+                  <button type="button" class="btn-speak-prompt p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="ฟังการออกเสียง" data-target="docPrompt1">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" class="btn-copy-card p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="คัดลอกข้อความ" data-target="docPrompt1">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-900 font-semibold leading-relaxed whitespace-pre-line" id="docPrompt1">
+                กรุณาเลือกไฟล์เวชระเบียน หรือคลิกเคสตัวอย่างจำลองด้านบนเพื่อดูสคริปต์
+              </p>
+              <div id="docPrompt1Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
+            </div>
+
+            <!-- Card 2: ยืนยันเอกสารผลตรวจที่ได้รับ -->
+            <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">
+                  2. ยืนยันเอกสารผลตรวจที่ได้รับ (Confirm Received Medical Records)
+                </span>
+                <div class="flex items-center gap-1">
+                  <button type="button" class="btn-speak-prompt p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="ฟังการออกเสียง" data-target="docPrompt2">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" class="btn-copy-card p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="คัดลอกข้อความ" data-target="docPrompt2">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium whitespace-pre-line" id="docPrompt2">
+                รอผลการประมวลผลเวชระเบียน
+              </p>
+              <div id="docPrompt2Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
+            </div>
+
+            <!-- Card 3: คัดกรองอาการเฉพาะโรค -->
+            <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">
+                  3. คัดกรองอาการเฉพาะโรค (Targeted Clinical Screening)
+                </span>
+                <div class="flex items-center gap-1">
+                  <button type="button" class="btn-speak-prompt p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="ฟังการออกเสียง" data-target="docPrompt3">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" class="btn-copy-card p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="คัดลอกข้อความ" data-target="docPrompt3">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line" id="docPrompt3">
+                รอผลการประมวลผลเวชระเบียน
+              </p>
+              <div id="docPrompt3Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
+            </div>
+
+            <!-- Card 4: จุดเด่นและมาตรฐาน รพ.เวชธานี -->
+            <div class="p-3.5 rounded-xl border border-blue-200 bg-blue-50/40 hover:bg-blue-50/60 transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold text-[#1B365D] uppercase tracking-wider block">
+                  4. จุดเด่นและนวัตกรรมการรักษา รพ.เวชธานี (Vejthani Medical Excellence)
+                </span>
+                <div class="flex items-center gap-1">
+                  <button type="button" class="btn-copy-card p-1 rounded-lg text-blue-400 hover:text-[#1B365D] hover:bg-blue-100 transition" title="คัดลอกข้อความ" data-target="docPrompt4">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="text-xs sm:text-sm text-slate-800 leading-relaxed" id="docPrompt4">
+                รอผลการประมวลผลเวชระเบียน
+              </div>
+            </div>
+
+            <!-- Card 5: แจ้งขอเอกสาร/ผลตรวจที่ยังขาด -->
+            <div class="p-3.5 rounded-xl border border-rose-200 bg-rose-50/40 hover:bg-rose-50/60 transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">
+                  5. แจ้งขอเอกสารหรือผลตรวจที่ยังขาด (Missing Document Request Alert)
+                </span>
+                <div class="flex items-center gap-1">
+                  <button type="button" class="btn-speak-prompt p-1 rounded-lg text-rose-400 hover:text-rose-800 hover:bg-rose-100 transition" title="ฟังการออกเสียง" data-target="docClosingDynamic">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" class="btn-copy-card p-1 rounded-lg text-rose-400 hover:text-rose-800 hover:bg-rose-100 transition" title="คัดลอกข้อความ" data-target="docClosingDynamic">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-rose-900 leading-relaxed font-semibold whitespace-pre-line" id="docClosingDynamic">
+                รอผลการประมวลผลเวชระเบียน
+              </p>
+              <div id="docClosingDynamicPhonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
+            </div>
+
+            <!-- Card 6: สรุปนัดหมายและขั้นตอนถัดไป -->
+            <div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/40 hover:bg-emerald-50/60 transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">
+                  6. สรุปขั้นตอนและข้อตกลงถัดไป (Next Steps &amp; 24h SLA)
+                </span>
+                <div class="flex items-center gap-1">
+                  <button type="button" class="btn-speak-prompt p-1 rounded-lg text-emerald-500 hover:text-emerald-800 hover:bg-emerald-100 transition" title="ฟังการออกเสียง" data-target="docPrompt6">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" class="btn-copy-card p-1 rounded-lg text-emerald-500 hover:text-emerald-800 hover:bg-emerald-100 transition" title="คัดลอกข้อความ" data-target="docPrompt6">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed font-semibold whitespace-pre-line" id="docPrompt6">
+                รอผลการประมวลผลเวชระเบียน
+              </p>
+              <div id="docPrompt6Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- VIEW 3: 5 SPECIALTIES INQUIRY & NURTURING CONSOLE            -->
     <!-- ============================================================ -->
     <section id="viewInquiryConsole" class="hidden space-y-6">
       
@@ -1755,8 +2007,10 @@
   <script>
     (function() {
       // 5-View IDs list
+      // View containers list
       const views = [
         'viewCallJourney',
+        'viewDocTeleprompter',
         'viewInquiryConsole',
         'viewArabicCenter',
         'viewLeadInvestigation',
@@ -1790,24 +2044,26 @@
 
         // Sync header mode buttons if applicable
         const navModeCall = document.getElementById('navModeCall');
+        const navModeDocScript = document.getElementById('navModeDocScript');
         const navModeInquiry = document.getElementById('navModeInquiry');
-        if (navModeCall && navModeInquiry) {
-          if (targetViewId === 'viewCallJourney') {
-            navModeCall.classList.add('bg-[#1B365D]', 'text-white');
-            navModeCall.classList.remove('text-slate-600');
-            navModeInquiry.classList.remove('bg-[#1B365D]', 'text-white');
-            navModeInquiry.classList.add('text-slate-600');
-          } else if (targetViewId === 'viewInquiryConsole') {
-            navModeInquiry.classList.add('bg-[#1B365D]', 'text-white');
-            navModeInquiry.classList.remove('text-slate-600');
-            navModeCall.classList.remove('bg-[#1B365D]', 'text-white');
-            navModeCall.classList.add('text-slate-600');
-          } else {
-            navModeCall.classList.remove('bg-[#1B365D]', 'text-white');
-            navModeCall.classList.add('text-slate-600');
-            navModeInquiry.classList.remove('bg-[#1B365D]', 'text-white');
-            navModeInquiry.classList.add('text-slate-600');
+        const modeButtons = [navModeCall, navModeDocScript, navModeInquiry];
+
+        modeButtons.forEach(function(btn) {
+          if (btn) {
+            btn.classList.remove('bg-[#1B365D]', 'text-white');
+            btn.classList.add('text-slate-600');
           }
+        });
+
+        if (targetViewId === 'viewCallJourney' && navModeCall) {
+          navModeCall.classList.add('bg-[#1B365D]', 'text-white');
+          navModeCall.classList.remove('text-slate-600');
+        } else if (targetViewId === 'viewDocTeleprompter' && navModeDocScript) {
+          navModeDocScript.classList.add('bg-[#1B365D]', 'text-white');
+          navModeDocScript.classList.remove('text-slate-600');
+        } else if (targetViewId === 'viewInquiryConsole' && navModeInquiry) {
+          navModeInquiry.classList.add('bg-[#1B365D]', 'text-white');
+          navModeInquiry.classList.remove('text-slate-600');
         }
 
         // Re-render any newly shown Lucide icons
@@ -1828,10 +2084,16 @@
 
       // Synchronize when header mode buttons are clicked
       const navModeCall = document.getElementById('navModeCall');
+      const navModeDocScript = document.getElementById('navModeDocScript');
       const navModeInquiry = document.getElementById('navModeInquiry');
       if (navModeCall) {
         navModeCall.addEventListener('click', function() {
           activateView('viewCallJourney');
+        });
+      }
+      if (navModeDocScript) {
+        navModeDocScript.addEventListener('click', function() {
+          activateView('viewDocTeleprompter');
         });
       }
       if (navModeInquiry) {

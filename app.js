@@ -1656,38 +1656,46 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeInqCat = "king_of_bone";
   let currentLoadedPresetKey = null;
 
-  // --- View Mode Switching (Call Journey vs Inquiry) ---
+  // --- View Mode Switching (Call Journey vs Doc Script vs Inquiry) ---
   const navModeCall = document.getElementById("navModeCall");
+  const navModeDocScript = document.getElementById("navModeDocScript");
   const navModeInquiry = document.getElementById("navModeInquiry");
   const viewCallJourney = document.getElementById("viewCallJourney");
+  const viewDocTeleprompter = document.getElementById("viewDocTeleprompter");
   const viewInquiryConsole = document.getElementById("viewInquiryConsole");
 
-  if (navModeCall && navModeInquiry && viewCallJourney && viewInquiryConsole) {
+  if (navModeCall) {
     navModeCall.addEventListener("click", () => {
       if (typeof window.activateView === "function") {
         window.activateView("viewCallJourney");
       } else {
-        navModeCall.classList.add("bg-blue-600", "text-white");
-        navModeCall.classList.remove("text-slate-600");
-        navModeInquiry.classList.remove("bg-blue-600", "text-white");
-        navModeInquiry.classList.add("text-slate-600");
-
-        viewCallJourney.classList.remove("hidden");
-        viewInquiryConsole.classList.add("hidden");
+        if (viewCallJourney) viewCallJourney.classList.remove("hidden");
+        if (viewDocTeleprompter) viewDocTeleprompter.classList.add("hidden");
+        if (viewInquiryConsole) viewInquiryConsole.classList.add("hidden");
       }
     });
+  }
 
+  if (navModeDocScript) {
+    navModeDocScript.addEventListener("click", () => {
+      if (typeof window.activateView === "function") {
+        window.activateView("viewDocTeleprompter");
+      } else {
+        if (viewDocTeleprompter) viewDocTeleprompter.classList.remove("hidden");
+        if (viewCallJourney) viewCallJourney.classList.add("hidden");
+        if (viewInquiryConsole) viewInquiryConsole.classList.add("hidden");
+      }
+    });
+  }
+
+  if (navModeInquiry) {
     navModeInquiry.addEventListener("click", () => {
       if (typeof window.activateView === "function") {
         window.activateView("viewInquiryConsole");
       } else {
-        navModeInquiry.classList.add("bg-blue-600", "text-white");
-        navModeInquiry.classList.remove("text-slate-600");
-        navModeCall.classList.remove("bg-blue-600", "text-white");
-        navModeCall.classList.add("text-slate-600");
-
-        viewInquiryConsole.classList.remove("hidden");
-        viewCallJourney.classList.add("hidden");
+        if (viewInquiryConsole) viewInquiryConsole.classList.remove("hidden");
+        if (viewCallJourney) viewCallJourney.classList.add("hidden");
+        if (viewDocTeleprompter) viewDocTeleprompter.classList.add("hidden");
       }
     });
   }
@@ -2502,6 +2510,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Dedicated Doc Teleprompter elements
+    const docP1 = document.getElementById("docPrompt1");
+    const docP2 = document.getElementById("docPrompt2");
+    const docP3 = document.getElementById("docPrompt3");
+    const docP4 = document.getElementById("docPrompt4");
+    const docP5 = document.getElementById("docClosingDynamic");
+    const docP6 = document.getElementById("docPrompt6");
+
+    const docP1Phonetic = document.getElementById("docPrompt1Phonetic");
+    const docP2Phonetic = document.getElementById("docPrompt2Phonetic");
+    const docP3Phonetic = document.getElementById("docPrompt3Phonetic");
+    const docP5Phonetic = document.getElementById("docClosingDynamicPhonetic");
+    const docP6Phonetic = document.getElementById("docPrompt6Phonetic");
+
     if (currentCustomScriptCards && currentCustomScriptCards.length >= 6) {
       const getCardText = (card) => {
         if (currentCallLang === "th") return card.thai || card.english;
@@ -2511,11 +2533,17 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       if (scriptPrompt1) scriptPrompt1.textContent = getCardText(currentCustomScriptCards[0]);
+      if (docP1) docP1.textContent = getCardText(currentCustomScriptCards[0]);
       if (scriptPrompt2) scriptPrompt2.textContent = getCardText(currentCustomScriptCards[1]);
+      if (docP2) docP2.textContent = getCardText(currentCustomScriptCards[1]);
       if (scriptPrompt3) scriptPrompt3.textContent = getCardText(currentCustomScriptCards[2]);
+      if (docP3) docP3.textContent = getCardText(currentCustomScriptCards[2]);
       if (scriptPrompt4) scriptPrompt4.innerHTML = `<p>${getCardText(currentCustomScriptCards[3])}</p>`;
+      if (docP4) docP4.innerHTML = `<p>${getCardText(currentCustomScriptCards[3])}</p>`;
       if (scriptClosingDynamic) scriptClosingDynamic.textContent = getCardText(currentCustomScriptCards[4]);
+      if (docP5) docP5.textContent = getCardText(currentCustomScriptCards[4]);
       if (scriptPrompt6) scriptPrompt6.textContent = getCardText(currentCustomScriptCards[5]);
+      if (docP6) docP6.textContent = getCardText(currentCustomScriptCards[5]);
 
       // Update Phonetics if Arabic
       const showPhonetics = (currentCallLang === "ar");
@@ -2525,26 +2553,27 @@ document.addEventListener("DOMContentLoaded", () => {
       const p5Phonetic = document.getElementById("scriptClosingDynamicPhonetic");
       const p6Phonetic = document.getElementById("scriptPrompt6Phonetic");
 
-      if (p1Phonetic) {
-        p1Phonetic.textContent = currentCustomScriptCards[0].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[0].arabicPhonetic}` : "";
-        p1Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[0].arabicPhonetic);
-      }
-      if (p2Phonetic) {
-        p2Phonetic.textContent = currentCustomScriptCards[1].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[1].arabicPhonetic}` : "";
-        p2Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[1].arabicPhonetic);
-      }
-      if (p3Phonetic) {
-        p3Phonetic.textContent = currentCustomScriptCards[2].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[2].arabicPhonetic}` : "";
-        p3Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[2].arabicPhonetic);
-      }
-      if (p5Phonetic) {
-        p5Phonetic.textContent = currentCustomScriptCards[4].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[4].arabicPhonetic}` : "";
-        p5Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[4].arabicPhonetic);
-      }
-      if (p6Phonetic) {
-        p6Phonetic.textContent = currentCustomScriptCards[5].arabicPhonetic ? `[คำอ่าน]: ${currentCustomScriptCards[5].arabicPhonetic}` : "";
-        p6Phonetic.classList.toggle("hidden", !showPhonetics || !currentCustomScriptCards[5].arabicPhonetic);
-      }
+      const phoneticPairs = [
+        { main: p1Phonetic, doc: docP1Phonetic, idx: 0 },
+        { main: p2Phonetic, doc: docP2Phonetic, idx: 1 },
+        { main: p3Phonetic, doc: docP3Phonetic, idx: 2 },
+        { main: p5Phonetic, doc: docP5Phonetic, idx: 4 },
+        { main: p6Phonetic, doc: docP6Phonetic, idx: 5 }
+      ];
+
+      phoneticPairs.forEach(({ main, doc, idx }) => {
+        const phon = currentCustomScriptCards[idx]?.arabicPhonetic;
+        const text = phon ? `[คำอ่าน]: ${phon}` : "";
+        const hide = !showPhonetics || !phon;
+        if (main) {
+          main.textContent = text;
+          main.classList.toggle("hidden", hide);
+        }
+        if (doc) {
+          doc.textContent = text;
+          doc.classList.toggle("hidden", hide);
+        }
+      });
     } else {
       if (scriptPrompt1) scriptPrompt1.textContent = result.p1;
       if (scriptPrompt2) scriptPrompt2.textContent = result.p2;
@@ -2553,8 +2582,18 @@ document.addEventListener("DOMContentLoaded", () => {
       if (scriptClosingDynamic) scriptClosingDynamic.textContent = result.closing;
       if (scriptPrompt6) scriptPrompt6.textContent = result.p6;
 
+      if (docP1) docP1.textContent = "กรุณาเลือกไฟล์เวชระเบียน หรือคลิกเคสตัวอย่างจำลองด้านบนเพื่อดูสคริปต์";
+      if (docP2) docP2.textContent = "รอผลการประมวลผลเวชระเบียน";
+      if (docP3) docP3.textContent = "รอผลการประมวลผลเวชระเบียน";
+      if (docP4) docP4.textContent = "รอผลการประมวลผลเวชระเบียน";
+      if (docP5) docP5.textContent = "รอผลการประมวลผลเวชระเบียน";
+      if (docP6) docP6.textContent = "รอผลการประมวลผลเวชระเบียน";
+
       ["scriptPrompt1Phonetic", "scriptPrompt2Phonetic", "scriptPrompt3Phonetic", "scriptClosingDynamicPhonetic", "scriptPrompt6Phonetic"].forEach(id => {
         const el = document.getElementById(id);
+        if (el) el.classList.add("hidden");
+      });
+      [docP1Phonetic, docP2Phonetic, docP3Phonetic, docP5Phonetic, docP6Phonetic].forEach(el => {
         if (el) el.classList.add("hidden");
       });
     }
@@ -2811,20 +2850,96 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAttach = document.getElementById("btnAttachMedicalDocs");
     const btnStep1Attach = document.getElementById("btnStep1AttachDoc");
     const btnInqAttach = document.getElementById("btnInqAttachDoc");
+    const btnSyncToCallSop = document.getElementById("btnSyncToCallSop");
+    const btnDocSendWhatsApp = document.getElementById("btnDocSendWhatsApp");
 
-    function triggerFileSelect(e) {
+    function triggerFileSelect(e, shouldSwitchView = false) {
       if (e) {
         e.preventDefault();
         e.stopPropagation();
+      }
+      if (shouldSwitchView && typeof window.activateView === "function") {
+        window.activateView("viewDocTeleprompter");
       }
       if (fileInput) {
         fileInput.click();
       }
     }
 
-    if (btnAttach) btnAttach.addEventListener("click", triggerFileSelect);
-    if (btnStep1Attach) btnStep1Attach.addEventListener("click", triggerFileSelect);
-    if (btnInqAttach) btnInqAttach.addEventListener("click", triggerFileSelect);
+    if (btnAttach) btnAttach.addEventListener("click", (e) => triggerFileSelect(e, false));
+    if (btnStep1Attach) btnStep1Attach.addEventListener("click", (e) => triggerFileSelect(e, true));
+    if (btnInqAttach) btnInqAttach.addEventListener("click", (e) => triggerFileSelect(e, true));
+
+    if (btnSyncToCallSop) {
+      btnSyncToCallSop.addEventListener("click", () => {
+        if (typeof window.activateView === "function") {
+          window.activateView("viewCallJourney");
+        }
+      });
+    }
+
+    if (btnDocSendWhatsApp) {
+      btnDocSendWhatsApp.addEventListener("click", () => {
+        const phone = (document.getElementById("callPatientPhone")?.value || "").replace(/[^0-9]/g, "");
+        const patientName = document.getElementById("callPatientName")?.value || "Patient";
+        const missingDocs = Array.from(document.querySelectorAll("#dossierMissingList li")).map(li => li.textContent.trim()).filter(t => t && !t.includes("ยังไม่มี"));
+        let waText = `Dear ${patientName},\n\nThank you for choosing Vejthani Hospital (King of Bones).\n\nOur medical liaison team has received your medical records and is preparing your treatment plan with our orthopedic specialists.\n`;
+        if (missingDocs.length > 0) {
+          waText += `\nTo complete your doctor review, kindly share the following additional records:\n${missingDocs.map(d => `- ${d}`).join('\n')}\n`;
+        }
+        waText += `\nBest regards,\nVejthani Hospital International Medical Liaison`;
+        const waUrl = phone ? `https://wa.me/${phone}?text=${encodeURIComponent(waText)}` : `https://wa.me/?text=${encodeURIComponent(waText)}`;
+        window.open(waUrl, "_blank");
+      });
+    }
+
+    // Doc Teleprompter Language controls
+    const docLangThai = document.getElementById("docCallLangThai");
+    const docLangEn = document.getElementById("docCallLangEn");
+    const docLangAr = document.getElementById("docCallLangAr");
+    const docLangButtons = [
+      { btn: docLangThai, lang: "th" },
+      { btn: docLangEn, lang: "en" },
+      { btn: docLangAr, lang: "ar" }
+    ];
+    docLangButtons.forEach(({ btn, lang }) => {
+      if (btn) {
+        btn.addEventListener("click", () => {
+          currentCallLang = lang;
+          docLangButtons.forEach(({ btn: b }) => {
+            if (b) {
+              b.classList.remove("bg-[#1B365D]", "text-white", "shadow-xs");
+              b.classList.add("text-slate-500");
+            }
+          });
+          btn.classList.add("bg-[#1B365D]", "text-white", "shadow-xs");
+          btn.classList.remove("text-slate-500");
+          renderCallPrompts();
+        });
+      }
+    });
+
+    // Doc Teleprompter Gender controls
+    const docMale = document.getElementById("docStaffGenderMale");
+    const docFemale = document.getElementById("docStaffGenderFemale");
+    if (docMale && docFemale) {
+      docMale.addEventListener("click", () => {
+        currentStaffGender = "male";
+        docMale.classList.add("bg-white", "text-[#1B365D]", "shadow-xs");
+        docMale.classList.remove("text-slate-500");
+        docFemale.classList.remove("bg-white", "text-[#1B365D]", "shadow-xs");
+        docFemale.classList.add("text-slate-500");
+        renderCallPrompts();
+      });
+      docFemale.addEventListener("click", () => {
+        currentStaffGender = "female";
+        docFemale.classList.add("bg-white", "text-[#1B365D]", "shadow-xs");
+        docFemale.classList.remove("text-slate-500");
+        docMale.classList.remove("bg-white", "text-[#1B365D]", "shadow-xs");
+        docMale.classList.add("text-slate-500");
+        renderCallPrompts();
+      });
+    }
 
     if (dropArea && fileInput) {
       dropArea.addEventListener("click", (e) => {
