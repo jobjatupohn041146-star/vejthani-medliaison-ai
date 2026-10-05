@@ -4240,12 +4240,15 @@ ${docText.slice(0, 16000)}`;
             renderDossierCard(result.dossier);
             updateCountryClock();
             refreshCallScript();
+            if (typeof saveCaseToRepository === "function") {
+              saveCaseToRepository(result.dossier, result.scriptCards, currentScriptTone, usedEngine);
+            }
 
             if (statusEl) {
               const engineLabel = usedEngine === "gemini" 
                 ? "Google Gemini 2.5 Flash AI (สด)" 
                 : "Deep Clinical NLP Engine (12+ สาขาเฉพาะทาง)";
-              statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700 font-bold">ประมวลผลสำเร็จ (${engineLabel}): วิเคราะห์ข้อมูลคุณ ${result.dossier.patientName} (${result.dossier.nationality}) เรียบร้อย สคริปต์พยาบาลปรับตามเอกสารตรงทุกภาษา</span>`;
+              statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700 font-bold">ประมวลผลสำเร็จ (${engineLabel}): วิเคราะห์ข้อมูลคุณ ${result.dossier.patientName} (${result.dossier.nationality}) เรียบร้อย บันทึกลงคลังเวชระเบียนอัตโนมัติ สคริปต์พยาบาลปรับตามเอกสารตรงทุกภาษา</span>`;
             }
           }
         } catch (err) {
@@ -4256,6 +4259,9 @@ ${docText.slice(0, 16000)}`;
             currentCustomScriptCards = fallbackResult.scriptCards;
             renderDossierCard(fallbackResult.dossier);
             refreshCallScript();
+            if (typeof saveCaseToRepository === "function") {
+              saveCaseToRepository(fallbackResult.dossier, fallbackResult.scriptCards, currentScriptTone, "client-fallback");
+            }
           }
           if (statusEl) {
             statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-blue-500"></span><span class="text-blue-700 font-semibold">ประมวลผลเวชระเบียนผ่านระบบ Client-Side Medical Extraction เรียบร้อย</span>`;
@@ -5209,10 +5215,1312 @@ ${docText.slice(0, 16000)}`;
     });
   }
 
+  // =========================================================================
+  // PERSISTENT CASE REPOSITORY & 3-STEP FOLLOW-UP DATA DASHBOARD ENGINE
+  // =========================================================================
+  const STORAGE_KEY_CASES = "vejthani_case_records_v1";
+
+  const DEFAULT_GCC_DEMO_CASES = [
+    {
+      id: "CASE-2026-OM-001",
+      createdAt: "2026-10-04T09:30:00Z",
+      patientName: "Mr. Mohammed Al-Balushi",
+      passportOrHN: "HN-OM-892144",
+      gender: "male",
+      age: "62",
+      phone: "+96891234567",
+      countryCode: "OM",
+      nationality: "Oman (سلطنة عمان)",
+      specialty: "orthopedics",
+      specialtyThai: "ศูนย์กระดูกและข้อ (King of Bones)",
+      centerThai: "กระดูกและข้อ King of Bones",
+      centerEng: "King of Bones & Joint Center",
+      diagnosis: "Severe Bilateral Knee Osteoarthritis (ข้อเข่าเสื่อมรุนแรงระดับ 3-4)",
+      procedure: "Robotic-Assisted Total Knee Arthroplasty (TKA)",
+      doctorAssigned: "นพ. สันติชัย เธียรสุนทร (Dr. Santichai Thiansunthorn)",
+      estimatedCost: "380,000 - 450,000 THB",
+      recoveryDays: 14,
+      documentsReceived: ["MRI Knee Right", "Medical Report (Muscat Hospital)"],
+      documentsMissing: ["Weight-bearing Full-Leg X-ray (ฟิล์มยืนตรง)", "Blood test CBC, Coagulation (PT/INR)"],
+      followUpStep: "step1",
+      lastContactDate: "2026-10-04 14:15",
+      followUpHistory: [
+        {
+          timestamp: "2026-10-04 14:15",
+          step: "step1",
+          channel: "phone",
+          staff: "Nurse Supervisor (GCC Team)",
+          outcome: "completed",
+          notes: "โทรแจ้งคนไข้ขอฟิล์มยืนตรง Weight-bearing และผลตรวจเลือด คนไข้จะไปตรวจเพิ่มที่มัสกัตและส่งผ่าน WhatsApp"
+        }
+      ],
+      tone: "formal",
+      source: "preloaded"
+    },
+    {
+      id: "CASE-2026-SA-002",
+      createdAt: "2026-10-03T11:00:00Z",
+      patientName: "Mrs. Fatima Al-Zahrani",
+      passportOrHN: "HN-SA-441209",
+      gender: "female",
+      age: "54",
+      phone: "+966501234567",
+      countryCode: "SA",
+      nationality: "Saudi Arabia (المملكة العربية السعودية)",
+      specialty: "cancer",
+      specialtyThai: "ศูนย์มะเร็งและเนื้องอกวิทยา (Oncology / MDT Center)",
+      centerThai: "ศูนย์มะเร็งและเนื้องอกวิทยา",
+      centerEng: "Vejthani Cancer & MDT Center",
+      diagnosis: "Hepatocellular Carcinoma with Cirrhosis (เนื้องอกตับและตับแข็ง)",
+      procedure: "Transarterial Chemoembolization (TACE) / Microwave Ablation",
+      doctorAssigned: "ศ.คลินิก นพ. สุรพล รังสิตยานนท์ (Prof. Surapol Rangsityanont)",
+      estimatedCost: "450,000 - 580,000 THB",
+      recoveryDays: 10,
+      documentsReceived: ["Triphasic CT Abdomen", "AFP Tumor Marker", "Biopsy Report"],
+      documentsMissing: ["Cardiac Clearance / Echocardiogram Report"],
+      followUpStep: "step2",
+      lastContactDate: "2026-10-05 10:30",
+      followUpHistory: [
+        {
+          timestamp: "2026-10-03 16:00",
+          step: "step1",
+          channel: "whatsapp",
+          staff: "Liaison Officer (Saudi Desk)",
+          outcome: "completed",
+          notes: "รับเอกสารผลตรวจ CT ช่องท้องครบถ้วน ส่งต่อให้คณะแพทย์ MDT ประเมิน"
+        },
+        {
+          timestamp: "2026-10-05 10:30",
+          step: "step2",
+          channel: "phone",
+          staff: "Liaison Officer (Saudi Desk)",
+          outcome: "completed",
+          notes: "โทรแจ้งผลการประชุมแพทย์ MDT และค่าใช้จ่าย TACE 450,000 บาท ส่งสรุปเข้า WhatsApp และอีเมล"
+        }
+      ],
+      tone: "empathy",
+      source: "preloaded"
+    },
+    {
+      id: "CASE-2026-AE-003",
+      createdAt: "2026-10-02T13:45:00Z",
+      patientName: "Baby Tariq Al-Maktoum (Guardian: Mr. Rashid)",
+      passportOrHN: "HN-AE-771928",
+      gender: "male",
+      age: "8 months",
+      phone: "+971509876543",
+      countryCode: "AE",
+      nationality: "United Arab Emirates (الإمارات العربية المتحدة)",
+      specialty: "pediatric",
+      specialtyThai: "ศูนย์กระดูกและข้อในเด็ก (Pediatric Orthopedic Center)",
+      centerThai: "กระดูกและข้อเด็ก",
+      centerEng: "Pediatric Orthopedic Center",
+      diagnosis: "Congenital Talipes Equinovarus / Clubfoot (โรคเท้าปุกแต่กำเนิด)",
+      procedure: "Ponseti Serial Casting & Percutaneous Achilles Tenotomy",
+      doctorAssigned: "พญ. พิมพรรณ วัฒนพงษ์ (Dr. Pimparn Wattanapong)",
+      estimatedCost: "180,000 - 240,000 THB",
+      recoveryDays: 21,
+      documentsReceived: ["Pediatric Clinical Photos", "Birth Record", "Ultrasound Feet"],
+      documentsMissing: [],
+      followUpStep: "step3",
+      lastContactDate: "2026-10-05 11:20",
+      followUpHistory: [
+        {
+          timestamp: "2026-10-02 14:00",
+          step: "step1",
+          channel: "email",
+          staff: "Pediatric Coordinator",
+          outcome: "completed",
+          notes: "ได้รับภาพถ่ายและผลอัลตราซาวด์เท้าเด็ก ส่งให้กุมารแพทย์ผู้เชี่ยวชาญทันที"
+        },
+        {
+          timestamp: "2026-10-03 15:30",
+          step: "step2",
+          channel: "phone",
+          staff: "Pediatric Coordinator",
+          outcome: "completed",
+          notes: "อธิบายวิธี Ponseti ครอบครัวพึงพอใจและขอหนังสือรับรองทำวีซ่าแพทย์"
+        },
+        {
+          timestamp: "2026-10-05 11:20",
+          step: "step3",
+          channel: "whatsapp",
+          staff: "Pediatric Coordinator",
+          outcome: "completed",
+          notes: "ออกหนังสือรับรองแพทย์ Medical Visa Letter ส่งให้สถานทูตไทยในดูไบเรียบร้อย รอคอนเฟิร์มเที่ยวบิน"
+        }
+      ],
+      tone: "empathy",
+      source: "preloaded"
+    },
+    {
+      id: "CASE-2026-QA-004",
+      createdAt: "2026-10-03T08:15:00Z",
+      patientName: "Mr. Khaled Al-Kuwari",
+      passportOrHN: "HN-QA-330192",
+      gender: "male",
+      age: "47",
+      phone: "+97455123456",
+      countryCode: "QA",
+      nationality: "Qatar (دولة قطر)",
+      specialty: "spine",
+      specialtyThai: "สถาบันกระดูกสันหลังเวชธานี (Vejthani Spine Institute)",
+      centerThai: "กระดูกสันหลัง King of Bones",
+      centerEng: "Vejthani Spine Institute",
+      diagnosis: "Herniated Nucleus Pulposus L4-L5 with Radiculopathy (หมอนรองกระดูกทับเส้นประสาท)",
+      procedure: "Full Endoscopic Lumbar Discectomy (ผ่าตัดหมอนรองกระดูกผ่านกล้องเอ็นโดสโคป)",
+      doctorAssigned: "นพ. ภัทรพล สันติพาณิชย์ (Dr. Pattarapol Santipanich)",
+      estimatedCost: "320,000 - 380,000 THB",
+      recoveryDays: 7,
+      documentsReceived: ["MRI Lumbar Spine (DICOM & Report)", "Electromyography (EMG)"],
+      documentsMissing: ["Blood test Pre-op Lab panel"],
+      followUpStep: "step2",
+      lastContactDate: "2026-10-05 09:45",
+      followUpHistory: [
+        {
+          timestamp: "2026-10-03 10:00",
+          step: "step1",
+          channel: "phone",
+          staff: "Spine Nurse Specialist",
+          outcome: "completed",
+          notes: "รับไฟล์ MRI กระดูกสันหลังส่วนเอว ส่งแพทย์ตรวจอ่านภาพฟิล์ม"
+        },
+        {
+          timestamp: "2026-10-05 09:45",
+          step: "step2",
+          channel: "phone",
+          staff: "Spine Nurse Specialist",
+          outcome: "completed",
+          notes: "โทรอธิบายการผ่าตัดส่องกล้องแผลเล็ก 8 มม. และส่งตารางราคาให้คนไข้พิจารณา"
+        }
+      ],
+      tone: "concise",
+      source: "preloaded"
+    },
+    {
+      id: "CASE-2026-KW-005",
+      createdAt: "2026-10-01T15:20:00Z",
+      patientName: "Sheikh Ahmed Al-Sabah",
+      passportOrHN: "HN-KW-110294",
+      gender: "male",
+      age: "59",
+      phone: "+96599123456",
+      countryCode: "KW",
+      nationality: "Kuwait (دولة الكويت)",
+      specialty: "cardiac",
+      specialtyThai: "ศูนย์หัวใจเวชธานี (Vejthani Cardiac Center)",
+      centerThai: "หัวใจและหลอดเลือด",
+      centerEng: "Vejthani Cardiac Center",
+      diagnosis: "Coronary Artery Disease with Angina Pectoris (หลอดเลือดหัวใจตีบ)",
+      procedure: "Coronary Angiography (CAG) & Percutaneous Coronary Intervention (PCI)",
+      doctorAssigned: "นพ. ชัยรัตน์ เสริมสิริวัฒน์ (Dr. Chairat Sermsiriwat)",
+      estimatedCost: "420,000 - 600,000 THB",
+      recoveryDays: 7,
+      documentsReceived: ["Coronary Angiogram DVD", "Echocardiogram", "Medical Insurance Letter"],
+      documentsMissing: [],
+      followUpStep: "booked",
+      lastContactDate: "2026-10-05 13:00",
+      followUpHistory: [
+        {
+          timestamp: "2026-10-01 16:00",
+          step: "step1",
+          channel: "email",
+          staff: "VIP Kuwait Concierge",
+          outcome: "completed",
+          notes: "ได้รับผลสวนหัวใจและรายงานทางการแพทย์ครบถ้วน"
+        },
+        {
+          timestamp: "2026-10-03 11:00",
+          step: "step2",
+          channel: "phone",
+          staff: "VIP Kuwait Concierge",
+          outcome: "completed",
+          notes: "แจ้งแผนการตรวจสวนหัวใจและทำบอลลูนขยายหลอดเลือด พร้อมส่งใบเสนอราคา"
+        },
+        {
+          timestamp: "2026-10-04 14:00",
+          step: "step3",
+          channel: "whatsapp",
+          staff: "VIP Kuwait Concierge",
+          outcome: "completed",
+          notes: "ยืนยันตารางบิน Kuwait Airways เที่ยวบิน KU411 ถึงสุวรรณภูมิ 12 ต.ค. 2026 จัดรถลีมูซีนต้อนรับพร้อมล่าม VIP"
+        }
+      ],
+      tone: "formal",
+      source: "preloaded"
+    }
+  ];
+
+  let activeModalCaseId = null;
+  let activeModalStep = "step1";
+  let activeModalLang = "th";
+
+  function getStoredCases() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_CASES);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn("Error reading stored cases:", e);
+    }
+    saveStoredCases(DEFAULT_GCC_DEMO_CASES);
+    return JSON.parse(JSON.stringify(DEFAULT_GCC_DEMO_CASES));
+  }
+
+  function saveStoredCases(cases) {
+    try {
+      localStorage.setItem(STORAGE_KEY_CASES, JSON.stringify(cases));
+    } catch (e) {
+      console.warn("Error saving cases to localStorage:", e);
+    }
+  }
+
+  function saveCaseToRepository(dossier, scriptCards, tone = "formal", source = "nlp") {
+    if (!dossier) return;
+    const cases = getStoredCases();
+    const cleanHN = (dossier.passportOrHN || "").trim().toLowerCase();
+    const cleanName = (dossier.patientName || "").trim().toLowerCase();
+
+    let existingIndex = -1;
+    if (cleanHN) {
+      existingIndex = cases.findIndex(c => (c.passportOrHN || "").trim().toLowerCase() === cleanHN);
+    }
+    if (existingIndex === -1 && cleanName) {
+      existingIndex = cases.findIndex(c => (c.patientName || "").trim().toLowerCase() === cleanName);
+    }
+
+    const now = new Date();
+    const timestampStr = now.getFullYear() + "-" +
+      String(now.getMonth() + 1).padStart(2, '0') + "-" +
+      String(now.getDate()).padStart(2, '0') + " " +
+      String(now.getHours()).padStart(2, '0') + ":" +
+      String(now.getMinutes()).padStart(2, '0');
+
+    if (existingIndex >= 0) {
+      const existing = cases[existingIndex];
+      existing.diagnosis = dossier.diagnosis || existing.diagnosis;
+      existing.procedure = dossier.procedure || existing.procedure;
+      existing.specialty = dossier.specialty || existing.specialty;
+      existing.specialtyThai = dossier.specialtyThai || existing.specialtyThai;
+      existing.centerThai = dossier.centerThai || existing.centerThai;
+      existing.centerEng = dossier.centerEng || existing.centerEng;
+      existing.doctorAssigned = dossier.doctorAssigned || existing.doctorAssigned;
+      existing.estimatedCost = dossier.estimatedCost || existing.estimatedCost;
+      existing.documentsReceived = dossier.documentsReceived || existing.documentsReceived;
+      existing.documentsMissing = dossier.documentsMissing || existing.documentsMissing;
+      existing.phone = dossier.phone || existing.phone;
+      existing.countryCode = dossier.countryCode || existing.countryCode;
+      existing.nationality = dossier.nationality || existing.nationality;
+      existing.dossier = dossier;
+      existing.scriptCards = scriptCards;
+      existing.tone = tone;
+      existing.source = source;
+      existing.lastContactDate = timestampStr;
+      if (!existing.followUpHistory) existing.followUpHistory = [];
+      existing.followUpHistory.unshift({
+        timestamp: timestampStr,
+        step: existing.followUpStep || "step1",
+        channel: "system",
+        staff: "Vejthani Clinical AI",
+        outcome: "completed",
+        notes: `อัปเดตเวชระเบียนใหม่จากการสแกนเอกสาร (${source}): ${dossier.diagnosis || 'ประเมินอาการ'}`
+      });
+      cases[existingIndex] = existing;
+    } else {
+      const code = (dossier.countryCode || "INT").toUpperCase();
+      const numStr = String(cases.length + 1).padStart(3, '0');
+      const newId = `CASE-${now.getFullYear()}-${code}-${numStr}`;
+      const missingCount = (dossier.documentsMissing && dossier.documentsMissing.length) || 0;
+      const initialStep = missingCount > 0 ? "step1" : "step2";
+
+      const newCase = {
+        id: newId,
+        createdAt: now.toISOString(),
+        patientName: dossier.patientName || "Unknown Patient",
+        passportOrHN: dossier.passportOrHN || `HN-${code}-${Date.now().toString().slice(-6)}`,
+        gender: dossier.gender || "male",
+        age: dossier.age || "N/A",
+        phone: dossier.phone || "+6627340000",
+        countryCode: dossier.countryCode || "TH",
+        nationality: dossier.nationality || "International",
+        specialty: dossier.specialty || "orthopedics",
+        specialtyThai: dossier.specialtyThai || "กระดูกและข้อ King of Bones",
+        centerThai: dossier.centerThai || "ศูนย์กระดูกและข้อ",
+        centerEng: dossier.centerEng || "King of Bones & Joint Center",
+        diagnosis: dossier.diagnosis || "Medical Consultation",
+        procedure: dossier.procedure || "Specialist Evaluation",
+        doctorAssigned: dossier.doctorAssigned || "Vejthani Specialist Team",
+        estimatedCost: dossier.estimatedCost || "ประเมินตามแผนการรักษา",
+        recoveryDays: dossier.recoveryDays || 7,
+        documentsReceived: dossier.documentsReceived || [],
+        documentsMissing: dossier.documentsMissing || [],
+        followUpStep: initialStep,
+        lastContactDate: timestampStr,
+        followUpHistory: [
+          {
+            timestamp: timestampStr,
+            step: initialStep,
+            channel: "system",
+            staff: "Vejthani Clinical AI",
+            outcome: "completed",
+            notes: `สร้างเวชระเบียนใหม่จากการสแกนเอกสาร (${source}): ${dossier.diagnosis || 'รอประเมิน'}`
+          }
+        ],
+        dossier: dossier,
+        scriptCards: scriptCards,
+        tone: tone,
+        source: source
+      };
+      cases.unshift(newCase);
+    }
+
+    saveStoredCases(cases);
+    if (typeof window.renderCaseDashboard === "function") {
+      window.renderCaseDashboard();
+    }
+  }
+
+  function generateFollowUpScript(c, step, lang) {
+    const pName = c.patientName || "คุณคนไข้";
+    const diag = c.diagnosis || "ปัญหาสุขภาพ";
+    const centerTh = c.centerThai || "ศูนย์การแพทย์เฉพาะทาง";
+    const centerEn = c.centerEng || "Vejthani Specialty Center";
+    const docName = c.doctorAssigned || "แพทย์ผู้เชี่ยวชาญโรงพยาบาลเวชธานี";
+    const cost = c.estimatedCost || "ประมาณการค่าใช้จ่าย";
+    const days = c.recoveryDays || 7;
+    const missing = (c.documentsMissing && c.documentsMissing.length > 0)
+      ? c.documentsMissing.join(", ")
+      : "ฟิล์มเอกซเรย์/MRI เพิ่มเติม";
+
+    if (step === "step1") {
+      if (lang === "th") {
+        return `สวัสดีครับ/ค่ะ ขอเรียนสายคุณ ${pName} ติดต่อจากแผนกลูกค้าสัมพันธ์ต่างประเทศ โรงพยาบาลเวชธานี Vejthani Hospital ตามที่ท่านได้ส่งเอกสารการปรึกษาเรื่อง ${diag} ขณะนี้ทีมแพทย์ผู้เชี่ยวชาญศูนย์ ${centerTh} กำลังประเมินแผนการรักษาเบื้องต้น แต่ยังต้องการ ${missing} เพิ่มเติม เพื่อให้แพทย์วินิจฉัยและออกแผนรักษาได้อย่างแม่นยำที่สุดครับ/ค่ะ ท่านสามารถส่งไฟล์ผ่าน WhatsApp หมายเลขนี้ได้เลยครับ/ค่ะ`;
+      } else if (lang === "en") {
+        return `Good day, may I speak with Mr./Ms. ${pName}. This is Vejthani Hospital International Medical Liaison calling regarding your medical consultation for ${diag}. Our specialist team at ${centerEn} is currently evaluating your clinical records. To ensure the most accurate treatment protocol and medical quotation, our specialist kindly requests the following additional records: ${missing}. You may submit these files directly via this WhatsApp number or our official medical liaison email.`;
+      } else {
+        return `مرحباً، هل يمكنني التحدث مع السيد/السيدة ${pName}؟ نتصل بكم من فريق التنسيق الطبي الدولي بمستشفى فيجثاني (Vejthani Hospital) ببانكوك بخصوص استفساركم الطبي حول ${diag}. يقوم فريقنا الاستشاري في ${centerEn} بدراسة تقاريركم الطبية بعناية. ولاستكمال الخطة العلاجية وعرض الأسعار الدقيق، يرجى تزويدنا بالمستندات التالية: ${missing}. يمكنكم إرسال هذه المستندات مباشرة عبر محادثة الواتساب هذه.`;
+      }
+    } else if (step === "step2") {
+      if (lang === "th") {
+        return `สวัสดีครับ/ค่ะ ขอเรียนสายคุณ ${pName} ติดต่อจากศูนย์ผู้ป่วยต่างประเทศ โรงพยาบาลเวชธานี Vejthani Hospital แจ้งความคืบหน้าการประเมินทางการแพทย์เรื่อง ${diag} โดย ${docName} ประจำศูนย์ ${centerTh} ได้ออกแผนการรักษาและประมาณการค่ารักษา (Medical Cost Estimate) เรียบร้อยแล้ว อยู่ที่ประมาณ ${cost} ระยะเวลาพักฟื้นในกรุงเทพฯ รวมประมาณ ${days} วันครับ/ค่ะ ทางทีมงานพร้อมส่งเอกสารใบเสนอราคาอย่างละเอียด (Itemized Quotation) และให้คำปรึกษาเพิ่มเติมครับ/ค่ะ`;
+      } else if (lang === "en") {
+        return `Good day Mr./Ms. ${pName}, this is Vejthani Hospital International Patient Center following up on your clinical consultation for ${diag}. We are pleased to advise that ${docName} at ${centerEn} has reviewed your case and formulated the comprehensive treatment plan. The preliminary medical cost estimation is ${cost} with an expected recovery and hospital stay of ${days} days. We have prepared the official itemized quotation for your review. Would you like us to explain the procedure schedule and physician credentials?`;
+      } else {
+        return `تحياتنا الطيبة للسيد/السيدة ${pName}، نتواصل معكم من مركز المرضى الدولي بمستشفى فيجثاني ببانكوك لمتابعة استشارتكم الطبية الخاصة بـ ${diag}. يسعدنا إبلاغكم بأن ${docName} في ${centerEn} قد اعتمد الخطة العلاجية وتقدير التكلفة بقيمة ${cost}، مع فترة تعافي وإقامة متوقعة لمدة ${days} يوماً في تايلاند. لقد قمنا بإعداد عرض الأسعار الطبي المعتمد، ويسرنا تزويدكم بالتفاصيل الكاملة وخطة العلاج.`;
+      }
+    } else if (step === "step3") {
+      if (lang === "th") {
+        return `สวัสดีครับ/ค่ะ ขอเรียนสายคุณ ${pName} ติดต่อจากแผนกต้อนรับและประสานงานนานาชาติ โรงพยาบาลเวชธานี Vejthani Hospital ติดตามความพร้อมในการเดินทางมารักษาเรื่อง ${diag} ครับ/ค่ะ ทางโรงพยาบาลได้จัดเตรียมหนังสือรับรองแพทย์เพื่อยื่นขอวีซ่ารักษาพยาบาล (Medical Visa Guarantee Letter) และทีมแพทย์พร้อมนัดหมายทันทีที่ท่านเดินทางถึง พร้อมจัดบริการรถรับส่ง VIP จากสนามบินสุวรรณภูมิมายังโรงพยาบาลฟรีครับ/ค่ะ ทางโรงพยาบาลขออนุญาตสอบถามกำหนดการเดินทางและเที่ยวบินเพื่อจัดเตรียมเจ้าหน้าที่ต้อนรับครับ/ค่ะ`;
+      } else if (lang === "en") {
+        return `Good day Mr./Ms. ${pName}, this is Vejthani Hospital International Concierge & Medical Liaison following up regarding your planned medical travel to Bangkok for ${diag}. We have finalized your Official Medical Visa Guarantee Letter for the Royal Thai Embassy and reserved priority clinical scheduling with ${docName}. Our airport concierge team is standing by to provide complimentary VIP limousine pickup directly from Suvarnabhumi Airport (BKK). May we confirm your intended flight schedule and arrival date?`;
+      } else {
+        return `أهلاً ومرحباً بالسيد/السيدة ${pName}، يتواصل معكم قسم الاستقبال والتنسيق الدولي بمستشفى فيجثاني ببانكوك لمتابعة ترتيبات سفركم لعلاج ${diag}. نود تأكيد جاهزية خطاب الضمان الطبي المعتمد للسفارة (Medical Visa Guarantee Letter) وتثبيت موعد الفحص والعملية مع ${docName}، كما يوفر المستشفى خدمة الاستقبال بسيارة خاصة من مطار بانكوك الدولي مباشرة. هل يمكنكم تزويدنا بموعد وتفاصيل رحلة الطيران لتأكيد كافة الترتيبات؟`;
+      }
+    } else {
+      if (lang === "th") {
+        return `ขอแสดงความยินดีและขอบพระคุณคุณ ${pName} ที่ไว้วางใจโรงพยาบาลเวชธานี Vejthani Hospital ในการดูแลสุขภาพและการรักษา ${diag} ทางโรงพยาบาลได้ยืนยันคิวผ่าตัด/ตรวจรักษากับ ${docName} เรียบร้อยแล้ว พร้อมจัดเตรียมห้องพักผู้ป่วยระดับพรีเมียม ล่ามภาษาอาหรับดูแลส่วนตัวตลอดการรักษา และเจ้าหน้าที่ต้อนรับ ณ สนามบินสุวรรณภูมิ หากต้องการประสานงานด้านใดเพิ่มเติม ทีมเวชธานียินดีดูแลตลอด 24 ชั่วโมงครับ/ค่ะ`;
+      } else if (lang === "en") {
+        return `Vejthani Hospital is honored to confirm your medical reservation and treatment schedule for ${diag}. Your clinical procedure with ${docName} has been secured, along with your private executive room reservation, dedicated Arabic interpreter concierge, and airport limousine reception upon arrival at Bangkok. Please let us know if you require any additional assistance prior to departure.`;
+      } else {
+        return `يتشرف مستشفى فيجثاني بتأكيد حجزكم الطبي وموعد إجراء العلاج لـ ${diag}. لقد تم تثبيت موعد العملية مع ${docName}، وتجهيز الغرفة الخاصة، وتعيين مترجم مرافق خاص، بالإضافة إلى خدمة الاستقبال في مطار بانكوك الدولي. فريقنا الطبي في خدمتكم على مدار الساعة لضمان رحلة علاجية مريحة ومكللة بالنجاح بإذن الله.`;
+      }
+    }
+  }
+
+  function generateFollowUpWhatsAppURL(c, step) {
+    const rawPhone = (c.phone || "").replace(/[^\d+]/g, '');
+    const cleanPhone = rawPhone.replace(/^\+/, '');
+    const pName = c.patientName || "Valued Patient";
+    const diag = c.diagnosis || "Medical Consultation";
+    const centerEn = c.centerEng || "Vejthani Specialty Center";
+    const missing = (c.documentsMissing && c.documentsMissing.length > 0)
+      ? c.documentsMissing.map(m => "- " + m).join("\n")
+      : "- None";
+
+    let msg = "";
+    if (step === "step1") {
+      msg = `*Vejthani Hospital Bangkok - International Patient Center*\n` +
+        `Dear ${pName},\n\n` +
+        `Thank you for contacting Vejthani Hospital regarding *${diag}*.\n\n` +
+        `Our medical specialist team at *${centerEn}* is currently reviewing your medical inquiry. To provide an accurate treatment plan and quotation, please send us the following missing documents:\n` +
+        `${missing}\n\n` +
+        `You may reply and attach your documents directly in this WhatsApp chat.\n\n` +
+        `*Contact Vejthani Hospital:*\n` +
+        `Hotline: +66 2 734 0000 | Arabic Hotline: +66 85 223 8888\n` +
+        `Website: https://www.vejthani.com\n` +
+        `Vejthani Hospital, Bangkok, Thailand`;
+    } else if (step === "step2") {
+      msg = `*Vejthani Hospital Bangkok - Treatment Plan & Quotation*\n` +
+        `Dear ${pName},\n\n` +
+        `We are pleased to advise that your case for *${diag}* has been evaluated by our specialist *${c.doctorAssigned || 'Senior Consultant'}* at *${centerEn}*.\n\n` +
+        `*Treatment Details:*\n` +
+        `- Procedure: ${c.procedure || 'Specialist Evaluation'}\n` +
+        `- Estimated Cost: ${c.estimatedCost || 'Contact for itemized details'}\n` +
+        `- Recommended Stay: ${c.recoveryDays || 7} days\n\n` +
+        `Please let us know if you would like to receive the official quotation letter and schedule your clinical appointment.\n\n` +
+        `Vejthani Hospital International Patient Center`;
+    } else if (step === "step3") {
+      msg = `*Vejthani Hospital Bangkok - Medical Travel & Visa Coordination*\n` +
+        `Dear ${pName},\n\n` +
+        `Regarding your upcoming medical journey for *${diag}* at Vejthani Hospital:\n\n` +
+        `We have prepared your Official Medical Visa Guarantee Letter for the Royal Thai Embassy and scheduled your clinical priority admission.\n` +
+        `Our airport liaison concierge is standing by to provide complimentary VIP pickup at Suvarnabhumi Airport (BKK).\n\n` +
+        `Kindly reply with your flight itinerary and travel dates.\n\n` +
+        `Vejthani Hospital International Concierge Team`;
+    } else {
+      msg = `*Vejthani Hospital Bangkok - Treatment Booking Confirmation*\n` +
+        `Dear ${pName},\n\n` +
+        `Your medical appointment for *${diag}* with *${c.doctorAssigned || 'Specialist Team'}* has been officially confirmed.\n\n` +
+        `We look forward to welcoming you to Vejthani Hospital in Bangkok.\n` +
+        `Emergency 24/7 Hotline: +66 2 734 0000\n` +
+        `Arabic Desk: +66 85 223 8888`;
+    }
+
+    const encoded = encodeURIComponent(msg);
+    return cleanPhone ? `https://wa.me/${cleanPhone}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
+  }
+
+  function renderCaseDashboard() {
+    const cases = getStoredCases();
+    const searchInput = document.getElementById("caseSearchInput");
+    const specFilter = document.getElementById("caseSpecialtyFilter");
+    const stepFilter = document.getElementById("caseStepFilter");
+    const tbody = document.getElementById("caseTableBody");
+    const emptyState = document.getElementById("caseTableEmptyState");
+    const countIndicator = document.getElementById("caseCountIndicator");
+
+    const query = (searchInput && searchInput.value) ? searchInput.value.trim().toLowerCase() : "";
+    const selectedSpec = (specFilter && specFilter.value) ? specFilter.value : "all";
+    const selectedStep = (stepFilter && stepFilter.value) ? stepFilter.value : "all";
+
+    // Update KPI metrics based on all cases in repository
+    const metricTotal = document.getElementById("metricTotalCases");
+    const metricStep1 = document.getElementById("metricStep1");
+    const metricStep2 = document.getElementById("metricStep2");
+    const metricStep3 = document.getElementById("metricStep3");
+    const metricBooked = document.getElementById("metricBooked");
+
+    if (metricTotal) metricTotal.textContent = cases.length;
+    if (metricStep1) metricStep1.textContent = cases.filter(c => c.followUpStep === "step1").length;
+    if (metricStep2) metricStep2.textContent = cases.filter(c => c.followUpStep === "step2").length;
+    if (metricStep3) metricStep3.textContent = cases.filter(c => c.followUpStep === "step3").length;
+    if (metricBooked) metricBooked.textContent = cases.filter(c => c.followUpStep === "booked").length;
+
+    // Filter cases for table display
+    const filtered = cases.filter(c => {
+      // Query filter
+      if (query) {
+        const matchName = (c.patientName || "").toLowerCase().includes(query);
+        const matchHN = (c.passportOrHN || "").toLowerCase().includes(query);
+        const matchNat = (c.nationality || "").toLowerCase().includes(query);
+        const matchDiag = (c.diagnosis || "").toLowerCase().includes(query);
+        const matchID = (c.id || "").toLowerCase().includes(query);
+        if (!matchName && !matchHN && !matchNat && !matchDiag && !matchID) return false;
+      }
+      // Specialty filter
+      if (selectedSpec !== "all") {
+        if (c.specialty !== selectedSpec) return false;
+      }
+      // Step filter
+      if (selectedStep !== "all") {
+        if (c.followUpStep !== selectedStep) return false;
+      }
+      return true;
+    });
+
+    if (countIndicator) {
+      countIndicator.textContent = `แสดง ${filtered.length} จาก ${cases.length} เคส`;
+    }
+
+    if (!tbody) return;
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = "";
+      if (emptyState) emptyState.classList.remove("hidden");
+      return;
+    }
+
+    if (emptyState) emptyState.classList.add("hidden");
+
+    tbody.innerHTML = filtered.map(c => {
+      let stepBadge = "";
+      if (c.followUpStep === "step1") {
+        stepBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300">
+          <i data-lucide="file-question" class="w-3 h-3 text-amber-600"></i>
+          <span>สเต็ป 1: ขาดเอกสาร</span>
+        </span>`;
+      } else if (c.followUpStep === "step2") {
+        stepBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-300">
+          <i data-lucide="stethoscope" class="w-3 h-3 text-blue-600"></i>
+          <span>สเต็ป 2: แจ้งแผน &amp; ราคา</span>
+        </span>`;
+      } else if (c.followUpStep === "step3") {
+        stepBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-50 text-purple-800 border border-purple-300">
+          <i data-lucide="plane" class="w-3 h-3 text-purple-600"></i>
+          <span>สเต็ป 3: วีซ่า &amp; เดินทาง</span>
+        </span>`;
+      } else {
+        stepBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300">
+          <i data-lucide="check-circle" class="w-3 h-3 text-emerald-600"></i>
+          <span>นัดหมายสำเร็จ</span>
+        </span>`;
+      }
+
+      const dateStr = (c.createdAt || "").slice(0, 10);
+      const historyCount = (c.followUpHistory || []).length;
+      const lastContact = c.lastContactDate || "N/A";
+
+      return `
+        <tr class="hover:bg-slate-50/70 transition">
+          <td class="py-3 px-4">
+            <span class="font-mono font-bold text-slate-800">${c.id}</span>
+            <div class="text-[10px] text-slate-400 mt-0.5">${dateStr}</div>
+          </td>
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-900">${c.patientName}</div>
+            <div class="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
+              <span class="px-1.5 py-0.2 rounded bg-slate-100 font-mono font-semibold">${c.countryCode}</span>
+              <span>${c.passportOrHN}</span>
+              <span class="text-slate-400">|</span>
+              <span>${c.phone}</span>
+            </div>
+          </td>
+          <td class="py-3 px-4">
+            <div class="font-medium text-[#1B365D]">${c.diagnosis}</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">${c.centerThai} (${c.estimatedCost})</div>
+          </td>
+          <td class="py-3 px-4">
+            ${stepBadge}
+          </td>
+          <td class="py-3 px-4">
+            <div class="text-[11px] font-semibold text-slate-700">${lastContact}</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">บันทึก ${historyCount} ครั้ง</div>
+          </td>
+          <td class="py-3 px-4 text-right">
+            <div class="inline-flex items-center gap-1">
+              <button type="button" class="btn-table-followup px-2.5 py-1.5 bg-[#1B365D] hover:bg-[#152a48] text-white text-[11px] font-bold rounded-lg transition shadow-2xs flex items-center gap-1 cursor-pointer" data-case-id="${c.id}" title="เปิดแผงติดตามเคส 3 สเต็ป">
+                <i data-lucide="phone-forwarded" class="w-3.5 h-3.5"></i>
+                <span>ติดตามเคส</span>
+              </button>
+              <button type="button" class="btn-table-teleprompter p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 rounded-lg transition border border-indigo-200 cursor-pointer" data-case-id="${c.id}" title="เปิดดูในบทพูดโทรศัพท์เฉพาะบุคคล">
+                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              </button>
+              <button type="button" class="btn-table-print p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition border border-slate-200 cursor-pointer" data-case-id="${c.id}" title="พิมพ์ใบสรุปเวชระเบียน (Dossier)">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+              </button>
+              <button type="button" class="btn-table-delete p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg transition border border-rose-200 cursor-pointer" data-case-id="${c.id}" title="ลบข้อมูลเคส">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    // Attach row button events
+    tbody.querySelectorAll(".btn-table-followup").forEach(b => {
+      b.addEventListener("click", () => {
+        const id = b.getAttribute("data-case-id");
+        openCaseFollowUpModal(id);
+      });
+    });
+
+    tbody.querySelectorAll(".btn-table-teleprompter").forEach(b => {
+      b.addEventListener("click", () => {
+        const id = b.getAttribute("data-case-id");
+        loadCaseIntoTeleprompter(id);
+      });
+    });
+
+    tbody.querySelectorAll(".btn-table-print").forEach(b => {
+      b.addEventListener("click", () => {
+        const id = b.getAttribute("data-case-id");
+        printCaseDossier(id);
+      });
+    });
+
+    tbody.querySelectorAll(".btn-table-delete").forEach(b => {
+      b.addEventListener("click", () => {
+        const id = b.getAttribute("data-case-id");
+        if (confirm(`คุณต้องการลบข้อมูลเวชระเบียน ${id} หรือไม่?`)) {
+          const updated = cases.filter(item => item.id !== id);
+          saveStoredCases(updated);
+          renderCaseDashboard();
+        }
+      });
+    });
+
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
+  }
+
+  function openCaseFollowUpModal(caseId) {
+    const cases = getStoredCases();
+    const c = cases.find(item => item.id === caseId);
+    if (!c) {
+      alert("ไม่พบข้อมูลเคสที่เลือก");
+      return;
+    }
+
+    activeModalCaseId = caseId;
+    activeModalStep = c.followUpStep || "step1";
+    activeModalLang = "th";
+
+    const modal = document.getElementById("caseFollowUpModal");
+    const badge = document.getElementById("modalCaseBadge");
+    const nameEl = document.getElementById("modalPatientName");
+    const subEl = document.getElementById("modalPatientSub");
+
+    if (badge) badge.textContent = c.id;
+    if (nameEl) nameEl.textContent = c.patientName;
+    if (subEl) subEl.textContent = `${c.nationality} | ${c.passportOrHN} | ${c.centerThai} | ${c.phone}`;
+
+    updateModalStepUI(c);
+    renderModalHistory(c);
+
+    if (modal) modal.classList.remove("hidden");
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
+  }
+
+  function updateModalStepUI(c) {
+    const tabs = {
+      step1: document.getElementById("btnModalSelectStep1"),
+      step2: document.getElementById("btnModalSelectStep2"),
+      step3: document.getElementById("btnModalSelectStep3"),
+      booked: document.getElementById("btnModalSelectStepBooked")
+    };
+
+    Object.keys(tabs).forEach(k => {
+      const btn = tabs[k];
+      if (!btn) return;
+      if (k === activeModalStep) {
+        btn.classList.add("bg-[#1B365D]", "border-[#1B365D]", "shadow-sm");
+        btn.querySelectorAll("span").forEach(s => s.classList.add("text-white"));
+      } else {
+        btn.classList.remove("bg-[#1B365D]", "border-[#1B365D]", "shadow-sm");
+        btn.querySelectorAll("span").forEach(s => s.classList.remove("text-white"));
+      }
+    });
+
+    // Language buttons
+    const langBtns = {
+      th: document.getElementById("btnModalLangThai"),
+      en: document.getElementById("btnModalLangEn"),
+      ar: document.getElementById("btnModalLangAr")
+    };
+
+    Object.keys(langBtns).forEach(k => {
+      const btn = langBtns[k];
+      if (!btn) return;
+      if (k === activeModalLang) {
+        btn.classList.add("bg-[#1B365D]", "text-white");
+        btn.classList.remove("text-slate-600", "hover:bg-slate-100");
+      } else {
+        btn.classList.remove("bg-[#1B365D]", "text-white");
+        btn.classList.add("text-slate-600", "hover:bg-slate-100");
+      }
+    });
+
+    // Update Objectives
+    const objEl = document.getElementById("modalStepObjective");
+    if (objEl) {
+      if (activeModalStep === "step1") {
+        objEl.textContent = "วัตถุประสงค์ (สเต็ป 1 - Day 1): ติดตามเอกสารและผลสแกนที่ยังขาดอยู่เพื่อให้แพทย์ออกแผนรักษา";
+      } else if (activeModalStep === "step2") {
+        objEl.textContent = "วัตถุประสงค์ (สเต็ป 2 - Day 3): แจ้งผลการประเมินของแพทย์ผู้เชี่ยวชาญ แผนการผ่าตัด/รักษา และประมาณการค่าใช้จ่าย";
+      } else if (activeModalStep === "step3") {
+        objEl.textContent = "วัตถุประสงค์ (สเต็ป 3 - Day 7): ประสานหนังสือรับรองทำวีซ่าแพทย์ (Medical Visa Guarantee) และจัดเตรียมรถรับส่งสนามบินสุวรรณภูมิ";
+      } else {
+        objEl.textContent = "วัตถุประสงค์ (นัดหมายสำเร็จ): ยืนยันการจองห้องพัก คิวตรวจรักษากับแพทย์ และเจ้าหน้าที่ต้อนรับสนามบินสุวรรณภูมิ";
+      }
+    }
+
+    // Update Script Box
+    const scriptBox = document.getElementById("modalScriptContent");
+    if (scriptBox) {
+      scriptBox.value = generateFollowUpScript(c, activeModalStep, activeModalLang);
+      if (activeModalLang === "ar") {
+        scriptBox.setAttribute("dir", "rtl");
+        scriptBox.classList.add("font-arabic");
+      } else {
+        scriptBox.setAttribute("dir", "ltr");
+        scriptBox.classList.remove("font-arabic");
+      }
+    }
+
+    // Update WhatsApp link
+    const waLink = document.getElementById("btnModalSendWhatsApp");
+    if (waLink) {
+      waLink.href = generateFollowUpWhatsAppURL(c, activeModalStep);
+    }
+  }
+
+  function renderModalHistory(c) {
+    const cont = document.getElementById("modalHistoryTimeline");
+    if (!cont) return;
+
+    const list = c.followUpHistory || [];
+    if (list.length === 0) {
+      cont.innerHTML = `<div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-center">ยังไม่มีประวัติการติดต่อสำหรับเคสนี้</div>`;
+      return;
+    }
+
+    cont.innerHTML = list.map(item => `
+      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 text-[9px] font-bold rounded-md bg-[#1B365D] text-white">${(item.step || '').toUpperCase()}</span>
+            <span class="font-bold text-slate-800">${item.staff || 'Staff'}</span>
+            <span class="text-slate-400">(${item.channel || 'phone'})</span>
+          </div>
+          <p class="text-slate-600 mt-1">${item.notes || ''}</p>
+        </div>
+        <div class="text-[10px] text-slate-400 shrink-0 sm:text-right">
+          ${item.timestamp || ''}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function loadCaseIntoTeleprompter(caseId) {
+    const cases = getStoredCases();
+    const c = cases.find(item => item.id === caseId);
+    if (!c) {
+      alert("ไม่พบข้อมูลเคสที่ระบุ");
+      return;
+    }
+
+    if (callPatientName) callPatientName.value = c.patientName || "";
+    if (callPatientHN) callPatientHN.value = c.passportOrHN || "";
+    if (callPatientPhone) callPatientPhone.value = c.phone || "";
+    if (callTopic) callTopic.value = c.procedure || c.diagnosis || "";
+    if (callRemainingIssue) {
+      const missingStr = (c.documentsMissing && c.documentsMissing.length > 0)
+        ? c.documentsMissing.join(", ")
+        : "เอกสารครบถ้วน";
+      callRemainingIssue.value = missingStr;
+    }
+
+    if (c.countryCode) {
+      syncCountrySelection(c.countryCode);
+    }
+
+    if (c.specialty) {
+      document.querySelectorAll(".call-preset-btn").forEach(b => {
+        if (b.getAttribute("data-specialty") === c.specialty) {
+          b.classList.add("bg-[#1B365D]", "text-white", "font-bold");
+          b.classList.remove("bg-slate-50", "text-slate-700", "font-semibold");
+        } else {
+          b.classList.remove("bg-[#1B365D]", "text-white", "font-bold");
+          b.classList.add("bg-slate-50", "text-slate-700", "font-semibold");
+        }
+      });
+    }
+
+    if (c.dossier) {
+      currentCaseDossier = c.dossier;
+    } else {
+      currentCaseDossier = {
+        patientName: c.patientName,
+        passportOrHN: c.passportOrHN,
+        gender: c.gender,
+        age: c.age,
+        phone: c.phone,
+        countryCode: c.countryCode,
+        nationality: c.nationality,
+        specialty: c.specialty,
+        specialtyThai: c.specialtyThai,
+        centerThai: c.centerThai,
+        centerEng: c.centerEng,
+        diagnosis: c.diagnosis,
+        procedure: c.procedure,
+        doctorAssigned: c.doctorAssigned,
+        estimatedCost: c.estimatedCost,
+        documentsReceived: c.documentsReceived,
+        documentsMissing: c.documentsMissing,
+        chiefComplaint: c.diagnosis,
+        clinicalPrecautions: []
+      };
+    }
+
+    if (c.scriptCards && c.scriptCards.length > 0) {
+      currentCustomScriptCards = c.scriptCards;
+    } else {
+      currentCustomScriptCards = generateDynamicDocScriptCards(currentCaseDossier, c.tone || "formal");
+    }
+
+    renderDossierCard(currentCaseDossier);
+    updateCountryClock();
+    refreshCallScript();
+
+    if (typeof window.activateView === "function") {
+      window.activateView("viewDocTeleprompter");
+    }
+
+    const modal = document.getElementById("caseFollowUpModal");
+    if (modal) modal.classList.add("hidden");
+  }
+
+  function exportCasesToCSV() {
+    const cases = getStoredCases();
+    if (!cases || cases.length === 0) {
+      alert("ไม่มีข้อมูลเคสในคลังเวชระเบียนเพื่อส่งออก");
+      return;
+    }
+
+    const headers = [
+      "Case ID",
+      "Created Date",
+      "Patient Name",
+      "Passport / HN",
+      "Gender",
+      "Age",
+      "Phone",
+      "Country Code",
+      "Nationality",
+      "Specialty",
+      "Specialty (Thai)",
+      "Diagnosis",
+      "Procedure",
+      "Doctor Assigned",
+      "Estimated Cost (THB)",
+      "Recovery Days",
+      "Follow-Up Step",
+      "Missing Documents",
+      "Received Documents",
+      "Last Contact Date",
+      "Latest Notes"
+    ];
+
+    const escapeCSV = (val) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/"/g, '""');
+      return `"${str}"`;
+    };
+
+    const rows = cases.map(c => {
+      const latestHistory = (c.followUpHistory && c.followUpHistory[0]) ? c.followUpHistory[0].notes : "";
+      const missingStr = (c.documentsMissing && Array.isArray(c.documentsMissing)) ? c.documentsMissing.join("; ") : "";
+      const recStr = (c.documentsReceived && Array.isArray(c.documentsReceived)) ? c.documentsReceived.join("; ") : "";
+      return [
+        escapeCSV(c.id),
+        escapeCSV(c.createdAt),
+        escapeCSV(c.patientName),
+        escapeCSV(c.passportOrHN),
+        escapeCSV(c.gender),
+        escapeCSV(c.age),
+        escapeCSV(c.phone),
+        escapeCSV(c.countryCode),
+        escapeCSV(c.nationality),
+        escapeCSV(c.specialty),
+        escapeCSV(c.specialtyThai),
+        escapeCSV(c.diagnosis),
+        escapeCSV(c.procedure),
+        escapeCSV(c.doctorAssigned),
+        escapeCSV(c.estimatedCost),
+        escapeCSV(c.recoveryDays),
+        escapeCSV(c.followUpStep),
+        escapeCSV(missingStr),
+        escapeCSV(recStr),
+        escapeCSV(c.lastContactDate),
+        escapeCSV(latestHistory)
+      ].join(",");
+    });
+
+    const csvContent = "\uFEFF" + headers.map(escapeCSV).join(",") + "\r\n" + rows.join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const todayStr = new Date().toISOString().slice(0, 10);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Vejthani_Cases_Export_${todayStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  function exportCasesToJSON() {
+    const cases = getStoredCases();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cases, null, 2));
+    const link = document.createElement("a");
+    const todayStr = new Date().toISOString().slice(0, 10);
+    link.setAttribute("href", dataStr);
+    link.setAttribute("download", `Vejthani_Cases_Backup_${todayStr}.json`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function importCasesFromJSON(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const imported = JSON.parse(e.target.result);
+        if (!Array.isArray(imported)) {
+          alert("รูปแบบไฟล์ JSON ไม่ถูกต้อง (ต้องเป็น Array ของข้อมูลเคส)");
+          return;
+        }
+        const currentCases = getStoredCases();
+        let addedCount = 0;
+        let updatedCount = 0;
+        imported.forEach(item => {
+          if (!item.id) return;
+          const idx = currentCases.findIndex(c => c.id === item.id);
+          if (idx >= 0) {
+            currentCases[idx] = item;
+            updatedCount++;
+          } else {
+            currentCases.unshift(item);
+            addedCount++;
+          }
+        });
+        saveStoredCases(currentCases);
+        renderCaseDashboard();
+        alert(`นำเข้าข้อมูลสำเร็จ: เพิ่มเคสใหม่ ${addedCount} เคส, อัปเดต ${updatedCount} เคส`);
+      } catch (err) {
+        alert("เกิดข้อผิดพลาดในการอ่านไฟล์ JSON: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function printCaseDossier(caseId) {
+    const cases = getStoredCases();
+    const c = cases.find(item => item.id === caseId);
+    if (!c) {
+      alert("ไม่พบข้อมูลเคสที่ระบุ");
+      return;
+    }
+
+    const printWin = window.open("", "_blank", "width=850,height=900");
+    if (!printWin) {
+      alert("กรุณาอนุญาต Pop-up Window เพื่อพิมพ์เอกสาร");
+      return;
+    }
+
+    const historyRows = (c.followUpHistory || []).map(h => `
+      <tr style="border-bottom: 1px solid #e2e8f0;">
+        <td style="padding: 8px; font-size: 11px; color: #64748b;">${h.timestamp || ''}</td>
+        <td style="padding: 8px; font-size: 11px; font-weight: bold; color: #1e293b;">${(h.step || '').toUpperCase()}</td>
+        <td style="padding: 8px; font-size: 11px; color: #334155;">${h.staff || ''} (${h.channel || 'phone'})</td>
+        <td style="padding: 8px; font-size: 11px; color: #334155;">${h.notes || ''}</td>
+      </tr>
+    `).join("");
+
+    const missingItems = (c.documentsMissing && c.documentsMissing.length > 0)
+      ? c.documentsMissing.map(m => `<li style="color: #b45309; font-weight: 500;">${m}</li>`).join("")
+      : `<li style="color: #059669;">เอกสารครบถ้วนแล้ว (Complete)</li>`;
+
+    const receivedItems = (c.documentsReceived && c.documentsReceived.length > 0)
+      ? c.documentsReceived.map(m => `<li>${m}</li>`).join("")
+      : `<li>ไม่มีเอกสารแนบเบื้องต้น</li>`;
+
+    const docContent = `
+      <!DOCTYPE html>
+      <html lang="th">
+      <head>
+        <meta charset="utf-8">
+        <title>Vejthani Clinical Dossier - ${c.id}</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Sarabun", sans-serif; margin: 40px; color: #1e293b; line-height: 1.5; }
+          .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #1B365D; padding-bottom: 16px; margin-bottom: 24px; }
+          .title { font-size: 20px; font-weight: 800; color: #1B365D; }
+          .subtitle { font-size: 12px; color: #64748b; margin-top: 4px; }
+          .badge { display: inline-block; padding: 4px 8px; background: #EC7825; color: white; border-radius: 6px; font-size: 11px; font-weight: bold; }
+          .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+          .box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
+          .box-title { font-size: 11px; font-weight: bold; text-transform: uppercase; color: #64748b; margin-bottom: 6px; }
+          .box-val { font-size: 13px; font-weight: bold; color: #0f172a; }
+          table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+          th { background: #f1f5f9; padding: 8px; text-align: left; font-size: 11px; color: #475569; }
+          .footer { margin-top: 40px; border-top: 1px solid #cbd5e1; padding-top: 16px; font-size: 11px; color: #94a3b8; display: flex; justify-content: space-between; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <div class="title">โรงพยาบาลเวชธานี Vejthani Hospital</div>
+            <div class="subtitle">International Medical Liaison & Clinical Dossier Summary</div>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge">King of Bones</span>
+            <div style="font-family: monospace; font-size: 13px; font-weight: bold; margin-top: 4px;">${c.id}</div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="box">
+            <div class="box-title">ข้อมูลคนไข้ (Patient Profile)</div>
+            <div class="box-val">${c.patientName}</div>
+            <div style="font-size: 12px; color: #475569; margin-top: 2px;">HN/Passport: ${c.passportOrHN} | ${c.gender}, ${c.age} ปี</div>
+            <div style="font-size: 12px; color: #475569;">สัญชาติ: ${c.nationality} | โทร: ${c.phone}</div>
+          </div>
+          <div class="box">
+            <div class="box-title">ศูนย์เฉพาะทางและการวินิจฉัย (Clinical Specialty)</div>
+            <div class="box-val">${c.centerThai} (${c.centerEng})</div>
+            <div style="font-size: 12px; color: #475569; margin-top: 2px;">การวินิจฉัย: ${c.diagnosis}</div>
+            <div style="font-size: 12px; color: #475569;">หัตถการ: ${c.procedure}</div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="box">
+            <div class="box-title">แพทย์ผู้เชี่ยวชาญ & ประมาณการค่าใช้จ่าย</div>
+            <div class="box-val">${c.doctorAssigned}</div>
+            <div style="font-size: 12px; color: #1B365D; font-weight: bold; margin-top: 4px;">ประมาณการ: ${c.estimatedCost} (พักฟื้น ${c.recoveryDays} วัน)</div>
+          </div>
+          <div class="box">
+            <div class="box-title">สถานะการติดตาม (Follow-Up Status)</div>
+            <div class="box-val" style="color: #1B365D;">${(c.followUpStep || '').toUpperCase()}</div>
+            <div style="font-size: 12px; color: #475569; margin-top: 4px;">ติดต่อล่าสุด: ${c.lastContactDate || 'N/A'}</div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="box">
+            <div class="box-title">เอกสารที่ได้รับแล้ว (Received Documents)</div>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12px;">${receivedItems}</ul>
+          </div>
+          <div class="box">
+            <div class="box-title">เอกสารที่ยังต้องการเพิ่มเติม (Missing Records)</div>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12px;">${missingItems}</ul>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <div class="box-title">ประวัติการติดตามประสานงาน (Follow-Up Activity Log)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>วันที่ / เวลา</th>
+                <th>สเต็ป</th>
+                <th>ผู้ติดต่อ (ช่องทาง)</th>
+                <th>บันทึกรายละเอียด</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${historyRows}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="footer">
+          <div>Vejthani Hospital Bangkok - 1 Ladprao 111, Klong-Chan, Bangkapi, Bangkok 10240</div>
+          <div>JCI Accredited Healthcare Enterprise</div>
+        </div>
+
+        <script>
+          window.onload = function() { window.print(); }
+        </script>
+      </body>
+      </html>
+    `;
+
+    printWin.document.open();
+    printWin.document.write(docContent);
+    printWin.document.close();
+  }
+
+  function initCaseDashboardAndRepository() {
+    const btnCSV = document.getElementById("btnExportCasesCSV");
+    const btnJSON = document.getElementById("btnExportCasesJSON");
+    const btnTriggerImport = document.getElementById("btnTriggerImportJSON");
+    const fileImport = document.getElementById("fileImportCasesJSON");
+    const btnReset = document.getElementById("btnResetDemoCases");
+
+    const searchInput = document.getElementById("caseSearchInput");
+    const specFilter = document.getElementById("caseSpecialtyFilter");
+    const stepFilter = document.getElementById("caseStepFilter");
+
+    const btnCloseModal = document.getElementById("btnCloseFollowUpModal");
+    const btnCloseModalSec = document.getElementById("btnModalCloseSecondary");
+    const modal = document.getElementById("caseFollowUpModal");
+
+    const btnStep1 = document.getElementById("btnModalSelectStep1");
+    const btnStep2 = document.getElementById("btnModalSelectStep2");
+    const btnStep3 = document.getElementById("btnModalSelectStep3");
+    const btnStepBooked = document.getElementById("btnModalSelectStepBooked");
+
+    const btnLangTh = document.getElementById("btnModalLangThai");
+    const btnLangEn = document.getElementById("btnModalLangEn");
+    const btnLangAr = document.getElementById("btnModalLangAr");
+
+    const btnCopy = document.getElementById("btnCopyModalScript");
+    const btnSaveLog = document.getElementById("btnSaveFollowUpLog");
+    const btnPrintDossier = document.getElementById("btnPrintModalDossier");
+    const btnOpenTeleprompter = document.getElementById("btnOpenCaseInTeleprompter");
+
+    if (btnCSV) btnCSV.addEventListener("click", exportCasesToCSV);
+    if (btnJSON) btnJSON.addEventListener("click", exportCasesToJSON);
+    if (btnTriggerImport && fileImport) {
+      btnTriggerImport.addEventListener("click", () => fileImport.click());
+      fileImport.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          importCasesFromJSON(e.target.files[0]);
+          e.target.value = "";
+        }
+      });
+    }
+
+    if (btnReset) {
+      btnReset.addEventListener("click", () => {
+        if (confirm("คุณต้องการรีเซ็ตคลังเคสเป็นข้อมูลตัวอย่างคนไข้ GCC 5 เคสเริ่มต้นหรือไม่?")) {
+          saveStoredCases(DEFAULT_GCC_DEMO_CASES);
+          renderCaseDashboard();
+        }
+      });
+    }
+
+    if (searchInput) searchInput.addEventListener("input", renderCaseDashboard);
+    if (specFilter) specFilter.addEventListener("change", renderCaseDashboard);
+    if (stepFilter) stepFilter.addEventListener("change", renderCaseDashboard);
+
+    if (btnCloseModal && modal) {
+      btnCloseModal.addEventListener("click", () => modal.classList.add("hidden"));
+    }
+    if (btnCloseModalSec && modal) {
+      btnCloseModalSec.addEventListener("click", () => modal.classList.add("hidden"));
+    }
+
+    const setStep = (step) => {
+      activeModalStep = step;
+      const cases = getStoredCases();
+      const c = cases.find(item => item.id === activeModalCaseId);
+      if (c) {
+        c.followUpStep = step;
+        saveStoredCases(cases);
+        updateModalStepUI(c);
+        renderCaseDashboard();
+      }
+    };
+
+    if (btnStep1) btnStep1.addEventListener("click", () => setStep("step1"));
+    if (btnStep2) btnStep2.addEventListener("click", () => setStep("step2"));
+    if (btnStep3) btnStep3.addEventListener("click", () => setStep("step3"));
+    if (btnStepBooked) btnStepBooked.addEventListener("click", () => setStep("booked"));
+
+    const setLang = (lang) => {
+      activeModalLang = lang;
+      const cases = getStoredCases();
+      const c = cases.find(item => item.id === activeModalCaseId);
+      if (c) updateModalStepUI(c);
+    };
+
+    if (btnLangTh) btnLangTh.addEventListener("click", () => setLang("th"));
+    if (btnLangEn) btnLangEn.addEventListener("click", () => setLang("en"));
+    if (btnLangAr) btnLangAr.addEventListener("click", () => setLang("ar"));
+
+    if (btnCopy) {
+      btnCopy.addEventListener("click", () => {
+        const scriptBox = document.getElementById("modalScriptContent");
+        if (scriptBox) {
+          navigator.clipboard.writeText(scriptBox.value).then(() => {
+            const orig = btnCopy.innerHTML;
+            btnCopy.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-emerald-600"></i><span>คัดลอกสำเร็จ</span>`;
+            if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+            setTimeout(() => {
+              btnCopy.innerHTML = orig;
+              if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+            }, 1500);
+          });
+        }
+      });
+    }
+
+    if (btnSaveLog) {
+      btnSaveLog.addEventListener("click", () => {
+        const staffInput = document.getElementById("modalLogStaff");
+        const channelSelect = document.getElementById("modalLogChannel");
+        const outcomeSelect = document.getElementById("modalLogOutcome");
+        const notesArea = document.getElementById("modalLogNotes");
+
+        const staff = staffInput ? staffInput.value.trim() : "Coordinator";
+        const channel = channelSelect ? channelSelect.value : "phone";
+        const outcome = outcomeSelect ? outcomeSelect.value : "completed";
+        const notes = notesArea ? notesArea.value.trim() : "";
+
+        if (!notes) {
+          alert("กรุณากรอกข้อความบันทึกความคืบหน้าการติดต่อ");
+          return;
+        }
+
+        const cases = getStoredCases();
+        const c = cases.find(item => item.id === activeModalCaseId);
+        if (!c) return;
+
+        const now = new Date();
+        const timestampStr = now.getFullYear() + "-" +
+          String(now.getMonth() + 1).padStart(2, '0') + "-" +
+          String(now.getDate()).padStart(2, '0') + " " +
+          String(now.getHours()).padStart(2, '0') + ":" +
+          String(now.getMinutes()).padStart(2, '0');
+
+        if (!c.followUpHistory) c.followUpHistory = [];
+        c.followUpHistory.unshift({
+          timestamp: timestampStr,
+          step: activeModalStep,
+          channel: channel,
+          staff: staff,
+          outcome: outcome,
+          notes: notes
+        });
+
+        c.lastContactDate = timestampStr;
+        if (outcome === "booked") {
+          c.followUpStep = "booked";
+          activeModalStep = "booked";
+        }
+
+        saveStoredCases(cases);
+        renderModalHistory(c);
+        updateModalStepUI(c);
+        renderCaseDashboard();
+
+        if (notesArea) notesArea.value = "";
+        alert("บันทึกประวัติการติดต่อประสานงานเรียบร้อยแล้ว");
+      });
+    }
+
+    if (btnPrintDossier) {
+      btnPrintDossier.addEventListener("click", () => {
+        if (activeModalCaseId) printCaseDossier(activeModalCaseId);
+      });
+    }
+
+    if (btnOpenTeleprompter) {
+      btnOpenTeleprompter.addEventListener("click", () => {
+        if (activeModalCaseId) loadCaseIntoTeleprompter(activeModalCaseId);
+      });
+    }
+
+    // Expose functions globally on window
+    window.renderCaseDashboard = renderCaseDashboard;
+    window.getStoredCases = getStoredCases;
+    window.saveCaseToRepository = saveCaseToRepository;
+    window.exportCasesToCSV = exportCasesToCSV;
+    window.exportCasesToJSON = exportCasesToJSON;
+    window.loadCaseIntoTeleprompter = loadCaseIntoTeleprompter;
+    window.openCaseFollowUpModal = openCaseFollowUpModal;
+    window.printCaseDossier = printCaseDossier;
+
+    // Initial render of dashboard
+    renderCaseDashboard();
+  }
+
   // Initial trigger
   refreshCallScript();
   renderInquiryCategory("king_of_bone");
   renderCallRecordsTable();
   initMedicalDocIngestion();
   initTeleprompterQuickActions();
+  initCaseDashboardAndRepository();
 });

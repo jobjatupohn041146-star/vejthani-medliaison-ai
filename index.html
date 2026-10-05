@@ -153,6 +153,12 @@
       <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Arabic Center (GCC)</span>
     </button>
 
+    <!-- Dock Item: Case Repository & 3-Step Follow-Up Dashboard -->
+    <button id="navDockCaseDashboard" class="dock-btn group relative p-3 rounded-xl transition duration-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent" data-target="viewCaseDashboard" title="Case Dashboard &amp; 3-Step Follow-Up">
+      <i data-lucide="layout-dashboard" class="w-5 h-5 text-indigo-600"></i>
+      <span class="absolute left-16 px-2.5 py-1 rounded-lg bg-[#12151c] text-white text-xs font-bold border border-white/10 shadow-xl opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Case Dashboard &amp; Follow-Up</span>
+    </button>
+
     <!-- Dock Item 5: Lead Investigation (Hidden from UI as requested) -->
     <button id="navDockLead" class="dock-btn hidden" data-target="viewLeadInvestigation" title="Lead Investigation"></button>
 
@@ -182,6 +188,10 @@
     <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewArabicCenter" title="Arabic Center">
       <i data-lucide="compass" class="w-5 h-5"></i>
       <span class="text-[9px] font-semibold">Arabic</span>
+    </button>
+    <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewCaseDashboard" title="Case Dashboard">
+      <i data-lucide="layout-dashboard" class="w-5 h-5 text-indigo-600"></i>
+      <span class="text-[9px] font-semibold">Dashboard</span>
     </button>
     <button class="dock-btn hidden" data-target="viewLeadInvestigation" title="Lead Investigation"></button>
     <button class="dock-btn p-2.5 rounded-xl text-slate-500 flex flex-col items-center gap-0.5" data-target="viewSettings" title="Settings">
@@ -229,6 +239,11 @@
           <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline">ตอบ Inquiry 5 กลุ่มโรค (WhatsApp/Email)</span>
           <span class="sm:hidden">Inquiry</span>
+        </button>
+        <button id="navModeCaseDashboard" class="mode-nav-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/70 flex items-center gap-1.5 transition duration-200">
+          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-indigo-600"></i>
+          <span class="hidden sm:inline">Case Dashboard &amp; ติดตาม 3 สเต็ป</span>
+          <span class="sm:hidden">Dashboard</span>
         </button>
       </div>
 
@@ -951,6 +966,10 @@
             <button type="button" onclick="if(window.activateView) window.activateView('viewInquiryConsole');" class="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-2xs cursor-pointer">
               <i data-lucide="message-square" class="w-4 h-4 text-slate-600"></i>
               <span>เปิดหน้าตอบ Inquiry (Claude)</span>
+            </button>
+            <button type="button" id="btnGoToCaseDashboard" onclick="if(window.activateView) window.activateView('viewCaseDashboard');" class="px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-2xs cursor-pointer">
+              <i data-lucide="layout-dashboard" class="w-4 h-4 text-indigo-700"></i>
+              <span>ดูคลังเวชระเบียน &amp; ติดตาม 3 สเต็ป</span>
             </button>
           </div>
         </div>
@@ -1738,6 +1757,359 @@
     </section>
 
     <!-- ============================================================ -->
+    <!-- VIEW: CASE REPOSITORY & 3-STEP FOLLOW-UP DASHBOARD           -->
+    <!-- ============================================================ -->
+    <section id="viewCaseDashboard" class="hidden space-y-6">
+
+      <!-- Header Banner & Action Toolbar -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 text-[10px] font-extrabold bg-[#1B365D] text-white rounded-full tracking-wide">
+                CASE REPOSITORY &amp; 3-STEP FOLLOW-UP
+              </span>
+              <span class="text-xs text-slate-500">Vejthani International Medical Liaison Hub</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1.5">Data Dashboard &amp; ติดตามเคส 3 สเต็ป</h2>
+            <p class="text-xs text-slate-600 mt-1 max-w-3xl">
+              คลังเวชระเบียนที่สกัดจากเอกสารอัตโนมัติ ข้อมูลไม่มีวันสูญหายเมื่อเติมข้อมูลใหม่ พร้อมระบบติดตามคนไข้ 3 สเต็ป บทพูดโทรศัพท์ 3 ภาษา ลิงก์ WhatsApp สำเร็จรูป และ Export รายงาน
+            </p>
+          </div>
+
+          <!-- Top Export & Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btnExportCasesCSV" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Export Excel / CSV</span>
+            </button>
+            <button type="button" id="btnExportCasesJSON" class="px-3.5 py-2 bg-[#1B365D] hover:bg-[#152a48] text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="download" class="w-4 h-4"></i>
+              <span>Backup JSON</span>
+            </button>
+            <button type="button" id="btnTriggerImportJSON" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold rounded-xl transition shadow-2xs flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="upload" class="w-4 h-4 text-slate-600"></i>
+              <span>Restore JSON</span>
+            </button>
+            <input type="file" id="fileImportCasesJSON" accept=".json" class="hidden">
+            <button type="button" id="btnResetDemoCases" class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold rounded-xl transition shadow-2xs flex items-center gap-1.5 cursor-pointer" title="โหลดข้อมูลจำลองคนไข้ GCC 5 เคส">
+              <i data-lucide="refresh-cw" class="w-4 h-4 text-amber-700"></i>
+              <span>รีเซ็ตเคสตัวอย่าง GCC</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 Metric KPI Cards Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+        
+        <!-- Metric 1: Total Cases -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">เคสทั้งหมดในคลัง</span>
+            <span class="p-2 rounded-xl bg-slate-100 text-[#1B365D]">
+              <i data-lucide="folder-kanban" class="w-4 h-4"></i>
+            </span>
+          </div>
+          <div class="mt-3">
+            <div id="metricTotalCases" class="text-2xl font-black text-[#1B365D]">0</div>
+            <p class="text-[11px] text-slate-500 mt-0.5">เวชระเบียนที่บันทึกไว้</p>
+          </div>
+        </div>
+
+        <!-- Metric 2: Step 1 (Missing Records) -->
+        <div class="bg-white rounded-2xl p-4 border border-amber-200 shadow-xs flex flex-col justify-between bg-gradient-to-b from-amber-50/40 to-white">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-amber-800 uppercase tracking-wider">สเต็ป 1 (Day 1)</span>
+            <span class="p-2 rounded-xl bg-amber-100 text-amber-800">
+              <i data-lucide="file-question" class="w-4 h-4"></i>
+            </span>
+          </div>
+          <div class="mt-3">
+            <div id="metricStep1" class="text-2xl font-black text-amber-700">0</div>
+            <p class="text-[11px] text-amber-900 mt-0.5">รอเอกสาร / ฟิล์มเพิ่มเติม</p>
+          </div>
+        </div>
+
+        <!-- Metric 3: Step 2 (Doctor Review & Cost) -->
+        <div class="bg-white rounded-2xl p-4 border border-blue-200 shadow-xs flex flex-col justify-between bg-gradient-to-b from-blue-50/40 to-white">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-blue-800 uppercase tracking-wider">สเต็ป 2 (Day 3)</span>
+            <span class="p-2 rounded-xl bg-blue-100 text-blue-800">
+              <i data-lucide="stethoscope" class="w-4 h-4"></i>
+            </span>
+          </div>
+          <div class="mt-3">
+            <div id="metricStep2" class="text-2xl font-black text-blue-700">0</div>
+            <p class="text-[11px] text-blue-900 mt-0.5">แจ้งแผนแพทย์ &amp; ค่ารักษา</p>
+          </div>
+        </div>
+
+        <!-- Metric 4: Step 3 (Visa & Travel) -->
+        <div class="bg-white rounded-2xl p-4 border border-purple-200 shadow-xs flex flex-col justify-between bg-gradient-to-b from-purple-50/40 to-white">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-purple-800 uppercase tracking-wider">สเต็ป 3 (Day 7)</span>
+            <span class="p-2 rounded-xl bg-purple-100 text-purple-800">
+              <i data-lucide="plane" class="w-4 h-4"></i>
+            </span>
+          </div>
+          <div class="mt-3">
+            <div id="metricStep3" class="text-2xl font-black text-purple-700">0</div>
+            <p class="text-[11px] text-purple-900 mt-0.5">ประสานวีซ่าแพทย์ &amp; สนามบิน</p>
+          </div>
+        </div>
+
+        <!-- Metric 5: Booked (Confirmed Treatment) -->
+        <div class="bg-white rounded-2xl p-4 border border-emerald-200 shadow-xs flex flex-col justify-between bg-gradient-to-b from-emerald-50/40 to-white col-span-2 sm:col-span-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">นัดหมายสำเร็จ</span>
+            <span class="p-2 rounded-xl bg-emerald-100 text-emerald-800">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+            </span>
+          </div>
+          <div class="mt-3">
+            <div id="metricBooked" class="text-2xl font-black text-emerald-700">0</div>
+            <p class="text-[11px] text-emerald-900 mt-0.5">ยืนยันเดินทางมารักษา</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Search, Filter & Quick Stats Toolbar -->
+      <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="flex-1 flex flex-col sm:flex-row items-center gap-2.5">
+          <div class="relative w-full sm:w-80">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="text" id="caseSearchInput" placeholder="ค้นหาชื่อคนไข้, HN/Passport, ประเทศ, โรค..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B365D] focus:bg-white transition">
+          </div>
+          
+          <!-- Specialty Filter -->
+          <div class="w-full sm:w-48">
+            <select id="caseSpecialtyFilter" class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:border-[#1B365D] transition">
+              <option value="all">ทุกศูนย์การแพทย์ (All)</option>
+              <option value="orthopedics">กระดูกและข้อ (King of Bones)</option>
+              <option value="spine">กระดูกสันหลัง (Spine Center)</option>
+              <option value="cancer">โรคมะเร็ง (Oncology/MDT)</option>
+              <option value="pediatric">กุมารเวชกรรม (Pediatric)</option>
+              <option value="gi_liver">ทางเดินอาหารและตับ (GI &amp; Liver)</option>
+              <option value="cardiac">หัวใจและหลอดเลือด (Cardiology)</option>
+              <option value="neuro">ระบบประสาทและสมอง (Neurology)</option>
+              <option value="general_surgery">ศัลยกรรมทั่วไป (General Surgery)</option>
+            </select>
+          </div>
+
+          <!-- Step Filter -->
+          <div class="w-full sm:w-48">
+            <select id="caseStepFilter" class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:border-[#1B365D] transition">
+              <option value="all">ทุกสเต็ปการติดตาม</option>
+              <option value="step1">สเต็ป 1: ขาดเอกสาร (Day 1)</option>
+              <option value="step2">สเต็ป 2: แผนแพทย์ &amp; ค่ารักษา (Day 3)</option>
+              <option value="step3">สเต็ป 3: วีซ่า &amp; ตารางเดินทาง (Day 7)</option>
+              <option value="booked">นัดหมายสำเร็จ (Booked)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between sm:justify-end gap-2 text-xs text-slate-500">
+          <span id="caseCountIndicator" class="font-bold text-slate-800">แสดง 0 เคส</span>
+          <button type="button" onclick="if(window.activateView) window.activateView('viewDocTeleprompter');" class="px-3 py-1.5 bg-[#EC7825] hover:bg-[#d66819] text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span>สแกนเอกสารใหม่</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Case Records Table -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+                <th class="py-3 px-4">Case ID / วันที่</th>
+                <th class="py-3 px-4">คนไข้ &amp; สัญชาติ</th>
+                <th class="py-3 px-4">ศูนย์เฉพาะทาง &amp; การวินิจฉัย</th>
+                <th class="py-3 px-4">ขั้นตอนการติดตาม (Follow-Up Step)</th>
+                <th class="py-3 px-4">ติดต่อล่าสุด</th>
+                <th class="py-3 px-4 text-right">การดำเนินการ (Actions)</th>
+              </tr>
+            </thead>
+            <tbody id="caseTableBody" class="divide-y divide-slate-100 text-xs">
+              <!-- Rendered dynamically by app.js -->
+            </tbody>
+          </table>
+        </div>
+        <div id="caseTableEmptyState" class="hidden p-12 text-center">
+          <div class="inline-flex p-3 rounded-2xl bg-slate-100 text-slate-400 mb-3">
+            <i data-lucide="folder-search" class="w-8 h-8"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-700">ไม่พบข้อมูลเวชระเบียนตามเงื่อนไขที่เลือก</h3>
+          <p class="text-xs text-slate-500 mt-1">ลองเปลี่ยนคำค้นหา หรือกดปุ่ม "รีเซ็ตเคสตัวอย่าง GCC" เพื่อทดสอบระบบ</p>
+        </div>
+      </div>
+
+      <!-- Follow-Up Modal (Interactive 3-Step Management Console) -->
+      <div id="caseFollowUpModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
+        <div class="bg-white w-full max-w-4xl rounded-2xl border border-slate-200 shadow-2xl flex flex-col max-h-[92vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          
+          <!-- Modal Header -->
+          <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/80 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span id="modalCaseBadge" class="px-2.5 py-1 text-xs font-mono font-bold bg-[#1B365D] text-white rounded-lg">CASE-XXXX</span>
+              <div>
+                <h3 id="modalPatientName" class="text-base font-bold text-slate-900 leading-tight">Patient Name</h3>
+                <p id="modalPatientSub" class="text-xs text-slate-500">Nationality | HN / Passport | Specialty</p>
+              </div>
+            </div>
+            <button type="button" id="btnCloseFollowUpModal" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-200/60 transition cursor-pointer">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <!-- Modal Body (Scrollable) -->
+          <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+
+            <!-- Step Selector Tabs -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">เลือกสเต็ปการติดตามคนไข้ (Follow-Up Stage)</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button type="button" id="btnModalSelectStep1" class="modal-step-tab px-3 py-2.5 rounded-xl border text-left transition flex flex-col gap-0.5 cursor-pointer">
+                  <span class="text-[10px] font-bold tracking-wide text-amber-700">สเต็ป 1 (Day 1)</span>
+                  <span class="text-xs font-bold text-slate-800">ขาดเอกสาร / ฟิล์ม</span>
+                </button>
+                <button type="button" id="btnModalSelectStep2" class="modal-step-tab px-3 py-2.5 rounded-xl border text-left transition flex flex-col gap-0.5 cursor-pointer">
+                  <span class="text-[10px] font-bold tracking-wide text-blue-700">สเต็ป 2 (Day 3)</span>
+                  <span class="text-xs font-bold text-slate-800">แผนแพทย์ &amp; ค่ารักษา</span>
+                </button>
+                <button type="button" id="btnModalSelectStep3" class="modal-step-tab px-3 py-2.5 rounded-xl border text-left transition flex flex-col gap-0.5 cursor-pointer">
+                  <span class="text-[10px] font-bold tracking-wide text-purple-700">สเต็ป 3 (Day 7)</span>
+                  <span class="text-xs font-bold text-slate-800">วีซ่าแพทย์ &amp; เดินทาง</span>
+                </button>
+                <button type="button" id="btnModalSelectStepBooked" class="modal-step-tab px-3 py-2.5 rounded-xl border text-left transition flex flex-col gap-0.5 cursor-pointer">
+                  <span class="text-[10px] font-bold tracking-wide text-emerald-700">นัดหมายสำเร็จ</span>
+                  <span class="text-xs font-bold text-slate-800">ยืนยันเดินทาง (Booked)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Step Clinical Context & Tailored Script -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h4 id="modalStepTitle" class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                    <i data-lucide="phone-forwarded" class="w-4 h-4 text-[#1B365D]"></i>
+                    <span>บทพูดโทรศัพท์เฉพาะบุคคลสำหรับสเต็ปนี้ (Personalized Clinical Teleprompter)</span>
+                  </h4>
+                  <p id="modalStepObjective" class="text-[11px] text-slate-500 mt-0.5">วัตถุประสงค์: ติดตามเอกสารและผลสแกนที่ยังขาดอยู่เพื่อให้แพทย์ออกแผนรักษา</p>
+                </div>
+
+                <!-- Language Selector for Script -->
+                <div class="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 self-start sm:self-auto">
+                  <button type="button" id="btnModalLangThai" class="modal-lang-btn px-2.5 py-1 text-[11px] font-bold rounded-lg bg-[#1B365D] text-white">ไทย</button>
+                  <button type="button" id="btnModalLangEn" class="modal-lang-btn px-2.5 py-1 text-[11px] font-bold rounded-lg text-slate-600 hover:bg-slate-100">English</button>
+                  <button type="button" id="btnModalLangAr" class="modal-lang-btn px-2.5 py-1 text-[11px] font-bold rounded-lg text-slate-600 hover:bg-slate-100 font-arabic">العربية</button>
+                </div>
+              </div>
+
+              <!-- Tailored Script Box -->
+              <div class="relative">
+                <textarea id="modalScriptContent" rows="4" readonly class="w-full p-3.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 leading-relaxed font-sans focus:outline-none resize-none shadow-2xs"></textarea>
+                <button type="button" id="btnCopyModalScript" class="absolute top-2 right-2 px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded-lg transition border border-slate-200 flex items-center gap-1 cursor-pointer" title="คัดลอกบทพูด">
+                  <i data-lucide="copy" class="w-3 h-3"></i>
+                  <span>คัดลอกบทพูด</span>
+                </button>
+              </div>
+
+              <!-- 1-Click WhatsApp Direct Action -->
+              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 border-t border-slate-200/80">
+                <div class="text-[11px] text-slate-600 flex items-center gap-1.5">
+                  <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
+                  <span>ส่งข้อความสรุปเข้า WhatsApp คนไข้โดยตรง (พร้อมลิงก์ข้อมูลและแบบฟอร์มโรงพยาบาลเวชธานี)</span>
+                </div>
+                <a id="btnModalSendWhatsApp" href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 shrink-0 cursor-pointer">
+                  <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                  <span>ส่ง WhatsApp ทันที (1-Click)</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Follow-up Activity Logger -->
+            <div class="border border-slate-200 rounded-2xl p-4 bg-white space-y-3">
+              <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                <i data-lucide="clipboard-list" class="w-4 h-4 text-[#EC7825]"></i>
+                <span>บันทึกผลการติดต่อประสานงาน (Log Follow-Up Interaction)</span>
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">ชื่อเจ้าหน้าที่ผู้ติดต่อ</label>
+                  <input type="text" id="modalLogStaff" value="Nurse Coordinator (Vejthani GCC Liaison)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#1B365D]">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">ช่องทางการติดต่อ</label>
+                  <select id="modalLogChannel" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#1B365D]">
+                    <option value="phone">โทรศัพท์ระหว่างประเทศ (International Call)</option>
+                    <option value="whatsapp">WhatsApp Business</option>
+                    <option value="email">อีเมลทางการแพทย์ (Official Medical Email)</option>
+                    <option value="embassy">สถานทูต / กต. (Embassy Medical Office)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">สถานะหลังการติดต่อ</label>
+                  <select id="modalLogOutcome" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#1B365D]">
+                    <option value="completed">ติดต่อสำเร็จ ได้รับข้อมูล/ยืนยันเรียบร้อย</option>
+                    <option value="pending">รอคนไข้ส่งไฟล์เพิ่มเติม</option>
+                    <option value="callback">คนไข้ขอให้โทรกลับภายหลัง</option>
+                    <option value="booked">ยืนยันวันเดินทางมารักษาแน่นอน</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 mb-1">บันทึกข้อความ / บันทึกอาการเพิ่มเติม (Clinical Notes)</label>
+                <textarea id="modalLogNotes" rows="2" placeholder="เช่น คนไข้แจ้งว่าจะส่งผล MRI หัวเข่ามาทาง WhatsApp ภายในวันพรุ่งนี้..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#1B365D]"></textarea>
+              </div>
+              <div class="flex justify-end gap-2">
+                <button type="button" id="btnSaveFollowUpLog" class="px-4 py-2 bg-[#1B365D] hover:bg-[#152a48] text-white font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                  <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                  <span>บันทึกความคืบหน้า (Save Follow-Up Progress)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Historical Activity Timeline -->
+            <div class="space-y-2">
+              <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                <i data-lucide="history" class="w-4 h-4 text-slate-500"></i>
+                <span>ประวัติการติดตามย้อนหลัง (Follow-Up Timeline)</span>
+              </h4>
+              <div id="modalHistoryTimeline" class="space-y-2">
+                <!-- Dynamically rendered timeline items -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="px-6 py-3 border-t border-slate-200 bg-slate-50/80 flex items-center justify-between">
+            <button type="button" id="btnPrintModalDossier" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition border border-slate-300 flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+              <span>พิมพ์ใบสรุปเวชระเบียน (Print Clinical Dossier)</span>
+            </button>
+            <div class="flex items-center gap-2">
+              <button type="button" id="btnOpenCaseInTeleprompter" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-xs font-bold rounded-xl transition border border-indigo-200 flex items-center gap-1.5 cursor-pointer">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <span>เปิดในสคริปต์รายบุคคล</span>
+              </button>
+              <button type="button" id="btnModalCloseSecondary" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold rounded-xl transition cursor-pointer">
+                ปิดหน้าต่าง
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
     <!-- VIEW 4: LEAD INVESTIGATION (4D Qualifier Console)            -->
     <!-- ============================================================ -->
     <section id="viewLeadInvestigation" class="hidden space-y-6" style="display: none !important;">
@@ -2062,6 +2434,7 @@
         'viewDocTeleprompter',
         'viewInquiryConsole',
         'viewArabicCenter',
+        'viewCaseDashboard',
         'viewLeadInvestigation',
         'viewSettings'
       ];
@@ -2095,7 +2468,8 @@
         const navModeCall = document.getElementById('navModeCall');
         const navModeDocScript = document.getElementById('navModeDocScript');
         const navModeInquiry = document.getElementById('navModeInquiry');
-        const modeButtons = [navModeCall, navModeDocScript, navModeInquiry];
+        const navModeCaseDashboard = document.getElementById('navModeCaseDashboard');
+        const modeButtons = [navModeCall, navModeDocScript, navModeInquiry, navModeCaseDashboard];
 
         modeButtons.forEach(function(btn) {
           if (btn) {
@@ -2113,6 +2487,14 @@
         } else if (targetViewId === 'viewInquiryConsole' && navModeInquiry) {
           navModeInquiry.classList.add('bg-[#1B365D]', 'text-white');
           navModeInquiry.classList.remove('text-slate-600');
+        } else if (targetViewId === 'viewCaseDashboard' && navModeCaseDashboard) {
+          navModeCaseDashboard.classList.add('bg-[#1B365D]', 'text-white');
+          navModeCaseDashboard.classList.remove('text-slate-600');
+        }
+
+        // Trigger dashboard re-render if entering viewCaseDashboard
+        if (targetViewId === 'viewCaseDashboard' && typeof window.renderCaseDashboard === 'function') {
+          window.renderCaseDashboard();
         }
 
         // Re-render any newly shown Lucide icons
@@ -2135,6 +2517,7 @@
       const navModeCall = document.getElementById('navModeCall');
       const navModeDocScript = document.getElementById('navModeDocScript');
       const navModeInquiry = document.getElementById('navModeInquiry');
+      const navModeCaseDashboard = document.getElementById('navModeCaseDashboard');
       if (navModeCall) {
         navModeCall.addEventListener('click', function() {
           activateView('viewCallJourney');
@@ -2148,6 +2531,11 @@
       if (navModeInquiry) {
         navModeInquiry.addEventListener('click', function() {
           activateView('viewInquiryConsole');
+        });
+      }
+      if (navModeCaseDashboard) {
+        navModeCaseDashboard.addEventListener('click', function() {
+          activateView('viewCaseDashboard');
         });
       }
     })();
