@@ -2358,6 +2358,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnCallLangAr = document.getElementById("btnCallLangAr");
 
   function setCallLanguage(lang) {
+    // 1. Capture current card edits before switching language so user changes are never lost
+    if (currentCustomScriptCards && currentCustomScriptCards.length >= 6) {
+      const promptIds = ["docPrompt1", "docPrompt2", "docPrompt3", "docPrompt4", "docClosingDynamic", "docPrompt6"];
+      promptIds.forEach((id, idx) => {
+        const el = document.getElementById(id);
+        if (el) {
+          const val = el.innerText || el.textContent;
+          if (val && val.trim().length > 0) {
+            if (currentCallLang === "th") currentCustomScriptCards[idx].thai = val;
+            else if (currentCallLang === "ar") currentCustomScriptCards[idx].arabic = val;
+            else currentCustomScriptCards[idx].english = val;
+          }
+        }
+      });
+    }
+
     currentCallLang = lang;
     
     // Call Journey language buttons
@@ -2389,11 +2405,13 @@ document.addEventListener("DOMContentLoaded", () => {
     docBtns.forEach(({ b, l }) => {
       if (b) {
         if (l === lang) {
-          b.classList.add("bg-[#1B365D]", "text-white", "shadow-xs");
-          b.classList.remove("text-slate-500");
+          b.className = (l === "ar")
+            ? "px-2.5 py-0.5 rounded bg-[#1B365D] text-white shadow-xs transition font-arabic text-xs font-bold cursor-pointer"
+            : "px-2.5 py-0.5 rounded bg-[#1B365D] text-white shadow-xs transition text-xs font-bold cursor-pointer";
         } else {
-          b.classList.remove("bg-[#1B365D]", "text-white", "shadow-xs");
-          b.classList.add("text-slate-500");
+          b.className = (l === "ar")
+            ? "px-2.5 py-0.5 rounded text-slate-500 hover:text-slate-900 transition font-arabic text-xs cursor-pointer font-medium"
+            : "px-2.5 py-0.5 rounded text-slate-500 hover:text-slate-900 transition text-xs cursor-pointer font-medium";
         }
       }
     });
@@ -2504,16 +2522,137 @@ document.addEventListener("DOMContentLoaded", () => {
   const callPatientHN = document.getElementById("callPatientHN");
   const callPatientPhone = document.getElementById("callPatientPhone");
 
+  function applyDynamicPatientDataToCardText(rawText, lang, patientName, patientHN, topic, gender) {
+    if (!rawText) return "";
+    let text = rawText;
+
+    // 1. Patient Name replacement & localization
+    if (patientName && patientName.trim()) {
+      const cleanName = patientName.trim();
+      const cleanTh = cleanName.replace(/^(คุณ|ท่าน)\s*/, "").trim();
+      const cleanEn = cleanName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || cleanTh;
+      const cleanAr = cleanName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || cleanTh;
+
+      if (lang === "th") {
+        text = text.replace(/(?:ขอสายคุณ|เรียนคุณ|คุณ)\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, (match) => {
+          return match.startsWith("ขอสายคุณ") ? `ขอสายคุณ${cleanTh}` : (match.startsWith("เรียนคุณ") ? `เรียนคุณ${cleanTh}` : `คุณ${cleanTh}`);
+        });
+      } else if (lang === "en") {
+        text = text.replace(/(Good day,\s*)([A-Za-z\s\.\-']+?)(?=\.|\?|,|$)/i, `$1Mr. ${cleanEn}`);
+        text = text.replace(/\b(Mr\.|Mrs\.|Ms\.)\s+[A-Za-z\s\.\-']+/g, `Mr. ${cleanEn}`);
+      } else if (lang === "ar") {
+        text = text.replace(/(مرحباً بالسيد\/السيدة\s+)([^\.،?!]+)/g, `$1${cleanAr}`);
+        text = text.replace(/(بالسيد\/السيدة\s+)([^\.،?!]+)/g, `$1${cleanAr}`);
+      }
+    }
+
+    // 2. Gender particle adaptation in Thai
+    if (lang === "th") {
+      if (gender === "female") {
+        text = text.replace(/สวัสดีครับ/g, "สวัสดีค่ะ")
+                   .replace(/นะครับ/g, "นะคะ")
+                   .replace(/ครับ/g, "ค่ะ")
+                   .replace(/ผมชื่อ/g, "ดิฉันชื่อ");
+      } else {
+        text = text.replace(/สวัสดีค่ะ/g, "สวัสดีครับ")
+                   .replace(/นะคะ/g, "นะครับ")
+                   .replace(/ค่ะ/g, "ครับ")
+                   .replace(/ดิฉันชื่อ/g, "ผมชื่อ");
+      }
+    }
+
+    return text;
+  }
+
+  function syncPatientNameAcrossCards(newName) {
+    if (!newName || typeof newName !== "string" || !newName.trim()) return;
+    const cleanName = newName.trim();
+    const cleanTh = cleanName.replace(/^(คุณ|ท่าน)\s*/, "").trim();
+    const cleanEn = cleanName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || cleanTh;
+    const cleanAr = cleanName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || cleanTh;
+
+    if (currentCaseDossier) {
+      currentCaseDossier.patientName = cleanName;
+    }
+    if (callPatientName && callPatientName.value !== cleanName) {
+      callPatientName.value = cleanName;
+    }
+    const dName = document.getElementById("dossierPatientName");
+    if (dName && dName.value !== cleanName) {
+      dName.value = cleanName;
+    }
+
+    if (currentCustomScriptCards && currentCustomScriptCards.length >= 6) {
+      currentCustomScriptCards.forEach((card) => {
+        if (card.thai) {
+          card.thai = card.thai.replace(/(?:ขอสายคุณ|เรียนคุณ|คุณ)\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, (match) => {
+            return match.startsWith("ขอสายคุณ") ? `ขอสายคุณ${cleanTh}` : (match.startsWith("เรียนคุณ") ? `เรียนคุณ${cleanTh}` : `คุณ${cleanTh}`);
+          });
+        }
+        if (card.english) {
+          card.english = card.english.replace(/(Good day,\s*)([A-Za-z\s\.\-']+?)(?=\.|\?|,|$)/i, `$1Mr. ${cleanEn}`);
+          card.english = card.english.replace(/\b(Mr\.|Mrs\.|Ms\.)\s+[A-Za-z\s\.\-']+/g, `Mr. ${cleanEn}`);
+        }
+        if (card.arabic) {
+          card.arabic = card.arabic.replace(/(مرحباً بالسيد\/السيدة\s+)([^\.،?!]+)/g, `$1${cleanAr}`);
+          card.arabic = card.arabic.replace(/(بالسيد\/السيدة\s+)([^\.،?!]+)/g, `$1${cleanAr}`);
+        }
+        if (card.arabicPhonetic) {
+          card.arabicPhonetic = card.arabicPhonetic.replace(/(Marhaban\s+)[A-Za-z\s\.\-']+/i, `$1${cleanEn}`);
+        }
+      });
+    }
+  }
+
+  function saveAndSyncAllCardsAcrossLanguages() {
+    if (!currentCustomScriptCards || currentCustomScriptCards.length < 6) return;
+
+    const promptIds = ["docPrompt1", "docPrompt2", "docPrompt3", "docPrompt4", "docClosingDynamic", "docPrompt6"];
+    promptIds.forEach((id, idx) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const val = el.innerText || el.textContent;
+        if (val && val.trim().length > 0) {
+          if (currentCallLang === "th") currentCustomScriptCards[idx].thai = val;
+          else if (currentCallLang === "ar") currentCustomScriptCards[idx].arabic = val;
+          else currentCustomScriptCards[idx].english = val;
+        }
+      }
+    });
+
+    const activePatientName = (callPatientName && callPatientName.value.trim()) || 
+                              (document.getElementById("dossierPatientName")?.value.trim()) || "";
+    if (activePatientName) {
+      syncPatientNameAcrossCards(activePatientName);
+    }
+
+    const statusEl = document.getElementById("medicalDocStatus");
+    if (statusEl) {
+      statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700 font-bold">บันทึกการแก้ไขสคริปต์เรียบร้อย: ซิงค์ข้อมูลข้าม 3 ภาษา (ไทย / English / العربية) สำเร็จ</span>`;
+    }
+    refreshCallScript();
+  }
+
   function getCallFormData() {
+    const pName = (callPatientName && callPatientName.value.trim()) || 
+                  (document.getElementById("dossierPatientName")?.value.trim()) || 
+                  (currentCaseDossier && currentCaseDossier.patientName) || "";
+    const pHN = (callPatientHN && callPatientHN.value.trim()) || 
+                (document.getElementById("dossierPatientHN")?.value.trim()) || 
+                (currentCaseDossier && currentCaseDossier.passportOrHN) || "";
+    const pTopic = (callTopic && callTopic.value.trim()) || 
+                   ((document.getElementById("dossierDiagnosis")?.textContent.trim() !== "-") ? document.getElementById("dossierDiagnosis")?.textContent.trim() : "") || 
+                   (currentCaseDossier && currentCaseDossier.diagnosis) || "";
+
     return {
-      patientName: (callPatientName && callPatientName.value.trim()) || "",
+      patientName: pName,
       staffName: (callStaffName && callStaffName.value.trim()) || (currentCallLang === "ar" ? "منسق التنسيق الطبي الدولي" : currentCallLang === "th" ? "เจ้าหน้าที่เวชธานี" : "International Patient Coordinator"),
       staffPosition: (callStaffPosition && callStaffPosition.value.trim()) || "International Patient Coordinator",
       staffExt: (callStaffExt && callStaffExt.value.trim()) || "Ext. 2222 (King of Bones)",
       staffWhatsApp: (callStaffWhatsApp && callStaffWhatsApp.value.trim()) || "+66 81 234 5678",
-      patientHN: (callPatientHN && callPatientHN.value.trim()) || "",
+      patientHN: pHN,
       patientPhone: (callPatientPhone && callPatientPhone.value.trim()) || "",
-      topic: (callTopic && callTopic.value.trim()) || "",
+      topic: pTopic,
       priorChannel: (callPriorChannel && callPriorChannel.value) || "WhatsApp",
       remainingIssue: (callRemainingIssue && callRemainingIssue.value.trim()) || ""
     };
@@ -2555,25 +2694,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (currentCustomScriptCards && currentCustomScriptCards.length >= 6) {
-      const getCardText = (card) => {
-        if (currentCallLang === "th") return card.thai || card.english;
-        if (currentCallLang === "en") return card.english || card.thai;
-        if (currentCallLang === "ar") return card.arabic || card.english;
-        return card.thai || card.english;
+      const activePatientName = data.patientName;
+      const activePatientHN = data.patientHN;
+      const activeTopic = data.topic;
+
+      const getCardText = (card, idx) => {
+        let text = "";
+        if (currentCallLang === "th") text = card.thai || card.english;
+        else if (currentCallLang === "en") text = card.english || card.thai;
+        else if (currentCallLang === "ar") text = card.arabic || card.english;
+        else text = card.thai || card.english;
+
+        return applyDynamicPatientDataToCardText(text, currentCallLang, activePatientName, activePatientHN, activeTopic, currentStaffGender);
       };
 
-      if (scriptPrompt1) scriptPrompt1.textContent = getCardText(currentCustomScriptCards[0]);
-      if (docP1) docP1.textContent = getCardText(currentCustomScriptCards[0]);
-      if (scriptPrompt2) scriptPrompt2.textContent = getCardText(currentCustomScriptCards[1]);
-      if (docP2) docP2.textContent = getCardText(currentCustomScriptCards[1]);
-      if (scriptPrompt3) scriptPrompt3.textContent = getCardText(currentCustomScriptCards[2]);
-      if (docP3) docP3.textContent = getCardText(currentCustomScriptCards[2]);
-      if (scriptPrompt4) scriptPrompt4.innerHTML = `<p>${getCardText(currentCustomScriptCards[3])}</p>`;
-      if (docP4) docP4.innerHTML = `<p>${getCardText(currentCustomScriptCards[3])}</p>`;
-      if (scriptClosingDynamic) scriptClosingDynamic.textContent = getCardText(currentCustomScriptCards[4]);
-      if (docP5) docP5.textContent = getCardText(currentCustomScriptCards[4]);
-      if (scriptPrompt6) scriptPrompt6.textContent = getCardText(currentCustomScriptCards[5]);
-      if (docP6) docP6.textContent = getCardText(currentCustomScriptCards[5]);
+      if (scriptPrompt1) scriptPrompt1.textContent = getCardText(currentCustomScriptCards[0], 0);
+      if (docP1) docP1.textContent = getCardText(currentCustomScriptCards[0], 0);
+      if (scriptPrompt2) scriptPrompt2.textContent = getCardText(currentCustomScriptCards[1], 1);
+      if (docP2) docP2.textContent = getCardText(currentCustomScriptCards[1], 1);
+      if (scriptPrompt3) scriptPrompt3.textContent = getCardText(currentCustomScriptCards[2], 2);
+      if (docP3) docP3.textContent = getCardText(currentCustomScriptCards[2], 2);
+      if (scriptPrompt4) scriptPrompt4.innerHTML = `<p>${getCardText(currentCustomScriptCards[3], 3)}</p>`;
+      if (docP4) docP4.innerHTML = `<p>${getCardText(currentCustomScriptCards[3], 3)}</p>`;
+      if (scriptClosingDynamic) scriptClosingDynamic.textContent = getCardText(currentCustomScriptCards[4], 4);
+      if (docP5) docP5.textContent = getCardText(currentCustomScriptCards[4], 4);
+      if (scriptPrompt6) scriptPrompt6.textContent = getCardText(currentCustomScriptCards[5], 5);
+      if (docP6) docP6.textContent = getCardText(currentCustomScriptCards[5], 5);
 
       // Update Phonetics if Arabic
       const showPhonetics = (currentCallLang === "ar");
@@ -2593,7 +2739,11 @@ document.addEventListener("DOMContentLoaded", () => {
       ];
 
       phoneticPairs.forEach(({ main, doc, idx }) => {
-        const phon = currentCustomScriptCards[idx]?.arabicPhonetic;
+        let phon = currentCustomScriptCards[idx]?.arabicPhonetic;
+        if (phon && activePatientName) {
+          const cleanEn = activePatientName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || activePatientName;
+          phon = phon.replace(/(Marhaban\s+)[A-Za-z\s\.\-']+/i, `$1${cleanEn}`);
+        }
         const text = phon ? `[คำอ่าน]: ${phon}` : "";
         const hide = !showPhonetics || !phon;
         if (main) {
@@ -2620,12 +2770,21 @@ document.addEventListener("DOMContentLoaded", () => {
         docDefaultMsg = "يرجى إرفاق أو سحب الملفات الطبية أعلاه لإنشاء نص المحادثة المخصص للحالة.";
       }
 
-      if (docP1) docP1.textContent = docDefaultMsg;
-      if (docP2) docP2.textContent = currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية");
-      if (docP3) docP3.textContent = currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية");
-      if (docP4) docP4.innerHTML = `<p>${currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية")}</p>`;
-      if (docP5) docP5.textContent = currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية");
-      if (docP6) docP6.textContent = currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية");
+      if (data.patientName) {
+        if (docP1) docP1.textContent = result.p1;
+        if (docP2) docP2.textContent = result.p2;
+        if (docP3) docP3.textContent = result.p3;
+        if (docP4) docP4.innerHTML = result.p4;
+        if (docP5) docP5.textContent = result.closing;
+        if (docP6) docP6.textContent = result.p6;
+      } else {
+        if (docP1) docP1.textContent = docDefaultMsg;
+        if (docP2) docP2.textContent = currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية");
+        if (docP3) docP3.textContent = currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية");
+        if (docP4) docP4.innerHTML = `<p>${currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية")}</p>`;
+        if (docP5) docP5.textContent = currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية");
+        if (docP6) docP6.textContent = currentCallLang === "th" ? "รอผลการประมวลผลเวชระเบียน" : (currentCallLang === "en" ? "Awaiting medical document analysis" : "في انتظار تحليل السجلات الطبية");
+      }
 
       ["scriptPrompt1Phonetic", "scriptPrompt2Phonetic", "scriptPrompt3Phonetic", "scriptClosingDynamicPhonetic", "scriptPrompt6Phonetic"].forEach(id => {
         const el = document.getElementById(id);
@@ -2669,6 +2828,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Input listeners
+  if (callPatientName) {
+    callPatientName.addEventListener("input", () => {
+      const val = callPatientName.value.trim();
+      const dName = document.getElementById("dossierPatientName");
+      if (dName && dName.value !== val) dName.value = val;
+      syncPatientNameAcrossCards(val);
+    });
+  }
+  if (callPatientHN) {
+    callPatientHN.addEventListener("input", () => {
+      const val = callPatientHN.value.trim();
+      const dHN = document.getElementById("dossierPatientHN");
+      if (dHN && dHN.value !== val) dHN.value = val;
+      if (currentCaseDossier) currentCaseDossier.passportOrHN = val;
+    });
+  }
+  if (callTopic) {
+    callTopic.addEventListener("input", () => {
+      const val = callTopic.value.trim();
+      const dDiag = document.getElementById("dossierDiagnosis");
+      if (dDiag && dDiag.textContent !== val) dDiag.textContent = val || "-";
+      if (currentCaseDossier) currentCaseDossier.diagnosis = val;
+    });
+  }
+
   [callPatientName, callStaffName, callStaffPosition, callStaffExt, callStaffWhatsApp, callPatientHN, callPatientPhone, callTopic, callRemainingIssue, callPriorChannel].forEach(el => {
     if (el) {
       el.addEventListener("input", refreshCallScript);
@@ -2774,7 +2958,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const missingListEl = document.getElementById("dossierMissingList");
     const missingBadge = document.getElementById("dossierMissingCountBadge");
     const statusBadge = document.getElementById("dossierStatusBadge");
+    const patientNameEl = document.getElementById("dossierPatientName");
+    const patientHNEl = document.getElementById("dossierPatientHN");
 
+    if (patientNameEl && dossier.patientName) patientNameEl.value = dossier.patientName;
+    if (patientHNEl && dossier.passportOrHN) patientHNEl.value = dossier.passportOrHN;
     if (complaintEl) complaintEl.textContent = dossier.chiefComplaint || "-";
     if (diagEl) diagEl.textContent = dossier.diagnosis || "-";
     if (precEl) precEl.textContent = dossier.precautions || "ไม่มีประวัติแพ้ยา หรือข้อควรระวังพิเศษ";
@@ -2810,7 +2998,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const missingListEl = document.getElementById("dossierMissingList");
     const missingBadge = document.getElementById("dossierMissingCountBadge");
     const statusBadge = document.getElementById("dossierStatusBadge");
+    const patientNameEl = document.getElementById("dossierPatientName");
+    const patientHNEl = document.getElementById("dossierPatientHN");
 
+    if (patientNameEl) patientNameEl.value = "";
+    if (patientHNEl) patientHNEl.value = "";
     if (complaintEl) complaintEl.textContent = "-";
     if (diagEl) diagEl.textContent = "-";
     if (precEl) precEl.textContent = "ไม่มีประวัติแพ้ยา หรือข้อควรระวังพิเศษ";
@@ -4081,6 +4273,8 @@ ${docText.slice(0, 16000)}`;
         } else {
           btnToggleEdit.classList.remove("bg-emerald-600", "text-white");
           btnToggleEdit.classList.add("bg-slate-100", "text-slate-700");
+          // User clicked "บันทึกการแก้ไข" to save their custom edits
+          saveAndSyncAllCardsAcrossLanguages();
         }
       });
     }
@@ -4098,6 +4292,8 @@ ${docText.slice(0, 16000)}`;
           targetEl.focus();
         } else {
           targetEl.classList.remove("bg-blue-50/50", "border", "border-blue-300", "p-1.5", "rounded-lg");
+          // Save and sync when closing single-card editing
+          saveAndSyncAllCardsAcrossLanguages();
         }
       });
     });
@@ -4119,14 +4315,72 @@ ${docText.slice(0, 16000)}`;
           const val = el.innerText || el.textContent;
           if (currentCallLang === "th") {
             currentCustomScriptCards[cardIdx].thai = val;
+            if (cardIdx === 0) {
+              const m = val.match(/(?:ขอสายคุณ|เรียนคุณ|คุณ)\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/);
+              if (m && m[1]) {
+                syncPatientNameAcrossCards(m[1].trim());
+              }
+            }
           } else if (currentCallLang === "ar") {
             currentCustomScriptCards[cardIdx].arabic = val;
+            if (cardIdx === 0) {
+              const m = val.match(/(?:مرحباً بالسيد\/السيدة\s+|بالسيد\/السيدة\s+)([^\.،?!]+)/);
+              if (m && m[1]) {
+                syncPatientNameAcrossCards(m[1].trim());
+              }
+            }
           } else {
             currentCustomScriptCards[cardIdx].english = val;
+            if (cardIdx === 0) {
+              const m = val.match(/(?:Good day,\s*|calling for\s*|speaking with\s*)(?:Mr\.|Mrs\.|Ms\.)?\s*([A-Za-z\s\.\-']+?)(?=\.|\?|,|$)/i);
+              if (m && m[1]) {
+                syncPatientNameAcrossCards(m[1].trim());
+              }
+            }
           }
         }
       });
     });
+
+    // 7. Two-Way Binding for Clinical Intake Dossier inputs
+    const dossierPatientName = document.getElementById("dossierPatientName");
+    const dossierPatientHN = document.getElementById("dossierPatientHN");
+    const dossierChiefComplaint = document.getElementById("dossierChiefComplaint");
+    const dossierDiagnosis = document.getElementById("dossierDiagnosis");
+
+    if (dossierPatientName) {
+      dossierPatientName.addEventListener("input", () => {
+        const val = dossierPatientName.value.trim();
+        if (callPatientName && callPatientName.value !== val) callPatientName.value = val;
+        syncPatientNameAcrossCards(val);
+        refreshCallScript();
+      });
+    }
+
+    if (dossierPatientHN) {
+      dossierPatientHN.addEventListener("input", () => {
+        const val = dossierPatientHN.value.trim();
+        if (callPatientHN && callPatientHN.value !== val) callPatientHN.value = val;
+        if (currentCaseDossier) currentCaseDossier.passportOrHN = val;
+        refreshCallScript();
+      });
+    }
+
+    if (dossierChiefComplaint) {
+      dossierChiefComplaint.addEventListener("input", () => {
+        const val = (dossierChiefComplaint.innerText || dossierChiefComplaint.textContent).trim();
+        if (currentCaseDossier) currentCaseDossier.chiefComplaint = val;
+      });
+    }
+
+    if (dossierDiagnosis) {
+      dossierDiagnosis.addEventListener("input", () => {
+        const val = (dossierDiagnosis.innerText || dossierDiagnosis.textContent).trim();
+        if (callTopic && callTopic.value !== val) callTopic.value = val;
+        if (currentCaseDossier) currentCaseDossier.diagnosis = val;
+        refreshCallScript();
+      });
+    }
   }
 
   // --- View 2: Inquiry Console Handling ---
