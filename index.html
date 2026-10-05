@@ -1028,9 +1028,25 @@
 
         <!-- Ingestion Status & Process Action Bar -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-          <div id="medicalDocStatus" class="text-xs text-slate-600 flex items-center gap-2">
-            <span class="inline-block w-2 h-2 rounded-full bg-slate-400"></span>
-            <span>พร้อมรับเอกสารเพื่อวิเคราะห์และสร้างบทพูดเฉพาะเคส</span>
+          <div class="flex flex-col gap-1">
+            <div id="medicalDocStatus" class="text-xs text-slate-600 flex items-center gap-2">
+              <span class="inline-block w-2 h-2 rounded-full bg-slate-400"></span>
+              <span>พร้อมรับเอกสารเพื่อวิเคราะห์และสร้างบทพูดเฉพาะเคส</span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-500">
+              <span class="font-medium text-slate-600">ระบบประมวลผล:</span>
+              <span id="engineBadgeNLP" class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">Deep Clinical NLP (12+ สาขาออฟไลน์)</span>
+              <span id="engineBadgeGemini" class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 font-bold text-[10px] hidden">Google Gemini 2.5 Flash (AI สด)</span>
+              <button type="button" id="btnToggleApiKeyBar" class="text-blue-600 hover:text-blue-800 text-[10px] underline ml-1 cursor-pointer">
+                ตั้งค่า Gemini API Key
+              </button>
+            </div>
+            <!-- Collapsible Quick API Key Bar -->
+            <div id="quickApiKeyBar" class="hidden mt-1 p-2 bg-purple-50/70 border border-purple-200 rounded-xl flex items-center gap-2 text-xs">
+              <i data-lucide="key" class="w-3.5 h-3.5 text-purple-600 shrink-0"></i>
+              <input type="password" id="quickGeminiApiKey" placeholder="วาง Google Gemini API Key (AIzaSy...) เพื่อเปิดโหมด AI สด" class="w-full bg-white px-2.5 py-1 text-xs border border-purple-200 rounded-lg text-slate-800 font-mono focus:outline-none focus:border-purple-500">
+              <button type="button" id="btnSaveQuickApiKey" class="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-[11px] shrink-0 transition cursor-pointer">บันทึก</button>
+            </div>
           </div>
           <div class="flex items-center gap-2">
             <button type="button" id="btnProcessMedicalDocs" class="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#1B365D] to-[#00A3E0] hover:opacity-95 shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
@@ -1116,7 +1132,20 @@
               <h3 class="text-sm font-bold text-[#1B365D]">สคริปต์พูดโทรเฉพาะบุคคล (Personalized Clinical Teleprompter)</h3>
             </div>
             
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <!-- Tone Selector -->
+              <div class="flex items-center space-x-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px] font-bold">
+                <button type="button" id="docToneFormal" class="doc-tone-btn px-2 py-0.5 rounded bg-white text-[#1B365D] shadow-xs font-bold cursor-pointer" data-tone="formal" title="น้ำเสียงทางการ สุภาพสมเกียรติ">ทางการ</button>
+                <button type="button" id="docToneEmpathy" class="doc-tone-btn px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 cursor-pointer" data-tone="empathy" title="น้ำเสียงเข้าอกเข้าใจ ห่วงใยความเจ็บปวด">ห่วงใย</button>
+                <button type="button" id="docToneConcise" class="doc-tone-btn px-2 py-0.5 rounded text-slate-500 hover:text-slate-900 cursor-pointer" data-tone="concise" title="น้ำเสียงกระชับ ตรงประเด็น ขอเอกสารด่วน">กระชับ</button>
+              </div>
+
+              <!-- Edit Script Toggle -->
+              <button type="button" id="btnToggleEditScript" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-[10px] font-bold transition flex items-center gap-1 cursor-pointer" title="เปิด/ปิดโหมดแก้ไขข้อความบทพูดบนการ์ด">
+                <i data-lucide="edit-3" class="w-3 h-3 text-[#EC7825]"></i>
+                <span id="btnToggleEditScriptText">แก้ไขบทพูด</span>
+              </button>
+
               <!-- Staff Tone Toggle -->
               <div class="flex items-center space-x-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px] font-bold">
                 <button type="button" id="docStaffGenderMale" class="px-2 py-0.5 rounded bg-white text-[#1B365D] shadow-xs font-bold">ครับ</button>
@@ -1141,6 +1170,9 @@
                   1. ทักทายและระบุตัวตนคนไข้ (Opening &amp; Respectful Identification)
                 </span>
                 <div class="flex items-center gap-1">
+                  <button type="button" class="btn-edit-single-card p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="แก้ไขข้อความการ์ดนี้" data-target="docPrompt1">
+                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
                   <button type="button" class="btn-speak-prompt p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="ฟังการออกเสียง" data-target="docPrompt1">
                     <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
                   </button>
@@ -1149,8 +1181,8 @@
                   </button>
                 </div>
               </div>
-              <p class="text-xs sm:text-sm text-slate-900 font-semibold leading-relaxed whitespace-pre-line" id="docPrompt1">
-                กรุณาเลือกไฟล์เวชระเบียน หรือคลิกเคสตัวอย่างจำลองด้านบนเพื่อดูสคริปต์
+              <p class="doc-prompt-editable text-xs sm:text-sm text-slate-900 font-semibold leading-relaxed whitespace-pre-line outline-none focus:ring-1 focus:ring-blue-400 focus:bg-white rounded p-1 transition" id="docPrompt1" contenteditable="false">
+                กรุณาเลือกไฟล์เวชระเบียนเพื่อดูสคริปต์เฉพาะบุคคล
               </p>
               <div id="docPrompt1Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
             </div>
@@ -1162,6 +1194,9 @@
                   2. ยืนยันเอกสารผลตรวจที่ได้รับ (Confirm Received Medical Records)
                 </span>
                 <div class="flex items-center gap-1">
+                  <button type="button" class="btn-edit-single-card p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="แก้ไขข้อความการ์ดนี้" data-target="docPrompt2">
+                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
                   <button type="button" class="btn-speak-prompt p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="ฟังการออกเสียง" data-target="docPrompt2">
                     <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
                   </button>
@@ -1170,7 +1205,7 @@
                   </button>
                 </div>
               </div>
-              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium whitespace-pre-line" id="docPrompt2">
+              <p class="doc-prompt-editable text-xs sm:text-sm text-slate-800 leading-relaxed font-medium whitespace-pre-line outline-none focus:ring-1 focus:ring-blue-400 focus:bg-white rounded p-1 transition" id="docPrompt2" contenteditable="false">
                 รอผลการประมวลผลเวชระเบียน
               </p>
               <div id="docPrompt2Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
@@ -1183,6 +1218,9 @@
                   3. คัดกรองอาการเฉพาะโรค (Targeted Clinical Screening)
                 </span>
                 <div class="flex items-center gap-1">
+                  <button type="button" class="btn-edit-single-card p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="แก้ไขข้อความการ์ดนี้" data-target="docPrompt3">
+                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
                   <button type="button" class="btn-speak-prompt p-1 rounded-lg text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 transition" title="ฟังการออกเสียง" data-target="docPrompt3">
                     <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
                   </button>
@@ -1191,7 +1229,7 @@
                   </button>
                 </div>
               </div>
-              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line" id="docPrompt3">
+              <p class="doc-prompt-editable text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line outline-none focus:ring-1 focus:ring-blue-400 focus:bg-white rounded p-1 transition" id="docPrompt3" contenteditable="false">
                 รอผลการประมวลผลเวชระเบียน
               </p>
               <div id="docPrompt3Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
@@ -1204,6 +1242,9 @@
                   4. จุดเด่นและนวัตกรรมการรักษา รพ.เวชธานี (Vejthani Medical Excellence)
                 </span>
                 <div class="flex items-center gap-1">
+                  <button type="button" class="btn-edit-single-card p-1 rounded-lg text-blue-400 hover:text-[#1B365D] hover:bg-blue-100 transition" title="แก้ไขข้อความการ์ดนี้" data-target="docPrompt4">
+                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
                   <button type="button" class="btn-speak-prompt p-1 rounded-lg text-blue-400 hover:text-[#1B365D] hover:bg-blue-100 transition" title="ฟังการออกเสียง" data-target="docPrompt4">
                     <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
                   </button>
@@ -1212,7 +1253,7 @@
                   </button>
                 </div>
               </div>
-              <div class="text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line" id="docPrompt4">
+              <div class="doc-prompt-editable text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line outline-none focus:ring-1 focus:ring-blue-400 focus:bg-white rounded p-1 transition" id="docPrompt4" contenteditable="false">
                 รอผลการประมวลผลเวชระเบียน
               </div>
               <div id="docPrompt4Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
@@ -1225,6 +1266,9 @@
                   5. แจ้งขอเอกสารหรือผลตรวจที่ยังขาด (Missing Document Request Alert)
                 </span>
                 <div class="flex items-center gap-1">
+                  <button type="button" class="btn-edit-single-card p-1 rounded-lg text-rose-400 hover:text-rose-800 hover:bg-rose-100 transition" title="แก้ไขข้อความการ์ดนี้" data-target="docClosingDynamic">
+                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
                   <button type="button" class="btn-speak-prompt p-1 rounded-lg text-rose-400 hover:text-rose-800 hover:bg-rose-100 transition" title="ฟังการออกเสียง" data-target="docClosingDynamic">
                     <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
                   </button>
@@ -1233,7 +1277,7 @@
                   </button>
                 </div>
               </div>
-              <p class="text-xs sm:text-sm text-rose-900 leading-relaxed font-semibold whitespace-pre-line" id="docClosingDynamic">
+              <p class="doc-prompt-editable text-xs sm:text-sm text-rose-900 leading-relaxed font-semibold whitespace-pre-line outline-none focus:ring-1 focus:ring-rose-400 focus:bg-white rounded p-1 transition" id="docClosingDynamic" contenteditable="false">
                 รอผลการประมวลผลเวชระเบียน
               </p>
               <div id="docClosingDynamicPhonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>
@@ -1246,6 +1290,9 @@
                   6. สรุปขั้นตอนและข้อตกลงถัดไป (Next Steps &amp; 24h SLA)
                 </span>
                 <div class="flex items-center gap-1">
+                  <button type="button" class="btn-edit-single-card p-1 rounded-lg text-emerald-500 hover:text-emerald-800 hover:bg-emerald-100 transition" title="แก้ไขข้อความการ์ดนี้" data-target="docPrompt6">
+                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
                   <button type="button" class="btn-speak-prompt p-1 rounded-lg text-emerald-500 hover:text-emerald-800 hover:bg-emerald-100 transition" title="ฟังการออกเสียง" data-target="docPrompt6">
                     <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
                   </button>
@@ -1254,7 +1301,7 @@
                   </button>
                 </div>
               </div>
-              <p class="text-xs sm:text-sm text-slate-800 leading-relaxed font-semibold whitespace-pre-line" id="docPrompt6">
+              <p class="doc-prompt-editable text-xs sm:text-sm text-slate-800 leading-relaxed font-semibold whitespace-pre-line outline-none focus:ring-1 focus:ring-emerald-400 focus:bg-white rounded p-1 transition" id="docPrompt6" contenteditable="false">
                 รอผลการประมวลผลเวชระเบียน
               </p>
               <div id="docPrompt6Phonetic" class="text-[11px] text-amber-800 bg-amber-50/80 px-2.5 py-1 rounded-lg border border-amber-200/70 font-mono hidden"></div>

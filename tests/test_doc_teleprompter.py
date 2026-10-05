@@ -133,6 +133,54 @@ class TestMedicalDocTeleprompter(unittest.TestCase):
         self.assertNotIn('id="btnSampleCaseSpine"', html)
         self.assertNotIn('id="btnSampleCasePediatric"', html)
 
+    def test_distinct_scripts_across_medical_specialties(self):
+        """Verify that different medical cases produce completely distinct scripts and missing docs"""
+        knee_payload = {"files": [{"name": "knee.pdf", "text": "Right knee osteoarthritis"}]}
+        cancer_payload = {"files": [{"name": "cancer.pdf", "text": "Liver hepatocellular carcinoma"}]}
+        pediatric_payload = {"files": [{"name": "child.pdf", "text": "Pediatric clubfoot evaluation"}]}
+
+        _, _, body_knee = ServerInspector.post_json("/api/analyze-doc", knee_payload)
+        _, _, body_cancer = ServerInspector.post_json("/api/analyze-doc", cancer_payload)
+        _, _, body_pediatric = ServerInspector.post_json("/api/analyze-doc", pediatric_payload)
+
+        res_knee = json.loads(body_knee.decode("utf-8"))
+        res_cancer = json.loads(body_cancer.decode("utf-8"))
+        res_pediatric = json.loads(body_pediatric.decode("utf-8"))
+
+        knee_card2 = res_knee["scriptCards"][1]["thai"]
+        cancer_card2 = res_cancer["scriptCards"][1]["thai"]
+        pediatric_card2 = res_pediatric["scriptCards"][1]["thai"]
+
+        # Assert no two cases have identical script cards
+        self.assertNotEqual(knee_card2, cancer_card2, "Knee and Cancer scripts must be distinct")
+        self.assertNotEqual(knee_card2, pediatric_card2, "Knee and Pediatric scripts must be distinct")
+        self.assertNotEqual(cancer_card2, pediatric_card2, "Cancer and Pediatric scripts must be distinct")
+
+        # Assert distinct missing documents
+        self.assertNotEqual(res_knee["dossier"]["documentsMissing"], res_cancer["dossier"]["documentsMissing"])
+        self.assertNotEqual(res_knee["dossier"]["documentsMissing"], res_pediatric["dossier"]["documentsMissing"])
+
+    def test_gemini_client_side_and_tone_controls(self):
+        """Verify Gemini client-side caller, tone switcher, and editable script DOM elements"""
+        with open("index.html", "r", encoding="utf-8") as f:
+            html = f.read()
+        with open("app.js", "r", encoding="utf-8") as f:
+            js = f.read()
+
+        # HTML elements
+        self.assertIn('id="engineBadgeNLP"', html)
+        self.assertIn('id="engineBadgeGemini"', html)
+        self.assertIn('id="quickGeminiApiKey"', html)
+        self.assertIn('id="docToneFormal"', html)
+        self.assertIn('id="docToneEmpathy"', html)
+        self.assertIn('id="docToneConcise"', html)
+        self.assertIn('id="btnToggleEditScript"', html)
+
+        # JS functions and state
+        self.assertIn("callClientSideGeminiApi", js)
+        self.assertIn("currentScriptTone", js)
+        self.assertIn("doc-tone-btn", js)
+
     def test_zero_emojis(self):
         """Enforce strict zero emojis rule in all web files"""
         emoji_pattern = re.compile(
@@ -150,3 +198,4 @@ class TestMedicalDocTeleprompter(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

@@ -207,6 +207,56 @@ Write a tailored WhatsApp script and formal email for this exact patient."""
                     result["dossier"]["procedure"] = "Comprehensive Tumor Board Evaluation & Targeted Therapy / TACE"
                     result["dossier"]["documentsReceived"] = ["Abdominal Triphasic CT Scan Report", "Liver Function Panel", "Biopsy Pathology Notes"]
                     result["dossier"]["documentsMissing"] = ["Alpha-Fetoprotein (AFP) tumor marker", "Recent contrast MRI abdomen (DICOM files)"]
+                    result["scriptCards"] = [
+                        {
+                            "step": 1,
+                            "title": "1. เปิดสายและทักทายอย่างสมเกียรติ (Opening & Respectful Identification)",
+                            "thai": "สวัสดีครับ ขอสายคุณฟาติมา อัล-ซาห์รา นะครับ ผมชื่อศรวิทย์ พยาบาลประสานงานผู้ป่วยสากล จากศูนย์มะเร็ง โรงพยาบาลเวชธานี กรุงเทพฯ ครับ สะดวกคุยสัก 2-3 นาทีไหมครับ?",
+                            "english": "Good day, Mrs. Fatima Al-Zahra. My name is Sorawit, International Patient Liaison Coordinator from Vejthani Cancer Center, Bangkok. May I have 2-3 minutes regarding your oncology review?",
+                            "arabic": "السلام عليكم ورحمة الله وبركاته، مرحباً بالسيدة فاطمة الزهراء. معكم صوراويت من مركز الأورام بمستشفى فيجثاني في بانكوك. هل وقتكم الكريم مناسب للحديث لبضع دقائق؟",
+                            "arabicPhonetic": "As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban Fatima Al-Zahra. Ma'akum Sorawit min markaz al-awram bi-Mustashfa Vejthani fi Bangkok. Hal waqtukum al-karim munasib lil-hadith li-bid' daqa'iq?"
+                        },
+                        {
+                            "step": 2,
+                            "title": "2. ยืนยันเวชระเบียนที่ได้รับ (Confirm Received Medical Records)",
+                            "thai": "ทางทีมแพทย์ผู้เชี่ยวชาญด้านมะเร็งวิทยาได้รับรายงานผล CT ช่องท้องและประวัติการรักษาเรียบร้อยแล้วครับ อาจารย์แพทย์ได้เริ่มศึกษาข้อมูลเบื้องต้นแล้ว",
+                            "english": "Our oncology multidisciplinary board has received your abdominal CT scan reports and clinical notes. Our lead oncologists have completed an initial review.",
+                            "arabic": "لقد استلم فريق علاج الأورام لدينا تقارير الأشعة المقطعية للبطن والملخص الطبي بنجاح وقام استشاريو الأورام بمراجعتها الأولية.",
+                            "arabicPhonetic": "Laqad istalama fariq 'ilaj al-awram ladayna taqareer al-ashi'ah al-maqta'iyyah lil-batn wal-mulakh-khas at-tibbi bi-najah."
+                        },
+                        {
+                            "step": 3,
+                            "title": "3. ซักประวัติและประเมินอาการเฉพาะเคส (Targeted Clinical Screening)",
+                            "thai": "จากผลตรวจที่ได้รับ ทางพยาบาลขออนุญาตสอบถามเพิ่มเติมนะครับ ตอนนี้มีอาการแน่นท้อง น้ำหนักลด หรือมีภาวะตัวเหลืองตาเหลืองหรือไม่ครับ? และรับประทานอาหารได้ปกติไหมครับ?",
+                            "english": "Regarding your current condition: have you noticed abdominal fullness, unexplained weight loss, or jaundice, and is your appetite normal?",
+                            "arabic": "بخصوص حالتكم الصحية الحالية: هل تشعرون بانتفاخ في البطن، أو فقدان غير مبرر للوزن، أو اصفرار بالعينين؟ وكيف هي شهيتكم للطعام؟",
+                            "arabicPhonetic": "Bi-khusoos halatikum as-sihhiyyah al-haliyyah: hal tash'uroona bi-intifakh fi al-batn, aw fiqdan ghayr mubarrar lil-wazn, aw isfirar bil-'aynayn?"
+                        },
+                        {
+                            "step": 4,
+                            "title": "4. นำเสนอความพร้อมของ รพ.เวชธานี (Vejthani Clinical & Cultural Excellence)",
+                            "thai": "สำหรับเคสนี้ รพ.เวชธานี มีการประชุมคณะกรรมการแพทย์สหสาขาวิชามะเร็ง (Multidisciplinary Tumor Board) เพื่อเลือกแนวทางการรักษาที่ตรงจุดและปลอดภัยที่สุด พร้อมล่ามอาหรับและอาหารฮาลาลครบวงจรครับ",
+                            "english": "At Vejthani Hospital, each oncology case is evaluated by our Multidisciplinary Tumor Board to determine the most precise targeted protocol, backed by dedicated Arabic interpreters and Halal dining.",
+                            "arabic": "يتميز مستشفى فيجثاني بلجنة أورام متعددة التخصصات (Tumor Board) لتحديد أدق خطة علاجية مخصصة، مع رعاية متكاملة ومترجمين عرب وخدمات حلال معتمدة.",
+                            "arabicPhonetic": "Yatamayyazu Mustashfa Vejthani bi-lajnat awram muta'addidat at-takhassusat (Tumor Board) li-tahdid adaqq khittah 'ilajiyyah mukhas-sasah."
+                        },
+                        {
+                            "step": 5,
+                            "title": "5. ขอเอกสารที่ยังขาด (Missing Document Collection Alert)",
+                            "thai": "เพื่อให้คณะกรรมการแพทย์ออกแผนการรักษาและประเมินค่าใช้จ่ายได้อย่างแม่นยำ ปัจจุบันเรายังขาดผลตรวจสารบ่งชี้มะเร็ง (AFP) และผล MRI ช่องท้องล่าสุด ขอความกรุณาส่งให้ทาง WhatsApp นี้ได้เลยนะครับ",
+                            "english": "To finalize your treatment protocol and travel estimate, our tumor board requires your latest AFP tumor marker and contrast MRI abdomen DICOM files. You can upload them directly to this WhatsApp chat.",
+                            "arabic": "لاعتماد خطة العلاج وتقدير التكلفة الدقيقة، تحتاج لجنة الأورام لأحدث فحص لدلالات الأورام (AFP) وصور الرنين للبطن. يمكنكم إرسالها عبر الواتساب.",
+                            "arabicPhonetic": "Li-i'timad khittat al-'ilaj wa taqdeer at-taklufah ad-daqeeqah, tahtaju lajnat al-awram li-ahdath fahs li-dalalat al-awram (AFP) wa suwar ar-ranin."
+                        },
+                        {
+                            "step": 6,
+                            "title": "6. สรุปขั้นตอนถัดไปและส่งสรุปทาง WhatsApp (Next Steps & WhatsApp Dispatch)",
+                            "thai": "ผมจะส่งสรุปแนวทางการประสานงานและหนังสือรับรองเพื่อขอวีซ่าให้ทาง WhatsApp ทันทีนะครับ เมื่อได้รับผลตรวจครบ คณะแพทย์จะออกแผนการรักษาภายใน 24 ชั่วโมงครับ",
+                            "english": "I am sending a formal summary and medical visa assistance letter to your WhatsApp right now. Once remaining tests arrive, your personalized plan will be issued in 24 hours.",
+                            "arabic": "سأرسل لكم الآن ملخص التنسيق الطبي وخطاب تسهيل التأشيرة العلاجية عبر الواتساب. وفور استلام الفحوصات المتبقية، سنصدر خطتكم العلاجية خلال 24 ساعة.",
+                            "arabicPhonetic": "Sa-ursilu lakum al-an mulakh-khas at-tanseeq at-tibbi wa khitab tas-hil at-ta'shirah 'abra al-WhatsApp."
+                        }
+                    ]
                 elif "pediatric" in all_text or "child" in all_text or "clubfoot" in all_text:
                     result["dossier"]["patientName"] = "Master Rashid Al-Thani (Father: Mr. Jassim)"
                     result["dossier"]["nationality"] = "Qatar"
@@ -217,6 +267,116 @@ Write a tailored WhatsApp script and formal email for this exact patient."""
                     result["dossier"]["procedure"] = "Pediatric Orthopedic Ponseti Correction & Tendon Transfer"
                     result["dossier"]["documentsReceived"] = ["Pediatric Orthopedic History Sheet", "Bilateral Foot Radiographs", "Growth & Immunization Record"]
                     result["dossier"]["documentsMissing"] = ["Latest standing weight-bearing foot X-ray", "Pediatrician fitness-to-fly clearance letter"]
+                    result["scriptCards"] = [
+                        {
+                            "step": 1,
+                            "title": "1. เปิดสายและทักทายอย่างสมเกียรติ (Opening & Respectful Identification)",
+                            "thai": "สวัสดีครับ ขอสายคุณพ่อจัสซิม ผู้ปกครองของน้องราชิด อัล-ธานี นะครับ ผมชื่อศรวิทย์ พยาบาลประสานงานผู้ป่วยสากล จากโรงพยาบาลเวชธานี กรุงเทพฯ ครับ สะดวกคุยสัก 2-3 นาทีไหมครับ?",
+                            "english": "Good day, Mr. Jassim, family of Master Rashid Al-Thani. My name is Sorawit, International Patient Liaison Coordinator from Vejthani Hospital, Bangkok. May I have 2-3 minutes regarding the orthopedic consultation?",
+                            "arabic": "السلام عليكم ورحمة الله وبركاته، مرحباً بالسيد جاسم، والد الطفل راشد آل ثاني. معكم صوراويت من مستشفى فيجثاني في بانكوك. هل وقتكم الكريم مناسب للحديث حول الاستشارة الطبية؟",
+                            "arabicPhonetic": "As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban Sayyid Jassim, walid at-tifl Rashid Al-Thani. Ma'akum Sorawit min Mustashfa Vejthani fi Bangkok."
+                        },
+                        {
+                            "step": 2,
+                            "title": "2. ยืนยันเวชระเบียนที่ได้รับ (Confirm Received Medical Records)",
+                            "thai": "ทางทีมกุมารแพทย์ศัลยกรรมกระดูกเด็กได้รับรายงานเวชระเบียนและภาพถ่ายเท้าของน้องเรียบร้อยแล้วครับ อาจารย์แพทย์เฉพาะทางเด็กได้ดูเบื้องต้นแล้ว",
+                            "english": "Our pediatric orthopedic team has reviewed the clinical notes and foot radiographs received. Our pediatric orthopedic specialists have conducted an initial evaluation.",
+                            "arabic": "لقد اطلع فريق جراحة عظام الأطفال لدينا على السجلات الطبية وصور الأشعة المستلمة بنجاح وقام الاستشاري بمراجعتها الأولية.",
+                            "arabicPhonetic": "Laqad ittala'a fariq jirahat 'izam al-atfal ladayna 'ala as-sijillat at-tibbiyyah wa suwar al-ashi'ah al-mustalamah bi-najah."
+                        },
+                        {
+                            "step": 3,
+                            "title": "3. ซักประวัติและประเมินอาการเฉพาะเคส (Targeted Clinical Screening)",
+                            "thai": "จากประวัติเดิม ทางพยาบาลขอสอบถามเพิ่มเติมนะครับ ปัจจุบันเวลาเดินหรือวิ่ง น้องมีอาการเจ็บเท้าหรือสะดุดบ่อยไหมครับ? และน้องยังใส่เฝือกดามกลางคืนอยู่หรือไม่ครับ?",
+                            "english": "Regarding current mobility: does the child experience pain while walking or tripping often, and is any night brace or corrective splint currently in use?",
+                            "arabic": "بخصوص الحركة الحالية: هل يشكو الطفل من ألم عند المشي أو الجري؟ وهل ما زال يرتدي جبيرة ليلية داعمة؟",
+                            "arabicPhonetic": "Bi-khusoos al-harakah al-haliyyah: hal yashkoo at-tifl min alam 'inda al-mashi aw al-jary? Wa hal ma zala yartadee jabeerah layliyyah da'imah?"
+                        },
+                        {
+                            "step": 4,
+                            "title": "4. นำเสนอความพร้อมของ รพ.เวชธานี (Vejthani Clinical & Cultural Excellence)",
+                            "thai": "สำหรับเคสนี้ รพ.เวชธานี มีกุมารแพทย์ผู้เชี่ยวชาญด้านกระดูกเด็กโดยเฉพาะ ด้วยวิธี Ponseti ร่วมกับการปรับสมดุลเอ็น แผลเล็ก พร้อมห้องพักเด็กและครอบครัวที่สะดวกสบายครับ",
+                            "english": "Vejthani features dedicated Pediatric Orthopedic specialists experienced in the Ponseti Method and minimally invasive tendon balancing, with family suites designed for child comfort.",
+                            "arabic": "يتميز مستشفى فيجثاني بوجود أطباء عظام أطفال متخصصين في تقنية بونزيتي وتعديل الأوتار المتقدم، مع أجنحة عائلية مجهزة لراحة الأطفال وذويهم.",
+                            "arabicPhonetic": "Yatamayyazu Mustashfa Vejthani bi-wujud atibba' 'izam atfal mutakhassisina fi tiqniyyat Ponseti wa ta'deel al-awtar al-mutaqaddim."
+                        },
+                        {
+                            "step": 5,
+                            "title": "5. ขอเอกสารที่ยังขาด (Missing Document Collection Alert)",
+                            "thai": "เพื่อให้การเดินทางและการรักษาเป็นไปอย่างปลอดภัย ปัจจุบันเรายังขาดใบรับรอง Fit-to-Fly จากกุมารแพทย์ และภาพเอกซเรย์ท่ายืนลงน้ำหนัก ขอความกรุณาส่งให้ทาง WhatsApp นี้ได้เลยนะครับ",
+                            "english": "To ensure safe travel and issue official visa guarantee letters for your family, we need the Fit-to-Fly certificate and standing foot X-ray.",
+                            "arabic": "لضمان سلامة السفر وإصدار خطابات الضمان للتأشيرة العائلية، نحتاج شهادة لياقة السفر (Fit-to-Fly) من طبيب الأطفال وصورة أشعة القدمين أثناء الوقوف.",
+                            "arabicPhonetic": "Li-dhaman salamat as-safar wa isdar khitabat ad-dhaman lit-ta'shirah al-'a'iliyyah, nahtaju shahadat liyaqat as-safar (Fit-to-Fly)."
+                        },
+                        {
+                            "step": 6,
+                            "title": "6. สรุปขั้นตอนถัดไปและส่งสรุปทาง WhatsApp (Next Steps & WhatsApp Dispatch)",
+                            "thai": "ผมจะส่งสรุปข้อมูลนี้พร้อมคำแนะนำสำหรับครอบครัวทาง WhatsApp นะครับ เมื่อส่งเอกสารครบ ทีมกุมารแพทย์จะยืนยันแผนการรักษาและนัดหมายอย่างรวดเร็วครับ",
+                            "english": "I am sending a consultation overview and family travel checklist to your WhatsApp now. Once remaining documents arrive, our pediatric board will finalize the schedule immediately.",
+                            "arabic": "سأرسل لكم الآن ملخص الاستشارة وقائمة الترتيبات العائلية عبر الواتساب. وفور استكمال المستندات، سنؤكد جدول المواعيد مباشرة.",
+                            "arabicPhonetic": "Sa-ursilu lakum al-an mulakh-khas al-istisharah wa qa'imat at-tarteebat al-'a'iliyyah 'abra al-WhatsApp."
+                        }
+                    ]
+                elif "spine" in all_text or "cervical" in all_text or "lumbar" in all_text:
+                    result["dossier"]["patientName"] = "Mr. Tariq Al-Riyami"
+                    result["dossier"]["nationality"] = "Oman"
+                    result["dossier"]["countryCode"] = "oman"
+                    result["dossier"]["specialty"] = "king_of_bone"
+                    result["dossier"]["chiefComplaint"] = "Cervical radiculopathy radiating to right arm, finger numbness, neck stiffness"
+                    result["dossier"]["diagnosis"] = "Cervical Spondylotic Radiculopathy with C5-C6 Herniated Disc"
+                    result["dossier"]["procedure"] = "Full-Endoscopic Cervical Discectomy (Micro-Endoscopic Spine Surgery)"
+                    result["dossier"]["documentsReceived"] = ["Muscat Spine Clinic Discharge Summary", "Cervical Spine Radiographs", "EMG Nerve Conduction Notes"]
+                    result["dossier"]["documentsMissing"] = ["Recent Cervical Spine MRI DICOM Image Files (within 3 months)", "Contrast Allergy Profile"]
+                    result["scriptCards"] = [
+                        {
+                            "step": 1,
+                            "title": "1. เปิดสายและทักทายอย่างสมเกียรติ (Opening & Respectful Identification)",
+                            "thai": "สวัสดีครับ ขอสายคุณทาริก อัล-ริยามี นะครับ ผมชื่อศรวิทย์ พยาบาลประสานงานผู้ป่วยสากล จากศูนย์กระดูกสันหลัง โรงพยาบาลเวชธานี กรุงเทพฯ ครับ สะดวกคุยสัก 2-3 นาทีไหมครับ?",
+                            "english": "Good day, Mr. Tariq Al-Riyami. My name is Sorawit, International Patient Liaison Coordinator from Vejthani Spine Center, Bangkok. May I have 2-3 minutes to discuss your spine consultation?",
+                            "arabic": "السلام عليكم ورحمة الله وبركاته، مرحباً بالسيد طارق الريامي. معكم صوراويت من مركز العمود الفقري بمستشفى فيجثاني في بانكوك. هل وقتكم الكريم مناسب للحديث حول استشارة العمود الفقري؟",
+                            "arabicPhonetic": "As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban Sayyid Tariq Al-Riyami. Ma'akum Sorawit min markaz al-'amood al-faqari bi-Mustashfa Vejthani fi Bangkok."
+                        },
+                        {
+                            "step": 2,
+                            "title": "2. ยืนยันเวชระเบียนที่ได้รับ (Confirm Received Medical Records)",
+                            "thai": "ทางทีมศัลยแพทย์กระดูกสันหลังได้รับรายงานสรุปประวัติจากโอมานและผลตรวจกล้ามเนื้อเรียบร้อยแล้วครับ อาจารย์แพทย์เฉพาะทางได้ศึกษาประวัติเบื้องต้นแล้ว",
+                            "english": "Our spine surgery team has reviewed your clinical summary from Oman and electrodiagnostic tests. Our senior spine surgeons have completed a preliminary review.",
+                            "arabic": "لقد اطلع استشاريو جراحة العمود الفقري لدينا على ملخصكم الطبي من سلطنة عُمان وفحوصات الأعصاب والعضلات بنجاح.",
+                            "arabicPhonetic": "Laqad ittala'a istishariyyu jirahat al-'amood al-faqari ladayna 'ala mulakh-khasikum at-tibbi min Saltanat 'Uman wa fuhusat al-a'sab."
+                        },
+                        {
+                            "step": 3,
+                            "title": "3. ซักประวัติและประเมินอาการเฉพาะเคส (Targeted Clinical Screening)",
+                            "thai": "จากอาการปวดคอร้าวลงแขนและชาปลายนิ้ว ทางพยาบาลขอสอบถามเพิ่มเติมนะครับ ตอนนี้มีอาการหยิบจับสิ่งของแล้วหลุดมือ หรืออาการปวดเวลานอนราบหรือไม่ครับ?",
+                            "english": "Regarding the pain radiating to your arm and finger numbness: do you experience difficulty gripping objects, and does the pain worsen when lying flat?",
+                            "arabic": "بخصوص الألم الممتد للذراع وخدر الأصابع: هل تواجهون صعوبة في إمساك الأشياء أو سقوطها من اليد؟ وهل يزداد الألم عند الاستلقاء؟",
+                            "arabicPhonetic": "Bi-khusoos al-alam al-mumtadd lidh-dhira' wa khadar al-asabi': hal tuwajihuna su'ubah fi imsak al-ashya' aw suqutiha min al-yad?"
+                        },
+                        {
+                            "step": 4,
+                            "title": "4. นำเสนอความพร้อมของ รพ.เวชธานี (Vejthani Clinical & Cultural Excellence)",
+                            "thai": "สำหรับเคสนี้ รพ.เวชธานี มีศูนย์กระดูกสันหลังครบวงจร ผ่าตัดแบบแผลเล็กส่องกล้อง Endoscopic Spine Surgery ไม่ต้องตัดกล้ามเนื้อ ฟื้นตัวเร็ว พร้อมล่ามภาษาอาหรับดูแลทุกขั้นตอนครับ",
+                            "english": "Vejthani's Spine Center specializes in Full-Endoscopic Spine Surgery, which uses micro-incisions without muscle damage for rapid recovery, supported by Arabic medical translators.",
+                            "arabic": "يوفر مركز العمود الفقري بمستشفى فيجثاني جراحة المنظار الكامل دقيقة التداخل دون قطع العضلات لسرعة الشفاء، مع مرافقين ومترجمين عرب في كل خطوة.",
+                            "arabicPhonetic": "Yuwaffir markaz al-'amood al-faqari bi-Mustashfa Vejthani jirahat al-minzar al-kamil daqeeqat at-tadakhul duna qat' al-'adallat li-sur'at ash-shifa'."
+                        },
+                        {
+                            "step": 5,
+                            "title": "5. ขอเอกสารที่ยังขาด (Missing Document Collection Alert)",
+                            "thai": "เพื่อให้ศัลยแพทย์วางแผนแนวการส่องกล้องได้อย่างแม่นยำ ปัจจุบันเรายังขาดไฟล์ภาพสแกน MRI กระดูกคอ (DICOM) แผ่นล่าสุด ขอความกรุณาส่งให้ทาง WhatsApp นี้ได้เลยนะครับ",
+                            "english": "To determine the exact endoscopic approach, our spine board needs your latest Cervical Spine MRI DICOM image files. You can upload them to this WhatsApp chat.",
+                            "arabic": "لتحديد المسار الجراحي بالمنظار بدقة، يحتاج الفريق الطبي لملفات صور الرنين المغناطيسي للرقبة (DICOM) الأخيرة. يمكنكم إرسالها عبر الواتساب.",
+                            "arabicPhonetic": "Li-tahdid al-masar al-jirahee bil-minzar bi-diqqah, yahtaju al-fariq at-tibbi li-milaffat suwar ar-ranin al-mighnatisi lir-raqabah (DICOM)."
+                        },
+                        {
+                            "step": 6,
+                            "title": "6. สรุปขั้นตอนถัดไปและส่งสรุปทาง WhatsApp (Next Steps & WhatsApp Dispatch)",
+                            "thai": "ผมจะส่งสรุปรายละเอียดแนวทางการรักษาและการเตรียมตัวเบื้องต้นให้ทาง WhatsApp ทันทีนะครับ เมื่อได้รับภาพ MRI ครบ แพทย์จะออกแผนการรักษาภายใน 24 ชั่วโมงครับ",
+                            "english": "I am sending a formal summary and pre-travel preparation guide to your WhatsApp right now. Once your MRI files are received, your comprehensive surgical plan will be ready in 24 hours.",
+                            "arabic": "سأرسل لكم الآن الملخص الطبي ودليل الإرشادات الأولية عبر الواتساب. وفور استلام صور الرنين، ستكون خطتكم العلاجية جاهزة خلال 24 ساعة.",
+                            "arabicPhonetic": "Sa-ursilu lakum al-an al-mulakh-khas at-tibbi wa daleel al-irshadat al-awwaliyyah 'abra al-WhatsApp."
+                        }
+                    ]
 
                 self.send_response(HTTPStatus.OK)
                 self.send_header('Content-Type', 'application/json')

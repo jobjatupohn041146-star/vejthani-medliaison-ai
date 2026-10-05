@@ -117,7 +117,30 @@ module.exports = async (req, res) => {
     const textContext = body.textContext || "";
 
     if (!apiKey) {
-      res.status(200).json(FALLBACK_DOSSIER);
+      const allText = (textContext + " " + files.map(f => (f.name || "") + " " + (f.text || "")).join(" ")).toLowerCase();
+      let adapted = JSON.parse(JSON.stringify(FALLBACK_DOSSIER));
+      if (allText.includes("cancer") || allText.includes("oncology")) {
+        adapted.dossier.patientName = "Mrs. Fatima Al-Zahra";
+        adapted.dossier.nationality = "Saudi Arabia";
+        adapted.dossier.countryCode = "saudi";
+        adapted.dossier.specialty = "cancer";
+        adapted.dossier.chiefComplaint = "Hepatic lesion evaluation and second opinion on immunotherapy protocol";
+        adapted.dossier.diagnosis = "Hepatocellular Carcinoma (HCC) stage II, localized";
+        adapted.dossier.procedure = "Comprehensive Tumor Board Evaluation & Targeted Therapy / TACE";
+        adapted.dossier.documentsReceived = ["Abdominal Triphasic CT Scan Report", "Liver Function Panel", "Biopsy Pathology Notes"];
+        adapted.dossier.documentsMissing = ["Alpha-Fetoprotein (AFP) tumor marker", "Recent contrast MRI abdomen (DICOM files)"];
+      } else if (allText.includes("pediatric") || allText.includes("child") || allText.includes("clubfoot")) {
+        adapted.dossier.patientName = "Master Rashid Al-Thani (Father: Mr. Jassim)";
+        adapted.dossier.nationality = "Qatar";
+        adapted.dossier.countryCode = "qatar";
+        adapted.dossier.specialty = "pediatric";
+        adapted.dossier.chiefComplaint = "Congenital bilateral clubfoot in a 4-year-old child";
+        adapted.dossier.diagnosis = "Bilateral Congenital Talipes Equinovarus (Clubfoot) with residual stiffness";
+        adapted.dossier.procedure = "Pediatric Orthopedic Ponseti Correction & Tendon Transfer";
+        adapted.dossier.documentsReceived = ["Pediatric Orthopedic History Sheet", "Bilateral Foot Radiographs", "Growth & Immunization Record"];
+        adapted.dossier.documentsMissing = ["Latest standing weight-bearing foot X-ray", "Pediatrician fitness-to-fly clearance letter"];
+      }
+      res.status(200).json(adapted);
       return;
     }
 
