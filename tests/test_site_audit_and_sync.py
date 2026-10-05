@@ -103,6 +103,14 @@ class TestSiteAuditAndCrossLanguageSync(unittest.TestCase):
         self.assertIn('id="docCallLangEn"', self.index_html)
         self.assertIn('id="docCallLangAr"', self.index_html)
 
+    def test_tone_transformation_functions_and_behavior(self):
+        """Test that tone adaptation functions exist and support formal, empathy, concise"""
+        self.assertIn("function applyToneToScriptCards", self.app_js)
+        self.assertIn("function generateVejthaniCallScript(data, lang, outcome, staffGender = \"male\", summaryLang = null, tone = \"formal\")", self.app_js)
+        self.assertIn("applyToneToScriptCards(scriptCards, tone", self.app_js)
+        self.assertIn("applyToneToScriptCards(currentCustomScriptCards, currentScriptTone", self.app_js)
+        self.assertIn("ปรับเปลี่ยนน้ำเสียงบทพูดเป็น:", self.app_js)
+
     def test_zero_emojis_across_project(self):
         """Strict Rule: Verify zero emojis in index.html and app.js"""
         emoji_pattern = re.compile(

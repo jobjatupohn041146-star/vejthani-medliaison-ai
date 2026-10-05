@@ -1077,7 +1077,7 @@ function formatPatientSalutation(name, lang = "en") {
 }
 
 // Generate Vejthani Hospital Call Script
-function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", summaryLang = null) {
+function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", summaryLang = null, tone = "formal") {
   const { patientName, staffName, topic, priorChannel, remainingIssue } = data;
   const isEn = (lang === "en");
   const isAr = (lang === "ar");
@@ -1121,17 +1121,27 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
     const arGreeting = "السلام عليكم ورحمة الله وبركاته،";
     const formalPatientName = formatPatientSalutation(scriptPatientName, "ar");
 
-    // Card 1: الافتتاح والاستئذان الموقر (Opening & Permission)
-    p1 = `“${arGreeting} ${formalPatientName}. معكم ${scriptStaffName} من مكتب التنسيق الطبي الدولي بمستشفى فيجثاني في بانكوك. نسأل الله أن تكونوا وعائلتكم الكريمة بأحسن حال. هل يتسع وقتكم الكريم لمحادثة قصيرة لمدة دقيقتين للاطمئنان والتأكد من إمكانية تقديم أي مساعدة لتيسير خطة قدومكم ومقابلة الطبيب الاستشاري؟”`;
+    if (tone === "empathy") {
+      p1 = `“${arGreeting} ${formalPatientName}. معكم ${scriptStaffName} من مستشفى فيจثاني الدولي في بانكوك. ندرك تماماً مدى القلق والصعوبة التي قد ترافق موضوع ${scriptTopic}. كيف حال صحتكم الكريمة اليوم؟ نتواصل معكم للاطمئنان عليكم ومساعدتكم بكل اهتمام لتيسير رحلتكم العلاجية، فهل يتسع وقتكم لبضع دقائق؟”`;
+      p2 = `“فريقنا الطبي يتفهم مشاعركم واهتمامكم البالغ بشأن ${scriptTopic}. لقد أرسلنا لكم الخطة الأولية عبر ${channelDisplay}. هل أتيحت لكم الفرصة للاطلاع عليها وهل هناك ما يقلقكم ونستطيع توضيحه؟”`;
+      p3 = `“كيف هي حالتكم الصحية والألم اليوم؟ وما هي أكثر الأمور التي تشغل بالكم في الوقت الحالي؟ نرجو ألا تترددوا بمشاركتنا فصحتكم وراحتكم أولويتنا القصوى.”`;
+    } else if (tone === "concise") {
+      p1 = `“${arGreeting} ${formalPatientName}. معكم ${scriptStaffName} من مستشفى فيجثاني في مكالمة سريعة وموجزة لمدة دقيقة واحدة بشأن ${scriptTopic}. هل وقتكم متاح الآن؟”`;
+      p2 = `“بخصوص ${scriptTopic}، تم إرسال كافة التفاصيل عبر ${channelDisplay}. هل اطلعتم عليها سعادتكم؟”`;
+      p3 = `“استفسار سريع: هل هناك نقطة جوهرية تودون من الطبيب الاستشاري حسمها وتأكيدها لكم فوراً؟”`;
+    } else {
+      // Card 1: الافتتاح والاستئذان الموقر (Opening & Permission)
+      p1 = `“${arGreeting} ${formalPatientName}. معكم ${scriptStaffName} من مكتب التنسيق الطبي الدولي بمستشفى فيจثاني في بانكوك. نسأل الله أن تكونوا وعائلتكم الكريمة بأحسن حال. هل يتسع وقتكم الكريم لمحادثة قصيرة لمدة دقيقتين للاطمئنان والتأكد من إمكانية تقديم أي مساعدة لتيسير خطة قدومكم ومقابلة الطبيب الاستشاري؟”`;
 
-    // Card 2: الإشارة الراقية إلى الاستفسار السابق (Referencing Prior Inquiry)
-    p2 = `“في تواصلنا السابق، تفضلتم بالاستفسار عن ${scriptTopic}. وقد تشرفنا بتزويدكم بالخطة العلاجية والتقدير المالي عبر ${channelDisplay}. نود الاطمئنان، هل أتيحت لكم الفرصة الكريمة للاطلاع عليها؟ وهل هناك أية تفاصيل طبية أو لوجستية تودون منا توضيحها لسعادتكم؟”`;
+      // Card 2: الإشارة الراقية إلى الاستفسار السابق (Referencing Prior Inquiry)
+      p2 = `“في تواصلنا السابق، تفضلتم بالاستفسار عن ${scriptTopic}. وقد تشرفنا بتزويدكم بالخطة العلاجية والتقدير المالي عبر ${channelDisplay}. نود الاطمئنان، هل أتيحت لكم الفرصة الكريمة للاطلاع عليها؟ وهل هناك أية تفاصيل طبية أو لوجستية تودون منا توضيحها لسعادتكم؟”`;
 
-    // Card 3: الاستماع بدقة لاهتمامات المريض (Active Listening to Concerns)
-    p3 = `“ما هي أهم الأمور التي تشغل بالكم في الوقت الحالي، أو الترتيبات التي تودون التنسيق بشأنها قبل موعد السفر وتأكيد الرحلة العلاجية؟”
+      // Card 3: الاستماع بدقة لاهتمامات المريض (Active Listening to Concerns)
+      p3 = `“ما هي أهم الأمور التي تشغل بالكمใน الوقت الحالي، أو الترتيبات التي تودون التنسيق بشأنها قبل موعد السفر وتأكيد الرحلة العلاجية؟”
 (إرشادات للمنسق الطبي: طرح سؤال واحد في كل مرة، إعطاء مهلة كافية للمريض للرد دون مقاطعة، ثم إعادة تأكيد الفهم بدقة واحترام.)`;
+    }
 
-    // Card 4: مرافق مستشفى فيجثاني والجاهزية الثقافية (Hospital Facilities & Cultural Readiness)
+    // Card 4: مرافق مستشفى فيจثاني والجاهزية الثقافية (Hospital Facilities & Cultural Readiness)
     p4 = `<p>• <strong>التميز الطبي والاعتماد الدولي:</strong> كبار الاستشاريين الحاصلين على أعلى الزمالات الدولية واعتماد اللجنة المشتركة الدولية (JCI).</p>
           <p>• <strong>الرعاية الثقافية والخصوصية:</strong> وجبات طعام حلال 100% معتمدة، ومصلى مخصص مجهز بأماكن الوضوء، مع كادر نسائي متخصص لخصوصية المريضات.</p>
           <p>• <strong>مترجمون عرب معتمدون:</strong> مرافق شخصي يتحدث العربية بطلاقة يرافقكم في كافة المواعيد والاستشارات الطبية مجاناً.</p>
@@ -1143,7 +1153,7 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
     } else if (outcome === "not_ready") {
       closing = `“بكل تأكيد وسرور. سأقوم بتجهيز وموافاتكم بكافة المعلومات التفصيلية حول ${scriptRemainingIssue} أولاً. ما هو اليوم والوقت المحلي الأنسب لسعادتكم حتى أقوم بإعادة الاتصال بكم؟ وإذا كنتم تفضلون التريث حالياً، فنرجو ألا تترددوا بإبلاغنا، ونحن في خدمتكم دائماً.”`;
     } else {
-      closing = `“لا بأس على الإطلاق، ونشكركم جزيل الشكر على إفادتنا ووقتكم الثمين. إذا سمحتم لنا بسؤال سريع، هل هناك سبب رئيسي يمكننا الاستفادة منه لتطوير خدماتنا ومراعاته مستقبلاً؟ نود التأكيد على أن أبواب مستشفى فيجثاني مفتوحة لكم دائماً، ويسعدنا تقديم الرعاية لكم ولعائلتكم في أي وقت تشاؤون. دمتم بحفظ الله ورعايته.”`;
+      closing = `“لا بأس على الإطلاق، ونشكركم جزيل الشكر على إفادتنا ووقتكم الثمين. إذا سمحتم لنا بسؤال سريع، هل هناك سبب رئيسي يمكننا الاستفادة منه لتطوير خدماتنا ومراعاته مستقبلاً؟ نود التأكيد على أن أبواب مستشفى فيจثاني مفتوحة لكم دائماً، ويسعدنا تقديم الرعاية لكم ولعائلتكم في أي وقت تشاؤون. دمتم بحفظ الله ورعايته.”`;
     }
 
     // Card 6: تلخيص ما تم الاتفاق عليه (Summarizing Agreed Actions)
@@ -1155,12 +1165,20 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
     // =========================================================================
     const formalPatientName = formatPatientSalutation(scriptPatientName, 'en');
 
-    p1 = `“Hello, ${formalPatientName}. This is ${scriptStaffName} from Vejthani Hospital. We spoke on ${channelDisplay} earlier. How are you? Would now be a good time to talk for 2–3 minutes? I’m calling to see if there is anything else we can help arrange before you plan your visit with the doctor.”`;
-
-    p2 = `“Last time, you asked about ${scriptTopic}. We sent the information to you via ${channelDisplay}. Have you had a chance to look at it? Is there anything you would like us to explain in more detail?”`;
-
-    p3 = `“Is there anything you are still concerned about or need to arrange before traveling for treatment?”
+    if (tone === "empathy") {
+      p1 = `“Hello, ${formalPatientName}. This is ${scriptStaffName} from Vejthani Hospital. We understand dealing with ${scriptTopic} can be challenging and distressing. How are you feeling today? I am calling with heartfelt care to see how we can assist and comfort you before your consultation. Would you have 2-3 minutes to speak?”`;
+      p2 = `“Our medical team truly understands how stressful ${scriptTopic} can be for you and your family. We sent the medical review to you via ${channelDisplay}. Have you had a chance to look at it, and is there any part causing you worry?”`;
+      p3 = `“How are your symptoms right now? Is there any specific pain or concern that is troubling you most? Please feel free to share—we are here to support you in every way.”`;
+    } else if (tone === "concise") {
+      p1 = `“Hello, ${formalPatientName}. This is ${scriptStaffName} from Vejthani Hospital with a quick 1-minute update regarding ${scriptTopic}. Do you have a brief moment?”`;
+      p2 = `“Regarding ${scriptTopic}, we sent the full information via ${channelDisplay}. Have you had a chance to review it?”`;
+      p3 = `“Quick check: are there any immediate questions you need our specialist to confirm before your travel?”`;
+    } else {
+      p1 = `“Hello, ${formalPatientName}. This is ${scriptStaffName} from Vejthani Hospital. We spoke on ${channelDisplay} earlier. How are you? Would now be a good time to talk for 2–3 minutes? I’m calling to see if there is anything else we can help arrange before you plan your visit with the doctor.”`;
+      p2 = `“Last time, you asked about ${scriptTopic}. We sent the information to you via ${channelDisplay}. Have you had a chance to look at it? Is there anything you would like us to explain in more detail?”`;
+      p3 = `“Is there anything you are still concerned about or need to arrange before traveling for treatment?”
 (Staff Guideline: Ask one question at a time, give the patient time to answer, and repeat key points to confirm understanding.)`;
+    }
 
     p4 = `<p>• <strong>Medical Excellence:</strong> Internationally trained subspecialists & JCI-accredited clinical safety</p>
           <p>• <strong>Cultural Care:</strong> 100% certified Halal dining & on-site prayer rooms (Musalla)</p>
@@ -1189,12 +1207,20 @@ function generateVejthaniCallScript(data, lang, outcome, staffGender = "male", s
     const formalPatientName = formatPatientSalutation(scriptPatientName, 'th');
     const displayPatientName = scriptPatientName.startsWith("[") ? scriptPatientName : `คุณ ${scriptPatientName.replace(/^(คุณ|ท่าน)\s*/, '')}`;
 
-    p1 = `“อัสสลามุอะลัยกุม ${formalPatientName} ${pronoun} ${scriptStaffName} จากโรงพยาบาลเวชธานี${polite} ที่เราเคยคุยกันทาง ${channelDisplay} ก่อนหน้านี้ คุณสบายดี${politeQuestion}? ตอนนี้สะดวกคุยสัก 2–3 นาที${politeQuestion}? ${pronoun}โทรมาเพื่อดูว่ามีอะไรที่เราช่วยเตรียมเพิ่มเติมให้คุณได้ ก่อนวางแผนมาพบแพทย์${polite}”`;
-
-    p2 = `“ครั้งก่อน ${displayPatientName} แจ้งว่าอยากทราบเรื่อง ${scriptTopic} เราได้ส่งข้อมูลให้ทาง ${channelDisplay} แล้ว${polite} คุณได้ดูข้อมูลหรือยัง${politeQuestion}? มีส่วนไหนที่อยากให้เราอธิบายเพิ่มเติม${politeQuestion}?”`;
-
-    p3 = `“ตอนนี้เรื่องไหนที่ยังทำให้คุณไม่สบายใจ หรือยังต้องจัดเตรียมก่อนเดินทางมารักษา${politeQuestion}?”
+    if (tone === "empathy") {
+      p1 = `“อัสสลามุอะลัยกุม ${formalPatientName} ${pronoun} ${scriptStaffName} จากโรงพยาบาลเวชธานี${polite} ทางเราทราบว่าคุณมีเรื่องกังวลด้านสุขภาพเกี่ยวกับ ${scriptTopic} เป็นอย่างไรบ้าง${politeQuestion}? สบายใจขึ้นบ้างไหม${politeQuestion}? ${pronoun}โทรมาด้วยความห่วงใยเพื่อสอบถามอาการและดูว่ามีสิ่งใดที่เราช่วยดูแลให้คุณคลายกังวลได้บ้าง${polite} สะดวกคุยสัก 2-3 นาที${politeQuestion}?”`;
+      p2 = `“ทางทีมแพทย์และพยาบาลเวชธานีเข้าใจดีว่าเรื่อง ${scriptTopic} อาจทำให้คุณและครอบครัวไม่สบายใจ เราได้ส่งข้อมูลเบื้องต้นให้ทาง ${channelDisplay} แล้ว${polite} คุณได้มีโอกาสดูข้อมูลหรือยัง${politeQuestion}? มีข้อกังวลส่วนไหนที่อยากปรึกษาเราเพิ่มเติมไหม${politeQuestion}?”`;
+      p3 = `“ตอนนี้อาการเป็นอย่างไรบ้าง${politeQuestion}? มีจุดไหนที่ยังเจ็บหรือไม่สบายใจมากที่สุดในแต่ละวัน${politeQuestion}? เล่าให้${pronoun}ฟังได้เลยนะ${politeEnd} เราพร้อมรับฟังและช่วยเหลือทุกทาง${polite}”`;
+    } else if (tone === "concise") {
+      p1 = `“สวัสดี${polite} ${formalPatientName} ${pronoun} ${scriptStaffName} จาก รพ.เวชธานี${polite} ขอแจ้งสรุปสั้นๆ เรื่อง ${scriptTopic} ${polite} สะดวกคุย 1 นาที${politeQuestion}?”`;
+      p2 = `“เรื่อง ${scriptTopic} เราส่งรายละเอียดให้ทาง ${channelDisplay} เรียบร้อยแล้ว${polite} ได้เปิดดูข้อมูลแล้วหรือยัง${politeQuestion}?”`;
+      p3 = `“ขอสอบถามสั้นๆ ครับ: มีจุดไหนที่ต้องการให้แพทย์ยืนยันด่วนก่อนเดินทางไหม${politeQuestion}?”`;
+    } else {
+      p1 = `“อัสสลามุอะลัยกุม ${formalPatientName} ${pronoun} ${scriptStaffName} จากโรงพยาบาลเวชธานี${polite} ที่เราเคยคุยกันทาง ${channelDisplay} ก่อนหน้านี้ คุณสบายดี${politeQuestion}? ตอนนี้สะดวกคุยสัก 2–3 นาที${politeQuestion}? ${pronoun}โทรมาเพื่อดูว่ามีอะไรที่เราช่วยเตรียมเพิ่มเติมให้คุณได้ ก่อนวางแผนมาพบแพทย์${polite}”`;
+      p2 = `“ครั้งก่อน ${displayPatientName} แจ้งว่าอยากทราบเรื่อง ${scriptTopic} เราได้ส่งข้อมูลให้ทาง ${channelDisplay} แล้ว${polite} คุณได้ดูข้อมูลหรือยัง${politeQuestion}? มีส่วนไหนที่อยากให้เราอธิบายเพิ่มเติม${politeQuestion}?”`;
+      p3 = `“ตอนนี้เรื่องไหนที่ยังทำให้คุณไม่สบายใจ หรือยังต้องจัดเตรียมก่อนเดินทางมารักษา${politeQuestion}?”
 (คำแนะนำสำหรับเจ้าหน้าที่: ถามทีละคำถาม เว้นจังหวะให้ตอบ แล้วทวนความเข้าใจ)`;
+    }
 
     p4 = `<p>• <strong>ศูนย์ความเป็นเลิศทางการแพทย์:</strong> ทีมแพทย์เฉพาะทางระดับสากล และหัตถการมาตรฐาน JCI</p>
           <p>• <strong>ความพร้อมด้านวัฒนธรรม:</strong> อาหารฮาลาลที่ได้รับการรับรอง 100%, ห้องละหมาด (Musalla) พร้อมที่อาบน้ำละหมาด</p>
@@ -2660,7 +2686,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function refreshCallScript() {
     const data = getCallFormData();
-    const result = generateVejthaniCallScript(data, currentCallLang, currentCallOutcome, currentStaffGender, currentSummaryLang);
+    const result = generateVejthaniCallScript(data, currentCallLang, currentCallOutcome, currentStaffGender, currentSummaryLang, currentScriptTone);
 
     // RTL and typography styling for tele-prompter cards (both Call Journey & Doc Teleprompter)
     const isArScript = (currentCallLang === "ar");
@@ -3021,6 +3047,123 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentScriptTone = "formal";
   let currentOriginalDocText = "";
   let currentStagedFilesRef = [];
+
+  // ============================================================
+  // DYNAMIC SCRIPT TONE TRANSFORMER (FORMAL / EMPATHY / CONCISE)
+  // ============================================================
+  function applyToneToScriptCards(cards, tone = "formal", patientName = "", diagnosis = "", missingDocs = []) {
+    if (!cards || !Array.isArray(cards) || cards.length < 6) return cards;
+
+    // Cache original formal cards on each card if not already preserved
+    cards.forEach((c) => {
+      if (!c._originalFormal) {
+        c._originalFormal = {
+          thai: c.thai || "",
+          english: c.english || "",
+          arabic: c.arabic || "",
+          arabicPhonetic: c.arabicPhonetic || ""
+        };
+      }
+    });
+
+    const pName = (patientName && patientName.trim()) ? patientName.trim() : "ผู้ป่วย";
+    const diag = (diagnosis && diagnosis.trim() && diagnosis !== "-") ? diagnosis.trim() : "การตรวจรักษาเฉพาะทาง";
+    const missingListTh = (missingDocs && missingDocs.length > 0) ? missingDocs.join(", ") : "เอกสารและผลตรวจสำคัญ";
+    const missingListEn = (missingDocs && missingDocs.length > 0) ? missingDocs.join(", ") : "pending medical records";
+
+    if (tone === "formal") {
+      return cards.map(c => {
+        const orig = c._originalFormal || c;
+        return {
+          step: c.step,
+          thai: orig.thai,
+          english: orig.english,
+          arabic: orig.arabic,
+          arabicPhonetic: orig.arabicPhonetic,
+          _originalFormal: orig
+        };
+      });
+    }
+
+    const newCards = cards.map(c => ({ ...c }));
+
+    if (tone === "empathy") {
+      // Step 1: Warm greeting & comfort
+      newCards[0].thai = `สวัสดีครับ ขอสายคุณ${pName} นะครับ ผมชื่อศรวิทย์ พยาบาลประสานงานผู้ป่วยสากล รพ.เวชธานี ครับ ทราบว่าคุณ${pName} มีอาการปวดและไม่สบายตัวช่วงนี้ เป็นอย่างไรบ้างครับ? ทางเราห่วงใยและพร้อมช่วยดูแลทุกขั้นตอนเพื่อให้คลายความกังวลนะครับ สะดวกคุยสักครู่ไหมครับ?`;
+      newCards[0].english = `Good day, ${pName}. My name is Sorawit, International Patient Liaison Coordinator from Vejthani Hospital. We understand this condition has been causing you discomfort and concern. How are you feeling today? Please be assured our team is here to support you with utmost care every step of the way. Do you have a moment to speak?`;
+      newCards[0].arabic = `السلام عليكم ورحمة الله وبركاته، مرحباً بكم السيد/السيدة ${pName}. معكم صوراويت من مستشفى فيجثاني في بانكوك. ندرك تماماً مدى الألم والصعوبة التي تعانون منها، ونود الاطمئنان عليكم أولاً: كيف حال صحتكم اليوم؟ نحن هنا لنقف إلى جانبكم ونخفف عنكم بكل عناية واهتمام. هل يناسبكم الحديث لدقائق معدودة؟`;
+      newCards[0].arabicPhonetic = `As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban ${pName}. Ma'akum Sorawit min Mustashfa Vejthani fi Bangkok. Nudriku tamaman mada al-alam was-su'ubah allati tu'anoona minha, wa nawaddu al-itmi'nan 'alaykum awwalan: kayfa hal sihhatikum al-yawm? Nahnu huna linaqifa ila janibikum wa nukhaffifa 'ankum bi-kulli 'inayah wa ihtimam. Hal yunasibukum al-hadith li-daqa'iq ma'doodah?`;
+
+      // Step 2: Empathetic review acknowledgment
+      newCards[1].thai = `อาจารย์แพทย์ผู้เชี่ยวชาญได้ตรวจดูประวัติและผลตรวจของ ${diag} อย่างละเอียดด้วยความใส่ใจครับ แพทย์เข้าใจดีว่าอาการนี้รบกวนการใช้ชีวิตประจำวันของคุณ${pName} มากเพียงใด และพร้อมช่วยหาแนวทางรักษาที่ตรงจุดและปลอดภัยที่สุดครับ`;
+      newCards[1].english = `Our senior specialists have reviewed your medical history and test records regarding ${diag} with profound care. Our doctors truly appreciate how much this condition has been impacting your daily comfort and quality of life.`;
+      newCards[1].arabic = `لقد راجع كبار أطبائنا الاستشاريين ملفكم الطبي وفحوصات ${diag} بكل عناية واهتمام، وهم يتفهمون تماماً كيف تؤثر هذه الحالة على راحتكم وأنشطتكم اليومية ومستعدون لتقديم أفضل الحلول العلاجية الآمنة.`;
+      newCards[1].arabicPhonetic = `Laqad raja'a kibar atibba'ina al-istishariyyin milaffakum at-tibbi bi-kulli 'inayah wa ihtimam, wa hum yatafahhamoona tamaman kayfa tu'ath-thiru hadhihi al-halah 'ala rahatikum wa anshitatikum al-yawmiyyah.`;
+
+      // Step 3: Gentle symptom check
+      newCards[2].thai = `ตอนนี้จุดที่มีอาการยังทรมานอยู่มากไหมครับ? เวลานอนหลับหรือทำกิจกรรมทำได้สะดวกขึ้นบ้างไหมครับ? หากมีตรงไหนที่รู้สึกกังวลใจเป็นพิเศษ สามารถเล่าให้พยาบาลฟังได้ทุกเรื่องเลยนะครับ`;
+      newCards[2].english = `Is the discomfort still severe at the moment? Are you able to sleep and move around comfortably? Please feel free to share any worries or fears you have—we are listening closely and want to help you.`;
+      newCards[2].arabic = `هل ما زلتم تعانون من آلام شديدة في الوقت الراهن؟ وهل تتمكنون من النوم والحركة بارتياح؟ نرجو ألا تترددوا بمشاركتنا أية مخاوف تشغل بالكم، فنحن هنا للاستماع إليكم ودعمكم بكل إخلاص.`;
+      newCards[2].arabicPhonetic = `Hal ma ziltum tu'anoona min alam shadeed fi al-waqt ar-rahin? Wa hal tatamakkanoona min an-nawm wal-harakah bi-irtiyah? Narju alla tataraddadoo bi-musharakatina ayyata makhawif tashghalu balakum, fa-nahnu huna lil-istima' ilaykum wa da'mikum.`;
+
+      // Step 4: Reassuring hospital support
+      newCards[3].thai = `ไม่ต้องกังวลเรื่องการเดินทางมารักษาที่ต่างประเทศเลยนะครับ ที่เวชธานีมีทีมพยาบาลและล่ามภาษาอาหรับคอยดูแลเคียงข้างอย่างใกล้ชิดเหมือนครอบครัว มีอาหารฮาลาลและห้องละหมาด เพื่อให้คุณ${pName} รู้สึกอบอุ่น ปลอดภัย และสบายใจที่สุดครับ`;
+      newCards[3].english = `Please do not worry about traveling abroad for medical care. At Vejthani Hospital, our compassionate Arabic coordinators and nursing teams will be by your side like family, with certified Halal dining and peaceful prayer rooms so you feel truly supported and at home.`;
+      newCards[3].arabic = `نرجو ألا تقلقوا إطلاقاً بشأن السفر للعلاج بالخارج؛ ففي مستشفى فيجثاني سيكون فريقنا التمريضي ومترجمونا العرب إلى جانبكم كعائلتكم تماماً، مع توفير كافة سبل الراحة والوجبات الحلال ومصلى مهيأ لتشعروا بالطمأنينة والأمان التام.`;
+      newCards[3].arabicPhonetic = `Narju alla taqlaqoo itlaqan bisha'n as-safar lil-'ilaj bil-kharij; fa-fi Mustashfa Vejthani sa-yakoonu fareequna at-tamreedhi wa mutarjimoona al-'Arab ila janibikum ka-'a'ilatikum tamaman, ma'a taweer kaffat subul ar-rahah wal-wajabat al-Halal wa musalla muhayya'.`;
+
+      // Step 5: Caring document request
+      newCards[4].thai = `ทางเราอยากช่วยให้คุณ${pName} ได้รับการรักษาที่ปลอดภัยและตรงจุดเร็วที่สุดครับ หากสะดวก รบกวนส่ง${missingListTh} ทาง WhatsApp นี้ได้เลยนะครับ หากติดขัดตรงไหนบอกผมได้ทันทีครับ`;
+      newCards[4].english = `We want to ensure you receive the safest and most effective care without delay. Whenever you are ready, please send your pending reports (${missingListEn}) through this WhatsApp chat, and please let us know if you need any assistance.`;
+      newCards[4].arabic = `حرصاً منا على تلقيكم العلاج الأنسب والآمن في أسرع وقت، نرجو منكم التكرم بإرسال أية تقارير أو فحوصات متبقية عبر الواتساب متى ما تيسر لكم ذلك، وأبلغونا فوراً إن احتجتم لأي مساعدة في توفيرها.`;
+      newCards[4].arabicPhonetic = `Hirsun minna 'ala talaqqeekum al-'ilaj al-ansab wal-amin fi asra' waqt, narju minkum at-takarrum bi-irsal ayyat taqareer aw fuhusat mutabaqqiyah 'abra al-WhatsApp mata ma tayassara lakum dhalik.`;
+
+      // Step 6: Heartfelt closing & care
+      newCards[5].thai = `ผมจะส่งสรุปข้อมูลทั้งหมดและขั้นตอนอำนวยความสะดวกเรื่องวีซ่าให้ทาง WhatsApp นะครับ ขอให้คุณ${pName} พักผ่อนมากๆ และมีสุขภาพที่แข็งแรงขึ้นในเร็ววัน ทางเราพร้อมดูแลเสมอครับ`;
+      newCards[5].english = `I will send a clear summary and complete medical visa support to your WhatsApp. Please take good care of yourself and rest well. We are always here for you whenever you need us.`;
+      newCards[5].arabic = `سأرسل لكم ملخصاً وافياً وإرشادات التأشيرة الميسرة عبر الواتساب. نتمنى لكم دوام الصحة والعافية والشفاء العاجل، وتأكدوا أننا في خدمتكم ورعايتكم دائماً.`;
+      newCards[5].arabicPhonetic = `Sa-ursilu lakum al-an mulakh-khasan wafiyan wa irshadat at-ta'shirah al-muyassarah 'abra al-WhatsApp. Natamanna lakum dawam as-sihhah wal-'afiyah wash-shifa' al-'ajil, wa ta'akkadoo annana fi khidmatikum wa ri'ayatikum da'iman.`;
+
+    } else if (tone === "concise") {
+      // Step 1: Direct 1-minute intro
+      newCards[0].thai = `สวัสดีครับคุณ${pName} ผมศรวิทย์ จาก รพ.เวชธานี ครับ ขออนุญาตโทรแจ้งสรุปสถานะเวชระเบียนแบบกระชับ 1 นาทีครับ สะดวกคุยไหมครับ?`;
+      newCards[0].english = `Hello ${pName}, this is Sorawit from Vejthani Hospital with a quick 1-minute update regarding your medical records review. Do you have a brief moment?`;
+      newCards[0].arabic = `مرحباً بالسيد/السيدة ${pName}، معكم صوراويت من مستشفى فيجثاني في مكالمة سريعة لمدة دقيقة واحدة لإحاطتكم بآخر مستجدات ملفكم الطبي. هل وقتكم متاح الآن؟`;
+      newCards[0].arabicPhonetic = `Marhaban ${pName}, ma'akum Sorawit min Mustashfa Vejthani fi mukalamah saree'ah li-muddah daqeeqah wahidah li-ihatatikum bi-akhir mustajaddat milaffikum at-tibbi. Hal waqtukum mutah al-an?`;
+
+      // Step 2: Direct baseline review
+      newCards[1].thai = `แพทย์เฉพาะทางตรวจดูเอกสารประวัติของ ${diag} ที่ส่งมาเบื้องต้นแล้วครับ มีข้อมูลภาพรวมของโรคแล้ว`;
+      newCards[1].english = `Our specialist has reviewed your submitted records regarding ${diag} and established your primary clinical baseline.`;
+      newCards[1].arabic = `اطلع أطباؤنا الاستشاريون على المستندات المرسلة بخصوص ${diag} وتم إعداد التقييم المبدئي للحالة.`;
+      newCards[1].arabicPhonetic = `Ittala'a atibba'una al-istishariyyun 'ala al-mustanadat al-mursalah wa tamma i'dad at-taqyeem al-mabda'i lil-halah.`;
+
+      // Step 3: Quick rating check
+      newCards[2].thai = `ขอเช็กอาการปัจจุบันสั้นๆ ครับ: ตอนนี้ปวดระดับไหน (1-10) และยังเดินหรือใช้ชีวิตได้ตามปกติไหมครับ?`;
+      newCards[2].english = `Quick symptom check: on a scale of 1 to 10, how severe is your pain today, and does it restrict your mobility?`;
+      newCards[2].arabic = `تقييم سريع وموجز للأعراض: على مقياس من 1 إلى 10، ما مدى شدة الألم لديكم اليوم وهل يعيق حركتكم المعتادة؟`;
+      newCards[2].arabicPhonetic = `Taqyeem saree' wa moojaz lil-a'rad: 'ala miqyas min 1 ila 10, ma mada shiddat al-alam ladaykum al-yawm wa hal yu'eequ harakatakum?`;
+
+      // Step 4: Rapid highlights
+      newCards[3].thai = `รพ.เวชธานี ได้มาตรฐานสากล JCI มีทีมแพทย์เฉพาะทาง ล่ามภาษาอาหรับ และบริการรับส่งสนามบินพร้อมครับ`;
+      newCards[3].english = `Vejthani Hospital provides JCI-accredited specialists, dedicated Arabic medical interpreters, and complete airport transfer logistics.`;
+      newCards[3].arabic = `مستشفى فيجثاني معتمد دولياً (JCI)، ويوفر نخبة من الاستشاريين ومترجمين عرب معتمدين وتنسيقاً شاملاً للاستقبال من المطار.`;
+      newCards[3].arabicPhonetic = `Mustashfa Vejthani mu'tamad duwaliyyan (JCI), wa yuwaffiru nukhbah min al-istishariyyin wa mutarjimeen 'Arab mu'tamadeen wa tanseeqan shamilan lil-istiqbal.`;
+
+      // Step 5: Urgent missing docs
+      newCards[4].thai = `ขอเอกสารเพิ่มเติมด่วนครับ: รบกวนส่ง ${missingListTh} ทาง WhatsApp นี้ทันที เพื่อให้อาจารย์แพทย์สรุปแผนรักษาและค่าใช้จ่ายได้เร็วที่สุดครับ`;
+      newCards[4].english = `Urgent document request: please send your latest records (${missingListEn}) via this WhatsApp right away so doctors can finalize your plan.`;
+      newCards[4].arabic = `طلب عاجل للمستندات: يرجى التكرم بإرسال الفحوصات والتقارير المتبقية عبر الواتساب فوراً لتمكين الأطباء من اعتماد خطتكم بأسرع وقت.`;
+      newCards[4].arabicPhonetic = `Talab 'ajil lil-mustanadat: yarju at-takarrum bi-irsal al-fuhusat wal-taqareer al-mutabaqqiyah 'abra al-WhatsApp fawran li-tamkeen al-atibba' min i'timad khittatikum.`;
+
+      // Step 6: Fast 24h closing
+      newCards[5].thai = `ผมส่งสรุปและแนวทางขอวีซ่าเข้า WhatsApp ทันทีครับ ได้ผลตรวจครบแพทย์จะสรุปแผนและค่าใช้จ่ายใน 24 ชม. ครับ ขอบคุณครับ`;
+      newCards[5].english = `Sending summary and visa guide to your WhatsApp now. Once remaining tests are sent, full plan and cost estimate will be ready in 24 hours. Thank you.`;
+      newCards[5].arabic = `أرسل لكم الآن الملخص وتفاصيل التأشيرة عبر الواتساب. فور استلام الملفات الناقصة، ستجهز الخطة والتكلفة خلال 24 ساعة. شكراً لوقتكم.`;
+      newCards[5].arabicPhonetic = `Ursilu lakum al-an al-mulakh-khas wa tafaseel at-ta'shirah 'abra al-WhatsApp. Fawra istilam al-milaffat an-naqisah, sa-tajhazu al-khittah wat-taklufah khilal 24 sa'ah. Shukran li-waqtikum.`;
+    }
+
+    return newCards;
+  }
 
   // ============================================================
   // DIRECT CLIENT-SIDE GEMINI 2.5 FLASH API INFERENCE
@@ -3652,7 +3795,7 @@ ${docText.slice(0, 16000)}`;
         documentsReceived: documentsReceived,
         documentsMissing: missingDocs
       },
-      scriptCards: scriptCards
+      scriptCards: (tone && tone !== "formal") ? applyToneToScriptCards(scriptCards, tone, patientName, diagnosis, missingDocs) : scriptCards
     };
   }
 
@@ -4234,13 +4377,31 @@ ${docText.slice(0, 16000)}`;
           }
         });
 
+        const activePatientName = (callPatientName && callPatientName.value.trim()) || 
+                                  (document.getElementById("dossierPatientName")?.value.trim()) || 
+                                  (currentCaseDossier && currentCaseDossier.patientName) || "";
+        const activeTopic = (callTopic && callTopic.value.trim()) || 
+                            ((document.getElementById("dossierDiagnosis")?.textContent.trim() !== "-") ? document.getElementById("dossierDiagnosis")?.textContent.trim() : "") || 
+                            (currentCaseDossier && currentCaseDossier.diagnosis) || "";
+        const activeMissing = currentCaseDossier ? currentCaseDossier.documentsMissing : [];
+
         // If we have document content, re-synthesize script with new tone
         if (currentOriginalDocText || (currentStagedFilesRef && currentStagedFilesRef.length > 0)) {
           const reResult = extractClinicalDossierAndScripts(currentOriginalDocText, currentStagedFilesRef, currentScriptTone);
           if (reResult && reResult.scriptCards) {
-            currentCustomScriptCards = reResult.scriptCards;
-            refreshCallScript();
+            currentCustomScriptCards = applyToneToScriptCards(reResult.scriptCards, currentScriptTone, activePatientName, activeTopic, activeMissing);
           }
+        } else if (currentCustomScriptCards && currentCustomScriptCards.length >= 6) {
+          currentCustomScriptCards = applyToneToScriptCards(currentCustomScriptCards, currentScriptTone, activePatientName, activeTopic, activeMissing);
+        }
+
+        refreshCallScript();
+
+        // Visual feedback to user
+        const statusEl = document.getElementById("medicalDocStatus");
+        if (statusEl) {
+          const toneNameTh = tone === "empathy" ? "ห่วงใย (Empathy)" : (tone === "concise" ? "กระชับ (Concise)" : "ทางการ (Formal)");
+          statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-blue-500"></span><span class="text-blue-700 font-bold">ปรับเปลี่ยนน้ำเสียงบทพูดเป็น: ${toneNameTh} เรียบร้อยแล้ว (อัปเดตบทพูด 3 ภาษาทันที)</span>`;
         }
       });
     });
