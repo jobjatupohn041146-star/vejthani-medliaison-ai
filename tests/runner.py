@@ -52,13 +52,13 @@ def run_medliaison_suite(target_tier: int = 0, target_milestone: str = "all", st
     tiers_to_run = [target_tier] if target_tier in TIER_CLASSES else [1, 2, 3, 4]
 
     print("\n" + "=" * 80)
-    print("🏥 Vejthani MedLiaison AI - E2E Automated Test Suite")
+    print("[SYSTEM] Vejthani MedLiaison AI - E2E Automated Test Suite")
     print("   Enterprise Standards: JCI Medical Diplomatic | GCC Royal Diplomatic | Vejthani SOP")
     print("=" * 80)
 
     for tier_num in tiers_to_run:
         tier_title, test_class = TIER_CLASSES[tier_num]
-        print(f"\n📂 Executing {tier_title} ...")
+        print(f"\n[RUN] Executing {tier_title} ...")
 
         # Extract test methods
         loader = unittest.TestLoader()
@@ -120,7 +120,7 @@ def run_medliaison_suite(target_tier: int = 0, target_milestone: str = "all", st
             )
 
             # Interactive console output
-            icon = "✅" if status == "PASS" else ("⏳" if test_milestone != "baseline" else "❌")
+            icon = "[PASS]" if status == "PASS" else ("[WAIT]" if test_milestone != "baseline" else "[FAIL]")
             if verbose or status != "PASS":
                 print(f"  {icon} [{display_status:<14}] {test_method_name}: {doc.splitlines()[0]}")
                 if msg and verbose:
@@ -137,22 +137,22 @@ def run_medliaison_suite(target_tier: int = 0, target_milestone: str = "all", st
     pending_m3 = sum(1 for r in collector.results if r["status"] != "PASS" and r["milestone"] == "M3")
 
     print("\n" + "=" * 80)
-    print("📊 Test Execution Summary & Milestone Readiness")
+    print("[SUMMARY] Test Execution Summary & Milestone Readiness")
     print("=" * 80)
     print(f"Total Test Cases Executed : {total_tests}")
     print(f"Execution Duration        : {total_time:.3f} seconds")
     print(f"Currently Passing         : {passed_tests} / {total_tests} ({(passed_tests/total_tests)*100:.1f}%)")
     print("-" * 80)
     print("Milestone Breakdown:")
-    print(f"  🟢 Baseline (Existing Codebase)  : {passed_tests} passing (Regressions: {failed_baseline})")
-    print(f"  ⏳ Milestone 1 (M1 UI Glass)     : {pending_m1} tests pending M1 completion")
-    print(f"  ⏳ Milestone 2 (M2 Localization) : {pending_m2} tests pending M2 completion")
-    print(f"  ⏳ Milestone 3 (M3 Call & Specs) : {pending_m3} tests pending M3 completion")
+    print(f"  [BASE] Baseline (Existing Codebase)  : {passed_tests} passing (Regressions: {failed_baseline})")
+    print(f"  [WAIT] Milestone 1 (M1 UI Glass)     : {pending_m1} tests pending M1 completion")
+    print(f"  [WAIT] Milestone 2 (M2 Localization) : {pending_m2} tests pending M2 completion")
+    print(f"  [WAIT] Milestone 3 (M3 Call & Specs) : {pending_m3} tests pending M3 completion")
     print("=" * 80)
 
     # Detailed pending items
     if pending_m1 + pending_m2 + pending_m3 > 0:
-        print("\n📋 Next Implementation Milestone Activations:")
+        print("\n[INFO] Next Implementation Milestone Activations:")
         if pending_m1 > 0:
             print(f"  [M1 Scope] {pending_m1} tests waiting for Obsidian theme (#0b0d11), ambient glow, and 5-view dock.")
         if pending_m2 > 0:
@@ -164,15 +164,15 @@ def run_medliaison_suite(target_tier: int = 0, target_milestone: str = "all", st
 
     if strict:
         if passed_tests < total_tests:
-            print("❌ Strict Mode: Test suite requires 100% pass across all milestones.")
+            print("[FAIL] Strict Mode: Test suite requires 100% pass across all milestones.")
             return 1
         return 0
 
     if failed_baseline > 0:
-        print("❌ Regression Detected in Baseline functionality!")
+        print("[FAIL] Regression Detected in Baseline functionality!")
         return 1
 
-    print("✅ Test suite executed cleanly! All baseline features passing, milestone gates active.")
+    print("[SUCCESS] Test suite executed cleanly! All baseline features passing, milestone gates active.")
     return 0
 
 

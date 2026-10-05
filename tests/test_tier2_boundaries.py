@@ -142,8 +142,8 @@ class TestTier2BoundariesAndCornerCases(unittest.TestCase):
     # -------------------------------------------------------------------------
     @milestone("baseline")
     def test_t2_12_whatsapp_url_encoding_rfc3986(self):
-        """T2.12: WhatsApp URL encoding properly encodes Arabic characters, emoji, and newlines."""
-        arabic_text = "السلام عليكم ورحمة الله وبركاته 🌿\nالموضوع: فحص طبي"
+        """T2.12: WhatsApp URL encoding properly encodes Arabic characters, special symbols, and newlines."""
+        arabic_text = "السلام عليكم ورحمة الله وبركاته - مستشفى فيجثاني\nالموضوع: فحص طبي"
         encoded = urllib.parse.quote(arabic_text, safe="")
         # Must not contain unescaped spaces or newlines
         self.assertNotIn(" ", encoded)
