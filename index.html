@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>โรงพยาบาลเวชธานี Vejthani Hospital — International Patient Liaison Portal</title>
+  <title>ระบบเวชธานี ฉบับแก้ไข — Vejthani Hospital MedLiaison AI</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -213,7 +213,7 @@
         </div>
         <div>
           <div class="flex items-center space-x-2">
-            <h1 class="text-base sm:text-lg font-black text-[#1B365D] tracking-tight">Vejthani MedLiaison AI</h1>
+            <h1 class="text-base sm:text-lg font-black text-[#1B365D] tracking-tight">ระบบเวชธานี ฉบับแก้ไข <span class="text-xs font-bold text-slate-500 hidden sm:inline">(Vejthani MedLiaison AI)</span></h1>
             <span class="px-2 py-0.5 text-[10px] font-extrabold bg-[#EC7825] text-white rounded-full shadow-xs">King of Bones</span>
             <span class="px-2 py-0.5 text-[10px] font-extrabold bg-[#1B365D] text-white rounded-full">โรงพยาบาลเวชธานี</span>
             <span class="hidden md:inline-flex px-2 py-0.5 text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 rounded-full">JCI Gold Seal</span>
@@ -1106,6 +1106,37 @@
                 <div>
                   <label class="text-[9px] text-slate-500 font-semibold block mb-0.5">เลข HN / Passport ID:</label>
                   <input type="text" id="dossierPatientHN" placeholder="เช่น VN-982144" class="w-full text-xs font-mono font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 outline-none focus:bg-white focus:border-[#1B365D] transition">
+                </div>
+              </div>
+            </div>
+
+            <!-- ข้อมูลโปรไฟล์เจ้าหน้าที่ประสานงาน (Liaison Profile) ย้ายมาที่หน้าศูนย์รับไฟล์เวชระเบียนและสร้างสคริปต์เฉพาะบุคคล -->
+            <div id="docLiaisonProfileCard" class="bg-blue-50/70 p-3 rounded-xl border border-blue-200/90 space-y-2 text-xs shadow-2xs">
+              <div class="flex items-center justify-between border-b border-blue-200/60 pb-1.5">
+                <span class="font-bold text-[#1B365D] flex items-center gap-1.5 text-[11px]">
+                  <i data-lucide="user-check" class="w-3.5 h-3.5 text-[#1B365D]"></i>
+                  ข้อมูลโปรไฟล์เจ้าหน้าที่ประสานงาน (Liaison Profile)
+                </span>
+                <span class="text-[9px] font-mono text-blue-700 font-bold bg-blue-100 px-1.5 py-0.5 rounded">SOP Profile</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-0.5 text-[10px]">ชื่อเจ้าหน้าที่ (Staff Name)</label>
+                  <input type="text" id="docStaffName" value="ศรวิทย์ (Sorawit)" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-[#1B365D] text-xs">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-0.5 text-[10px]">ตำแหน่งงาน (Position)</label>
+                  <input type="text" id="docStaffPosition" value="International Patient Coordinator" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-[#1B365D] text-xs">
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-0.5 text-[10px]">เบอร์ต่อภายใน รพ. (Ext.)</label>
+                  <input type="text" id="docStaffExt" value="Ext. 2222 (King of Bones)" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-[#1B365D] text-xs">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-0.5 text-[10px]">เบอร์ WhatsApp ประจำโต๊ะ</label>
+                  <input type="text" id="docStaffWhatsApp" value="+66 81 234 5678" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono text-xs focus:outline-none focus:border-[#1B365D]">
                 </div>
               </div>
             </div>

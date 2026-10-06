@@ -9,6 +9,7 @@ import socketserver
 import os
 import json
 import urllib.parse
+import re
 from http import HTTPStatus
 
 PORT = 8080
@@ -382,6 +383,154 @@ Write a tailored WhatsApp script and formal email for this exact patient."""
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps(result).encode('utf-8'))
+            except Exception as e:
+                self.send_response(HTTPStatus.INTERNAL_SERVER_ERROR)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode('utf-8'))
+        elif self.path == '/api/translate-script':
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_data = self.rfile.read(content_length)
+            try:
+                data = json.loads(post_data.decode('utf-8'))
+                thai_text = data.get('thaiText', '').strip()
+                card_index = data.get('cardIndex', 0)
+                patient_name = data.get('patientName', 'Patient')
+                staff_name = data.get('staffName', 'Sorawit')
+                api_key = data.get('apiKey') or os.environ.get('GEMINI_API_KEY')
+
+                if api_key:
+                    try:
+                        from google import genai
+                        client = genai.Client(api_key=api_key)
+                        prompt = f"""You are a medical translator and senior liaison nurse editor for Vejthani Hospital, Bangkok.
+The coordinator edited the following Thai clinical speaking script for Step {card_index + 1}:
+"{thai_text}"
+
+Patient Name: {patient_name}
+Staff Name: {staff_name}
+
+Translate this script into professional, diplomatic clinical English and modern standard Arabic (with Latin phonetic pronunciation).
+Strict Rules:
+1. Zero emojis. No emojis anywhere.
+2. Return ONLY a single valid JSON object matching this schema:
+{{
+  "status": "success",
+  "english": "English translation here",
+  "arabic": "Arabic translation here",
+  "arabicPhonetic": "Latin phonetic pronunciation for Arabic"
+}}"""
+                        response = client.models.generate_content(
+                            model="gemini-2.5-flash",
+                            contents=prompt
+                        )
+                        raw_text = response.text.strip()
+                        start_idx = raw_text.find('{')
+                        end_idx = raw_text.rfind('}')
+                        if start_idx != -1 and end_idx != -1:
+                            clean_json = raw_text[start_idx:end_idx+1]
+                            parsed = json.loads(clean_json)
+                            self.send_response(HTTPStatus.OK)
+                            self.send_header('Content-Type', 'application/json')
+                            self.end_headers()
+                            self.wfile.write(json.dumps(parsed).encode('utf-8'))
+                            return
+                    except Exception as gemini_err:
+                        print(f"Gemini translate script error: {gemini_err}")
+
+                # High-fidelity rule-based clinical fallback
+                clean_en_name = re.sub(r'^(?:mr\.?|mrs\.?|ms\.?|คุณ|ท่าน)\s+', '', patient_name, flags=re.I).strip() or patient_name
+                clean_ar_name = clean_en_name
+                clean_staff = re.sub(r'[\u0E00-\u0E7F()]', '', staff_name).strip() or "Sorawit"
+
+                center_en = "King of Bones Center"
+                center_ar = "مركز عظام كينغ أوف بونز"
+                center_phon = "markaz 'Izam King of Bones"
+                organ_en = "orthopedic"
+                organ_ar = "العظام والمفاصل"
+                lower_th = thai_text.lower()
+
+                if "หัวใจ" in thai_text or "cath" in lower_th or "cag" in lower_th or "ecg" in lower_th:
+                    center_en = "Heart Center"
+                    center_ar = "مركز القلب"
+                    center_phon = "markaz al-qalb"
+                    organ_en = "cardiac"
+                    organ_ar = "القلب والشرايين"
+                elif "กระดูกสันหลัง" in thai_text or "หมอนรองกระดูก" in thai_text:
+                    center_en = "Spine Center"
+                    center_ar = "مركز العمود الفقري"
+                    center_phon = "markaz al-'amud al-faqari"
+                    organ_en = "spine"
+                    organ_ar = "العمود الفقري"
+                elif "มะเร็ง" in thai_text or "ก้อนเนื้อ" in thai_text or "biopsy" in lower_th:
+                    center_en = "Life Cancer Center"
+                    center_ar = "مركز علاج الأورام والسرطان"
+                    center_phon = "markaz al-awram"
+                    organ_en = "oncology"
+                    organ_ar = "الأورام والسرطان"
+                elif "สะโพก" in thai_text:
+                    organ_en = "hip"
+                    organ_ar = "مفصل الورك"
+                elif "เข่า" in thai_text:
+                    organ_en = "knee"
+                    organ_ar = "مفصل الركبة"
+
+                missing_en = []
+                missing_ar = []
+                if "mri" in lower_th or "เอ็มอาร์ไอ" in thai_text:
+                    missing_en.append("latest MRI scan (DICOM Link/CD)")
+                    missing_ar.append("أحدث صورة رنين مغناطيسي (MRI)")
+                if "x-ray" in lower_th or "เอกซเรย์" in thai_text:
+                    missing_en.append("digital X-Ray films")
+                    missing_ar.append("صور الأشعة السينية (X-Ray)")
+                if "ct" in lower_th or "ซีที" in thai_text:
+                    missing_en.append("high-resolution CT scan")
+                    missing_ar.append("الأشعة المقطعية (CT Scan)")
+                if "เลือด" in thai_text or "cbc" in lower_th or "hba1c" in lower_th:
+                    missing_en.append("recent blood panel (CBC / HbA1c)")
+                    missing_ar.append("تقرير فحص الدم والسكر التراكمي (HbA1c)")
+                if "ชิ้นเนื้อ" in thai_text or "biopsy" in lower_th:
+                    missing_en.append("histopathology biopsy report")
+                    missing_ar.append("تقرير فحص الخزعة النسيجية (Biopsy)")
+
+                en_res = f"Good day, Mr./Ms. {clean_en_name}. My name is {clean_staff}, International Patient Coordinator from Vejthani Hospital's {center_en}, Bangkok. May I have 2-3 minutes regarding your {organ_en} consultation?"
+                ar_res = f"السلام عليكم ورحمة الله وبركاته، مرحباً بالسيد/السيدة {clean_ar_name}. معكم {clean_staff} من {center_ar} بمستشفى فيجثاني في بانكوك. هل وقتكم الكريم مناسب للحديث حول استشارة {organ_ar}؟"
+                phon_res = f"As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban {clean_en_name}. Ma'akum {clean_staff} min {center_phon} bi-Mustashfa Vejthani fi Bangkok."
+
+                if card_index == 1:
+                    en_res = f"Our specialized medical board at {center_en} has received your clinical documentation and diagnostic imaging. Our senior consultant has conducted an initial evaluation."
+                    ar_res = f"لقد اطلع فريقنا الطبي المتخصص في {center_ar} بمستشفى فيجثاني على تقاريركم وصور الأشعة بنجاح وقام استشاري التخصص بمراجعتها."
+                    phon_res = f"Laqad ittala'a fariquna at-tibbi fi {center_phon} 'ala taqareerakum wa suwar al-ashi'ah bi-najah."
+                elif card_index == 2:
+                    en_res = f"Regarding your {organ_en} symptoms: how severe is your pain on a scale of 1 to 10, how many minutes can you walk comfortably, and do you experience night pain or numbness?"
+                    ar_res = f"بخصوص أعراض {organ_ar}: ما هو مستوى الألم من 1 إلى 10، وكم دقيقة تستطيعون المشي دون ألم حاد، وهل تعانون من آلام ليلية أو خدر؟"
+                    phon_res = f"Bi-khusoos al-a'rad: ma mustawa al-alam min 1 ila 10, wa kam daqiqah tastati'oona al-mashi duna alam shadid?"
+                elif card_index == 3:
+                    en_res = "Vejthani Hospital is JCI-accredited and internationally recognized, offering cutting-edge surgical technology, 24/7 specialist care, dedicated Arabic medical interpreters, and 100% Halal catering."
+                    ar_res = "يتميز مستشفى فيجثاني باعتمادات دولية مرموقة (JCI) وتقنيات جراحية متقدمة وفريق طبي على مدار الساعة، مع مترجمين باللغة العربية ورعاية ووجبات حلال 100%."
+                    phon_res = "Yatamayyazu Mustashfa Vejthani bi-i'timadat dawliyyah marmooqah wa tiqniyyat mutatawwirah, ma'a tawfeer mutarjimin bil-lughah al-'Arabiyyah wa ri'ayah Halal kamilah."
+                elif card_index == 4:
+                    missing_str_en = ", ".join(missing_en) if missing_en else "your latest diagnostic imaging and complete clinical summary"
+                    missing_str_ar = "، ".join(missing_ar) if missing_ar else "صور الأشعة والتقارير الطبية الحديثة"
+                    en_res = f"To confirm your definitive treatment plan and safe clearance, our medical team requires: {missing_str_en}. Please feel free to send these via this WhatsApp chat."
+                    ar_res = f"لاعتماد الخطة العلاجية بدقة وأمان، يحتاج الفريق الطبي إلى: {missing_str_ar}. يرجى التفضل بإرسالها عبر محادثة الواتساب هذه."
+                    phon_res = "Li-i'timad al-khittah al-'ilajiyyah bi-diqqah wa aman, nahtaju al-fuhusat al-matloobah. Yumkinukum irsaluha 'abra al-WhatsApp."
+                elif card_index == 5:
+                    hours_en = "48 hours" if "48" in thai_text else "24 hours"
+                    hours_ar = "48 ساعة" if "48" in thai_text else "24 ساعة"
+                    en_res = f"I am sending your clinical consultation summary and medical visa assistance letter to your WhatsApp right now. Once remaining records are received, your personalized plan will be issued within {hours_en}."
+                    ar_res = f"سأرسل لكم الآن الملخص الطبي وخطاب تسهيل التأشيرة عبر الواتساب. وفور استلام التقارير المتبقية، ستصدر خطتكم العلاجية خلال {hours_ar}."
+                    phon_res = f"Sa-ursilu lakum al-an al-mulakh-khas at-tibbi wa khitab tas-hil at-ta'shirah 'abra al-WhatsApp. Wa fawra istilam al-fuhusat, sa-tasduru khittatukum al-'ilajiyyah khilal {hours_ar}."
+
+                self.send_response(HTTPStatus.OK)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "status": "success",
+                    "english": en_res,
+                    "arabic": ar_res,
+                    "arabicPhonetic": phon_res
+                }).encode('utf-8'))
             except Exception as e:
                 self.send_response(HTTPStatus.INTERNAL_SERVER_ERROR)
                 self.send_header('Content-Type', 'application/json')

@@ -2392,7 +2392,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (el) {
           const val = el.innerText || el.textContent;
           if (val && val.trim().length > 0) {
-            if (currentCallLang === "th") currentCustomScriptCards[idx].thai = val;
+            if (currentCallLang === "th") {
+              currentCustomScriptCards[idx].thai = val;
+              translateThaiCardToEnAndAr(idx, val);
+            }
             else if (currentCallLang === "ar") currentCustomScriptCards[idx].arabic = val;
             else currentCustomScriptCards[idx].english = val;
           }
@@ -2548,6 +2551,87 @@ document.addEventListener("DOMContentLoaded", () => {
   const callPatientHN = document.getElementById("callPatientHN");
   const callPatientPhone = document.getElementById("callPatientPhone");
 
+  // Liaison Profile (SOP Profile) elements on Medical Document AI Teleprompter view
+  const docStaffName = document.getElementById("docStaffName");
+  const docStaffPosition = document.getElementById("docStaffPosition");
+  const docStaffExt = document.getElementById("docStaffExt");
+  const docStaffWhatsApp = document.getElementById("docStaffWhatsApp");
+
+  function syncStaffProfile(fromSource) {
+    const isDoc = (fromSource === "doc");
+    const nameVal = isDoc ? (docStaffName?.value ?? "") : (callStaffName?.value ?? "");
+    const posVal = isDoc ? (docStaffPosition?.value ?? "") : (callStaffPosition?.value ?? "");
+    const extVal = isDoc ? (docStaffExt?.value ?? "") : (callStaffExt?.value ?? "");
+    const waVal = isDoc ? (docStaffWhatsApp?.value ?? "") : (callStaffWhatsApp?.value ?? "");
+
+    if (isDoc) {
+      if (callStaffName && callStaffName.value !== nameVal) callStaffName.value = nameVal;
+      if (callStaffPosition && callStaffPosition.value !== posVal) callStaffPosition.value = posVal;
+      if (callStaffExt && callStaffExt.value !== extVal) callStaffExt.value = extVal;
+      if (callStaffWhatsApp && callStaffWhatsApp.value !== waVal) callStaffWhatsApp.value = waVal;
+    } else {
+      if (docStaffName && docStaffName.value !== nameVal) docStaffName.value = nameVal;
+      if (docStaffPosition && docStaffPosition.value !== posVal) docStaffPosition.value = posVal;
+      if (docStaffExt && docStaffExt.value !== extVal) docStaffExt.value = extVal;
+      if (docStaffWhatsApp && docStaffWhatsApp.value !== waVal) docStaffWhatsApp.value = waVal;
+    }
+
+    try {
+      localStorage.setItem("vejthani_staff_profile", JSON.stringify({
+        name: nameVal,
+        position: posVal,
+        ext: extVal,
+        whatsapp: waVal
+      }));
+    } catch (e) {}
+  }
+
+  [
+    { src: "call", el: callStaffName },
+    { src: "call", el: callStaffPosition },
+    { src: "call", el: callStaffExt },
+    { src: "call", el: callStaffWhatsApp },
+    { src: "doc", el: docStaffName },
+    { src: "doc", el: docStaffPosition },
+    { src: "doc", el: docStaffExt },
+    { src: "doc", el: docStaffWhatsApp }
+  ].forEach(item => {
+    if (item.el) {
+      item.el.addEventListener("input", () => {
+        syncStaffProfile(item.src);
+        refreshCallScript();
+      });
+      item.el.addEventListener("change", () => {
+        syncStaffProfile(item.src);
+        refreshCallScript();
+      });
+    }
+  });
+
+  // Restore saved staff profile on startup
+  try {
+    const savedStaffStr = localStorage.getItem("vejthani_staff_profile");
+    if (savedStaffStr) {
+      const sp = JSON.parse(savedStaffStr);
+      if (sp.name) {
+        if (callStaffName) callStaffName.value = sp.name;
+        if (docStaffName) docStaffName.value = sp.name;
+      }
+      if (sp.position) {
+        if (callStaffPosition) callStaffPosition.value = sp.position;
+        if (docStaffPosition) docStaffPosition.value = sp.position;
+      }
+      if (sp.ext) {
+        if (callStaffExt) callStaffExt.value = sp.ext;
+        if (docStaffExt) docStaffExt.value = sp.ext;
+      }
+      if (sp.whatsapp) {
+        if (callStaffWhatsApp) callStaffWhatsApp.value = sp.whatsapp;
+        if (docStaffWhatsApp) docStaffWhatsApp.value = sp.whatsapp;
+      }
+    }
+  } catch (e) {}
+
   function applyDynamicPatientDataToCardText(rawText, lang, patientName, patientHN, topic, gender) {
     if (!rawText) return "";
     let text = rawText;
@@ -2560,11 +2644,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const cleanAr = cleanName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || cleanTh;
 
       if (lang === "th") {
-        text = text.replace(/(?:ขอสายคุณ|เรียนคุณ|คุณ)\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, (match) => {
-          return match.startsWith("ขอสายคุณ") ? `ขอสายคุณ${cleanTh}` : (match.startsWith("เรียนคุณ") ? `เรียนคุณ${cleanTh}` : `คุณ${cleanTh}`);
-        });
+        if (cleanTh && cleanTh.length > 1 && !/^(mr\.?|mrs\.?|ms\.?|คุณ|ท่าน)$/i.test(cleanTh)) {
+          text = text.replace(/ขอสายคุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `ขอสายคุณ${cleanTh}`);
+          text = text.replace(/เรียนคุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `เรียนคุณ${cleanTh}`);
+          text = text.replace(/ทราบว่าคุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `ทราบว่าคุณ${cleanTh}`);
+          text = text.replace(/ประจำวันของคุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `ประจำวันของคุณ${cleanTh}`);
+          text = text.replace(/ให้คุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `ให้คุณ${cleanTh}`);
+        }
       } else if (lang === "en") {
-        text = text.replace(/(Good day,\s*)([A-Za-z\s\.\-']+?)(?=\.|\?|,|$)/i, `$1Mr. ${cleanEn}`);
+        text = text.replace(/(Good day,\s*)(?:Mr\.|Mrs\.|Ms\.)?\s*([A-Za-z\s\.\-']+?)(?=\.|\?|,|$)/i, `$1Mr. ${cleanEn}`);
         text = text.replace(/\b(Mr\.|Mrs\.|Ms\.)\s+[A-Za-z\s\.\-']+/g, `Mr. ${cleanEn}`);
       } else if (lang === "ar") {
         text = text.replace(/(مرحباً بالسيد\/السيدة\s+)([^\.،?!]+)/g, `$1${cleanAr}`);
@@ -2593,9 +2681,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function syncPatientNameAcrossCards(newName) {
     if (!newName || typeof newName !== "string" || !newName.trim()) return;
     const cleanName = newName.trim();
+    if (cleanName.length < 2) return;
+    if (/^(mr\.?|mrs\.?|ms\.?|คุณ|ท่าน)$/i.test(cleanName)) return;
+
     const cleanTh = cleanName.replace(/^(คุณ|ท่าน)\s*/, "").trim();
-    const cleanEn = cleanName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || cleanTh;
-    const cleanAr = cleanName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || cleanTh;
+    let cleanEn = cleanName.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim();
+    if (!cleanEn) cleanEn = cleanTh;
+    let cleanAr = cleanEn;
 
     if (currentCaseDossier) {
       currentCaseDossier.patientName = cleanName;
@@ -2610,13 +2702,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (currentCustomScriptCards && currentCustomScriptCards.length >= 6) {
       currentCustomScriptCards.forEach((card) => {
-        if (card.thai) {
-          card.thai = card.thai.replace(/(?:ขอสายคุณ|เรียนคุณ|คุณ)\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, (match) => {
-            return match.startsWith("ขอสายคุณ") ? `ขอสายคุณ${cleanTh}` : (match.startsWith("เรียนคุณ") ? `เรียนคุณ${cleanTh}` : `คุณ${cleanTh}`);
-          });
+        if (card.thai && cleanTh && cleanTh.length > 1) {
+          card.thai = card.thai.replace(/ขอสายคุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `ขอสายคุณ${cleanTh}`);
+          card.thai = card.thai.replace(/เรียนคุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `เรียนคุณ${cleanTh}`);
+          card.thai = card.thai.replace(/ทราบว่าคุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `ทราบว่าคุณ${cleanTh}`);
+          card.thai = card.thai.replace(/ประจำวันของคุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `ประจำวันของคุณ${cleanTh}`);
+          card.thai = card.thai.replace(/ให้คุณ\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/g, `ให้คุณ${cleanTh}`);
         }
         if (card.english) {
-          card.english = card.english.replace(/(Good day,\s*)([A-Za-z\s\.\-']+?)(?=\.|\?|,|$)/i, `$1Mr. ${cleanEn}`);
+          card.english = card.english.replace(/(Good day,\s*)(?:Mr\.|Mrs\.|Ms\.)?\s*([A-Za-z\s\.\-']+?)(?=\.|\?|,|$)/i, `$1Mr. ${cleanEn}`);
           card.english = card.english.replace(/\b(Mr\.|Mrs\.|Ms\.)\s+[A-Za-z\s\.\-']+/g, `Mr. ${cleanEn}`);
         }
         if (card.arabic) {
@@ -2630,6 +2724,233 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Cross-Language Script Editing & Adaptation Engine
+  // When coordinator customizes the Thai script card, synthesize matching English & Arabic versions instantly
+  function translateThaiCardToEnAndAr(cardIndex, thaiText) {
+    if (!currentCustomScriptCards || !currentCustomScriptCards[cardIndex]) return;
+    if (!thaiText || typeof thaiText !== "string") return;
+
+    const trimmed = thaiText.trim();
+    if (!trimmed) return;
+
+    const staffNameVal = (docStaffName && docStaffName.value.trim()) || (callStaffName && callStaffName.value.trim()) || "Sorawit";
+    const staffCleanEn = staffNameVal.replace(/[\u0E00-\u0E7F()]/g, "").trim() || staffNameVal.split(" ")[0] || "Sorawit";
+    const staffCleanAr = staffCleanEn;
+    const staffPosVal = (docStaffPosition && docStaffPosition.value.trim()) || (callStaffPosition && callStaffPosition.value.trim()) || "International Patient Coordinator";
+
+    let patientNameVal = (callPatientName && callPatientName.value.trim()) || 
+                         (document.getElementById("dossierPatientName")?.value.trim()) || 
+                         (currentCaseDossier && currentCaseDossier.patientName) || "Patient";
+    const pMatch = trimmed.match(/(?:ขอสายคุณ|เรียนคุณ)\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/);
+    if (pMatch && pMatch[1] && pMatch[1].trim().length > 1 && !/^(mr\.?|mrs\.?|ms\.?|คุณ|ท่าน)$/i.test(pMatch[1].trim())) {
+      patientNameVal = pMatch[1].trim();
+    }
+    const cleanEnName = patientNameVal.replace(/^(?:mr\.?|mrs\.?|ms\.?|miss|dr\.?|prof\.?|khun|คุณ|ท่าน)\s+/i, "").replace(/[\u0E00-\u0E7F]/g, "").trim() || patientNameVal;
+    const cleanArName = cleanEnName;
+
+    // Detect center and clinical focus from Thai text
+    let centerEn = "King of Bones Center";
+    let centerAr = "مركز عظام كينغ أوف بونز";
+    let centerPhon = "markaz 'Izam King of Bones";
+    let organEn = "orthopedic";
+    let organAr = "العظام والمفاصل";
+
+    if (/หัวใจ|cath\s*lab|หลอดเลือด|cag|ecg|คลื่นหัวใจ/i.test(trimmed)) {
+      centerEn = "Heart Center";
+      centerAr = "مركز القلب";
+      centerPhon = "markaz al-qalb";
+      organEn = "cardiac";
+      organAr = "القلب والشرايين";
+    } else if (/กระดูกสันหลัง|หมอนรองกระดูก|หลัง|เอว/i.test(trimmed)) {
+      centerEn = "Spine Center";
+      centerAr = "مركز العمود الفقري";
+      centerPhon = "markaz al-'amud al-faqari";
+      organEn = "spine";
+      organAr = "العمود الفقري";
+    } else if (/มะเร็ง|ก้อนเนื้อ|ชิ้นเนื้อ|biopsy|เคมีบำบัด/i.test(trimmed)) {
+      centerEn = "Life Cancer Center";
+      centerAr = "مركز علاج الأورام والسرطان";
+      centerPhon = "markaz al-awram";
+      organEn = "oncology";
+      organAr = "الأورام والسرطان";
+    } else if (/ทางเดินอาหาร|ตับ|ส่องกล้องกระเพาะ/i.test(trimmed)) {
+      centerEn = "GI & Liver Center";
+      centerAr = "مركز الجهاز الهضمي والكبد";
+      centerPhon = "markaz al-jihaz al-hadmi wal-kabid";
+      organEn = "gastrointestinal";
+      organAr = "الجهاز الهضمي والكبد";
+    } else if (/เด็ก|กุมาร|เท้าปุก/i.test(trimmed)) {
+      centerEn = "Pediatric Orthopedic Center";
+      centerAr = "مركز طب وجراحة عظام الأطفال";
+      centerPhon = "markaz tibb al-atfal";
+      organEn = "pediatric orthopedic";
+      organAr = "عظام الأطفال";
+    } else if (/ข้อสะโพก|สะโพก/i.test(trimmed)) {
+      organEn = "hip";
+      organAr = "مفصل الورك";
+    } else if (/ข้อเข่า|เข่า/i.test(trimmed)) {
+      organEn = "knee";
+      organAr = "مفصل الركبة";
+    }
+
+    // Detect clinical tests and missing files in Thai text
+    const missingDocsEn = [];
+    const missingDocsAr = [];
+    if (/mri|เอ็มอาร์ไอ/i.test(trimmed)) {
+      missingDocsEn.push("latest MRI scan (DICOM Link/CD)");
+      missingDocsAr.push("أحدث صورة رنين مغناطيسي (MRI)");
+    }
+    if (/x-ray|เอกซเรย์/i.test(trimmed)) {
+      missingDocsEn.push("digital X-Ray films");
+      missingDocsAr.push("صور الأشعة السينية (X-Ray)");
+    }
+    if (/ct|ซีที/i.test(trimmed)) {
+      missingDocsEn.push("high-resolution CT scan");
+      missingDocsAr.push("الأشعة المقطعية (CT Scan)");
+    }
+    if (/ตรวจเลือด|cbc|hba1c|น้ำตาล/i.test(trimmed)) {
+      missingDocsEn.push("recent blood panel (CBC / HbA1c)");
+      missingDocsAr.push("تقرير فحص الدم والسكر التراكمي (HbA1c)");
+    }
+    if (/ชิ้นเนื้อ|biopsy/i.test(trimmed)) {
+      missingDocsEn.push("histopathology biopsy report");
+      missingDocsAr.push("تقرير فحص الخزعة النسيجية (Biopsy)");
+    }
+    if (/สวนหัวใจ|ฉีดสี|cag/i.test(trimmed)) {
+      missingDocsEn.push("Coronary Angiogram (CAG) report/film");
+      missingDocsAr.push("تقرير قسطرة القلب وتصوير الشرايين (CAG)");
+    }
+    if (/คลื่นหัวใจ|ecg|ekg/i.test(trimmed)) {
+      missingDocsEn.push("12-Lead Electrocardiogram (ECG)");
+      missingDocsAr.push("تخطيط كهربية القلب (ECG)");
+    }
+    if (/อัลตราซาวด์|echo/i.test(trimmed)) {
+      missingDocsEn.push("Echocardiogram report with EF%");
+      missingDocsAr.push("فحص الإيكو للقلب (Echo)");
+    }
+
+    // Synthesis per card index
+    if (cardIndex === 0) {
+      currentCustomScriptCards[0].english = `Good day, Mr./Ms. ${cleanEnName}. My name is ${staffCleanEn}, ${staffPosVal} from Vejthani Hospital's ${centerEn}, Bangkok. May I have 2-3 minutes regarding your ${organEn} consultation?`;
+      currentCustomScriptCards[0].arabic = `السلام عليكم ورحمة الله وبركاته، مرحباً بالسيد/السيدة ${cleanArName}. معكم ${staffCleanAr}، منسق التنسيق الطبي الدولي من ${centerAr} بمستشفى فيجثاني في بانكوك. هل وقتكم الكريم مناسب للحديث حول استشارة ${organAr}؟`;
+      currentCustomScriptCards[0].arabicPhonetic = `As-salamu alaykum wa rahmatullahi wa barakatuh, Marhaban ${cleanEnName}. Ma'akum ${staffCleanEn} min ${centerPhon} bi-Mustashfa Vejthani fi Bangkok. Hal waqtukum al-karim munasib lil-hadith hawla istisharah ${cleanEnName}?`;
+    } else if (cardIndex === 1) {
+      currentCustomScriptCards[1].english = `Our specialized medical board at ${centerEn} has received your clinical documentation and diagnostic imaging. Our senior consultant has conducted an initial evaluation.`;
+      currentCustomScriptCards[1].arabic = `لقد اطلع فريقنا الطبي المتخصص في ${centerAr} بمستشفى فيجثاني على تقاريركم وصور الأشعة بنجاح وقام استشاري التخصص بمراجعتها وتقديم التقييم الأولي.`;
+      currentCustomScriptCards[1].arabicPhonetic = `Laqad ittala'a fariquna at-tibbi fi ${centerPhon} 'ala taqareerakum wa suwar al-ashi'ah bi-najah wa qama al-istishari bi-muraja'atiha.`;
+    } else if (cardIndex === 2) {
+      let symptomDetailsEn = `Regarding your ${organEn} symptoms: how severe is your pain on a scale of 1 to 10, how many minutes can you walk or exert comfortably, and do you experience night pain or numbness?`;
+      let symptomDetailsAr = `بخصوص أعراض ${organAr}: ما هو مستوى الألم من 1 إلى 10، وكم دقيقة تستطيعون المشي أو الحركة دون ألم حاد، وهل تعانون من آلام ليلية أو خدر؟`;
+      let symptomPhon = `Bi-khusoos al-a'rad: ma mustawa al-alam min 1 ila 10, wa kam daqiqah tastati'oona al-mashi duna alam shadid?`;
+      if (/บันได|เหนื่อย|แน่นหน้าอก/i.test(trimmed)) {
+        symptomDetailsEn = "Regarding your symptoms: do you experience chest tightness, shortness of breath when walking up stairs or exerting, and how frequently do you need to pause?";
+        symptomDetailsAr = "بخصوص الأعراض: هل تشعرون بضيق أو ضغط في الصدر أو ضيق تنفس عند صعود الدرج أو بذل مجهود، وكم مرة تحتاجون للتوقف والراحة؟";
+      }
+      currentCustomScriptCards[2].english = symptomDetailsEn;
+      currentCustomScriptCards[2].arabic = symptomDetailsAr;
+      currentCustomScriptCards[2].arabicPhonetic = symptomPhon;
+    } else if (cardIndex === 3) {
+      currentCustomScriptCards[3].english = `Vejthani Hospital is JCI-accredited and internationally recognized, offering cutting-edge surgical technology, 24/7 specialist care, dedicated Arabic medical interpreters, and 100% Halal catering.`;
+      currentCustomScriptCards[3].arabic = `يتميز مستشفى فيجثاني باعتمادات دولية مرموقة (JCI) وتقنيات جراحية متقدمة وفريق طبي على مدار الساعة، مع مترجمين باللغة العربية ورعاية ووجبات حلال 100%.`;
+      currentCustomScriptCards[3].arabicPhonetic = `Yatamayyazu Mustashfa Vejthani bi-i'timadat dawliyyah marmooqah wa tiqniyyat mutatawwirah, ma'a tawfeer mutarjimin bil-lughah al-'Arabiyyah wa ri'ayah Halal kamilah.`;
+    } else if (cardIndex === 4) {
+      const missingEnText = (missingDocsEn.length > 0)
+        ? missingDocsEn.join(", ")
+        : (currentCaseDossier?.documentsMissing?.join(", ") || "your latest diagnostic imaging and complete clinical summary");
+      const missingArText = (missingDocsAr.length > 0)
+        ? missingDocsAr.join("، ")
+        : "صور الأشعة والتقارير الطبية الحديثة";
+
+      currentCustomScriptCards[4].english = `To confirm your definitive treatment plan and safe clearance, our medical team requires: ${missingEnText}. Please feel free to send these via this WhatsApp chat.`;
+      currentCustomScriptCards[4].arabic = `لاعتماد الخطة العلاجية بدقة وأمان، يحتاج الفريق الطبي إلى: ${missingArText}. يرجى التفضل بإرسالها عبر محادثة الواتساب هذه.`;
+      currentCustomScriptCards[4].arabicPhonetic = `Li-i'timad al-khittah al-'ilajiyyah bi-diqqah wa aman, nahtaju al-fuhusat al-matloobah. Yumkinukum irsaluha 'abra al-WhatsApp.`;
+    } else if (cardIndex === 5) {
+      let hoursTextEn = /48\s*ชั่วโมง/.test(trimmed) ? "48 hours" : "24 hours";
+      let hoursTextAr = /48\s*ชั่วโมง/.test(trimmed) ? "48 ساعة" : "24 ساعة";
+      currentCustomScriptCards[5].english = `I am sending your clinical consultation summary and medical visa assistance letter to your WhatsApp right now. Once remaining records are received, your personalized plan will be issued within ${hoursTextEn}.`;
+      currentCustomScriptCards[5].arabic = `سأرسل لكم الآن الملخص الطبي وخطاب تسهيل التأشيرة عبر الواتساب. وفور استلام التقارير المتبقية، ستصدر خطتكم العلاجية خلال ${hoursTextAr}.`;
+      currentCustomScriptCards[5].arabicPhonetic = `Sa-ursilu lakum al-an al-mulakh-khas at-tibbi wa khitab tas-hil at-ta'shirah 'abra al-WhatsApp. Wa fawra istilam al-fuhusat, sa-tasduru khittatukum al-'ilajiyyah khilal ${hoursTextAr}.`;
+    }
+
+    // Asynchronously call Gemini AI if connected
+    requestGeminiTranslationAsync(cardIndex, trimmed, cleanEnName, staffCleanEn);
+  }
+
+  async function requestGeminiTranslationAsync(cardIndex, thaiText, patientName, staffName) {
+    const apiKey = (document.getElementById("quickGeminiApiKey")?.value.trim()) || 
+                   localStorage.getItem("gemini_api_key") || "";
+
+    // 1. Try Backend API first
+    try {
+      const response = await fetch("/api/translate-script", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          thaiText: thaiText,
+          cardIndex: cardIndex,
+          patientName: patientName,
+          staffName: staffName,
+          apiKey: apiKey
+        })
+      });
+      if (response.ok) {
+        const resJson = await response.json();
+        if (resJson && resJson.english && resJson.arabic) {
+          if (currentCustomScriptCards && currentCustomScriptCards[cardIndex]) {
+            currentCustomScriptCards[cardIndex].english = resJson.english;
+            currentCustomScriptCards[cardIndex].arabic = resJson.arabic;
+            if (resJson.arabicPhonetic) currentCustomScriptCards[cardIndex].arabicPhonetic = resJson.arabicPhonetic;
+            if (currentCallLang === "en" || currentCallLang === "ar") refreshCallScript();
+          }
+          return;
+        }
+      }
+    } catch (e) {
+      // Backend unavailable or offline
+    }
+
+    // 2. Direct client-side Gemini if API key present
+    if (apiKey) {
+      try {
+        const prompt = `You are a medical translator for Vejthani Hospital, Bangkok.
+The coordinator edited the following Thai script for Card Step ${cardIndex + 1}:
+"${thaiText}"
+
+Translate this into natural, professional, diplomatic clinical English and modern standard Arabic with Latin phonetic pronunciation.
+Strict Rules:
+- ZERO EMOJIS anywhere.
+- Return ONLY JSON: {"english": "...", "arabic": "...", "arabicPhonetic": "..."}`;
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: "application/json", temperature: 0.2 }
+          })
+        });
+        if (res.ok) {
+          const resJson = await res.json();
+          const raw = resJson?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.english && parsed.arabic) {
+              if (currentCustomScriptCards && currentCustomScriptCards[cardIndex]) {
+                currentCustomScriptCards[cardIndex].english = parsed.english;
+                currentCustomScriptCards[cardIndex].arabic = parsed.arabic;
+                if (parsed.arabicPhonetic) currentCustomScriptCards[cardIndex].arabicPhonetic = parsed.arabicPhonetic;
+                if (currentCallLang === "en" || currentCallLang === "ar") refreshCallScript();
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Client Gemini script translation error:", err);
+      }
+    }
+  }
+
   function saveAndSyncAllCardsAcrossLanguages() {
     if (!currentCustomScriptCards || currentCustomScriptCards.length < 6) return;
 
@@ -2637,11 +2958,16 @@ document.addEventListener("DOMContentLoaded", () => {
     promptIds.forEach((id, idx) => {
       const el = document.getElementById(id);
       if (el) {
-        const val = el.innerText || el.textContent;
-        if (val && val.trim().length > 0) {
-          if (currentCallLang === "th") currentCustomScriptCards[idx].thai = val;
-          else if (currentCallLang === "ar") currentCustomScriptCards[idx].arabic = val;
-          else currentCustomScriptCards[idx].english = val;
+        const val = (el.innerText || el.textContent || "").trim();
+        if (val.length > 0) {
+          if (currentCallLang === "th") {
+            currentCustomScriptCards[idx].thai = val;
+            translateThaiCardToEnAndAr(idx, val);
+          } else if (currentCallLang === "ar") {
+            currentCustomScriptCards[idx].arabic = val;
+          } else {
+            currentCustomScriptCards[idx].english = val;
+          }
         }
       }
     });
@@ -2654,7 +2980,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const statusEl = document.getElementById("medicalDocStatus");
     if (statusEl) {
-      statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700 font-bold">บันทึกการแก้ไขสคริปต์เรียบร้อย: ซิงค์ข้อมูลข้าม 3 ภาษา (ไทย / English / العربية) สำเร็จ</span>`;
+      statusEl.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700 font-bold">บันทึกการแก้ไขสคริปต์เรียบร้อย: ซิงค์บทพูดข้าม 3 ภาษา (ไทย / English / العربية) สำเร็จ</span>`;
     }
     refreshCallScript();
   }
@@ -4482,30 +4808,16 @@ ${docText.slice(0, 16000)}`;
           const val = el.innerText || el.textContent;
           if (currentCallLang === "th") {
             currentCustomScriptCards[cardIdx].thai = val;
-            if (cardIdx === 0) {
-              const m = val.match(/(?:ขอสายคุณ|เรียนคุณ|คุณ)\s*([^\s,\.?!]+(?:\s+[^\s,\.?!]+)?)/);
-              if (m && m[1]) {
-                syncPatientNameAcrossCards(m[1].trim());
-              }
-            }
           } else if (currentCallLang === "ar") {
             currentCustomScriptCards[cardIdx].arabic = val;
-            if (cardIdx === 0) {
-              const m = val.match(/(?:مرحباً بالسيد\/السيدة\s+|بالسيد\/السيدة\s+)([^\.،?!]+)/);
-              if (m && m[1]) {
-                syncPatientNameAcrossCards(m[1].trim());
-              }
-            }
           } else {
             currentCustomScriptCards[cardIdx].english = val;
-            if (cardIdx === 0) {
-              const m = val.match(/(?:Good day,\s*|calling for\s*|speaking with\s*)(?:Mr\.|Mrs\.|Ms\.)?\s*([A-Za-z\s\.\-']+?)(?=\.|\?|,|$)/i);
-              if (m && m[1]) {
-                syncPatientNameAcrossCards(m[1].trim());
-              }
-            }
           }
         }
+      });
+
+      el.addEventListener("blur", () => {
+        saveAndSyncAllCardsAcrossLanguages();
       });
     });
 
@@ -4548,6 +4860,29 @@ ${docText.slice(0, 16000)}`;
         refreshCallScript();
       });
     }
+
+    // Two-Way Binding for Medical Document Teleprompter Liaison Profile
+    const docStaffNameEl = document.getElementById("docStaffName");
+    const docStaffPositionEl = document.getElementById("docStaffPosition");
+    const docStaffExtEl = document.getElementById("docStaffExt");
+    const docStaffWhatsAppEl = document.getElementById("docStaffWhatsApp");
+
+    [
+      { el: docStaffNameEl, target: callStaffName },
+      { el: docStaffPositionEl, target: callStaffPosition },
+      { el: docStaffExtEl, target: callStaffExt },
+      { el: docStaffWhatsAppEl, target: callStaffWhatsApp }
+    ].forEach(item => {
+      if (item.el) {
+        item.el.addEventListener("input", () => {
+          if (item.target && item.target.value !== item.el.value) {
+            item.target.value = item.el.value;
+          }
+          syncStaffProfile("doc");
+          refreshCallScript();
+        });
+      }
+    });
   }
 
   // --- View 2: Inquiry Console Handling ---

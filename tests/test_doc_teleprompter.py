@@ -105,7 +105,12 @@ class TestMedicalDocTeleprompter(unittest.TestCase):
             "docPrompt4",
             "docPrompt4Phonetic",
             "docClosingDynamic",
-            "docPrompt6"
+            "docPrompt6",
+            "docLiaisonProfileCard",
+            "docStaffName",
+            "docStaffPosition",
+            "docStaffExt",
+            "docStaffWhatsApp"
         ]
 
         for el_id in required_ids:
@@ -180,6 +185,51 @@ class TestMedicalDocTeleprompter(unittest.TestCase):
         self.assertIn("callClientSideGeminiApi", js)
         self.assertIn("currentScriptTone", js)
         self.assertIn("doc-tone-btn", js)
+
+    def test_liaison_profile_and_sync(self):
+        """Verify Liaison Profile elements in Medical Doc Teleprompter and bidirectional sync logic"""
+        with open("index.html", "r", encoding="utf-8") as f:
+            html = f.read()
+        with open("app.js", "r", encoding="utf-8") as f:
+            js = f.read()
+
+        # HTML assertions
+        self.assertIn('id="docLiaisonProfileCard"', html)
+        self.assertIn('id="docStaffName"', html)
+        self.assertIn('id="docStaffPosition"', html)
+        self.assertIn('id="docStaffExt"', html)
+        self.assertIn('id="docStaffWhatsApp"', html)
+
+        # JS sync assertions
+        self.assertIn("syncStaffProfile", js)
+        self.assertIn("vejthani_staff_profile", js)
+        self.assertIn("docStaffName", js)
+        self.assertIn("callStaffName", js)
+
+    def test_cross_language_sync_and_api(self):
+        """Verify cross-language translation engine and /api/translate-script endpoint"""
+        with open("app.js", "r", encoding="utf-8") as f:
+            js = f.read()
+
+        self.assertIn("translateThaiCardToEnAndAr", js)
+        self.assertIn("saveAndSyncAllCardsAcrossLanguages", js)
+        self.assertIn("/api/translate-script", js)
+
+        # Server endpoint verification
+        payload = {
+            "thaiText": "สวัสดีครับ ขอสายคุณโมฮัมเหม็ด อัล-บาลูชี นะครับ ผมชื่อศรวิทย์ พยาบาลประสานงานผู้ป่วยสากล จากศูนย์กระดูกและข้อ King of Bones โรงพยาบาลเวชธานี",
+            "cardIndex": 0,
+            "patientName": "Mr. Mohammed Al-Balushi",
+            "staffName": "Sorawit"
+        }
+        status, headers, body = ServerInspector.post_json("/api/translate-script", payload)
+        self.assertEqual(status, 200)
+        res = json.loads(body.decode("utf-8"))
+        self.assertEqual(res.get("status"), "success")
+        self.assertIn("Mohammed Al-Balushi", res.get("english", ""))
+        self.assertIn("King of Bones", res.get("english", ""))
+        self.assertIn("Sorawit", res.get("english", ""))
+        self.assertIn("Mohammed Al-Balushi", res.get("arabic", ""))
 
     def test_zero_emojis(self):
         """Enforce strict zero emojis rule in all web files"""
